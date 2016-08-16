@@ -45,8 +45,22 @@ set_property(TARGET NemstaTest PROPERTY CXX_STANDARD 11)
 set_property(TARGET NemstaTest PROPERTY CXX_STANDARD_REQUIRED ON)
 
 ###############################################################################
+## generate documentation #####################################################
+###############################################################################
+
+find_package(Doxygen)
+add_custom_target (doc ALL
+	${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/doxy/*.doxyfile
+	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/doxy
+)
+
+###############################################################################
 ## dependencies ###############################################################
 ###############################################################################
+
+# THREADS
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
 
 # CPPUNIT
 find_library(CPPUNIT_LIBRARY_DEBUG NAMES cppunit cppunit_dll cppunitd cppunitd_dll
@@ -72,37 +86,33 @@ endif(CPPUNIT_LIBRARY_DEBUG AND NOT CPPUNIT_LIBRARY_RELEASE)
 set( CPPUNIT_LIBRARY debug ${CPPUNIT_LIBRARY_DEBUG} optimized ${CPPUNIT_LIBRARY_RELEASE} )
 
 #SNMPDao
-#set(SNMPDAO_LIBRARY_DIRS ${CMAKE_CURRENT_LIST_DIR}/env/snmpdao/lib)
-#set(SNMPDAO_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/env/snmpdao/inc)
+set(SNMPDAO_LIBRARY_DIRS ${CMAKE_CURRENT_LIST_DIR}/env/SNMPDao/lib)
+set(SNMPDAO_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/env/SNMPDao/inc)
 
-#find_library(
-#    SNMPDAO_LIBRARIES
-#    NAMES SNMPDao
-#    PATHS ${CMAKE_CURRENT_LIST_DIR}/../env/snmpdao
-#    PATH_SUFFIXES "lib"
-#    NO_DEFAULT_PATH
-#)
+find_library(
+    SNMPDAO_LIBRARIES
+    NAMES SNMPDao
+    PATHS ${CMAKE_CURRENT_LIST_DIR}/../env/SNMPDao
+    PATH_SUFFIXES "lib"
+    NO_DEFAULT_PATH
+)
 
 #SNMPLib
-#set(SNMPLIB_LIBRARY_DIRS ${CMAKE_CURRENT_LIST_DIR}/env/snmplib/lib)
-#set(SNMPLIB_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/env/snmplib/inc)
+set(SNMPLIB_LIBRARY_DIRS ${CMAKE_CURRENT_LIST_DIR}/env/SNMPLib/lib)
+set(SNMPLIB_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/env/SNMPLib/inc)
 
-#find_library(
-#    SNMPLIB_LIBRARIES
-#    NAMES SNMPLib
-#    PATHS ${CMAKE_CURRENT_LIST_DIR}/../env/snmplib
-#    PATH_SUFFIXES "lib"
-#    NO_DEFAULT_PATH
-#)
+find_library(
+    SNMPLIB_LIBRARIES
+    NAMES SNMPLib
+    PATHS ${CMAKE_CURRENT_LIST_DIR}/../env/SNMPLib
+    PATH_SUFFIXES "lib"
+    NO_DEFAULT_PATH
+)
 
 # TEST FILES
 #file(GLOB TEST_FILES "test_files/*")
 #file(COPY ${TEST_FILES} DESTINATION .)
 
-#include_directories(${SNMPDAO_INCLUDE_DIRS} ${SNMPLIB_INCLUDE_DIRS})
-#link_directories(${CPPUNIT_LIBRARY} ${SNMPDAO_LIBRARY_DIRS} ${SNMPLIB_LIBRARY_DIRS})
-#target_link_libraries(NemstaTest ${CPPUNIT_LIBRARY} ${SNMPDAO_LIBRARIES} ${SNMPLIB_LIBRARIES})
-
-include_directories()
-link_directories(${CPPUNIT_LIBRARY})
-target_link_libraries(NemstaTest ${CPPUNIT_LIBRARY} ${CMAKE_DL_LIBS})
+include_directories(${SNMPDAO_INCLUDE_DIRS} ${SNMPLIB_INCLUDE_DIRS})
+link_directories(${CPPUNIT_LIBRARY} ${SNMPDAO_LIBRARY_DIRS} ${SNMPLIB_LIBRARY_DIRS})
+target_link_libraries(NemstaTest ${CPPUNIT_LIBRARY} ${SNMPDAO_LIBRARIES} ${SNMPLIB_LIBRARIES} Threads::Threads)

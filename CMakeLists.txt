@@ -28,9 +28,47 @@ set_property(TARGET Nemsta PROPERTY CXX_STANDARD 11)
 set_property(TARGET Nemsta PROPERTY CXX_STANDARD_REQUIRED ON)
 
 ###############################################################################
+## generate documentation #####################################################
+###############################################################################
+
+find_package(Doxygen)
+add_custom_target (doc ALL
+	${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/doxy/*.doxyfile
+	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/doxy
+)
+
+###############################################################################
 ## dependencies ###############################################################
 ###############################################################################
 
-include_directories()
-link_directories()
-target_link_libraries(Nemsta )
+# THREADS
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
+
+#SNMPDao
+set(SNMPDAO_LIBRARY_DIRS ${CMAKE_CURRENT_LIST_DIR}/env/SNMPDao/lib)
+set(SNMPDAO_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/env/SNMPDao/inc)
+
+find_library(
+    SNMPDAO_LIBRARIES
+    NAMES SNMPDao
+    PATHS ${CMAKE_CURRENT_LIST_DIR}/env/SNMPDao
+    PATH_SUFFIXES "lib"
+    NO_DEFAULT_PATH
+)
+
+#SNMPLib
+set(SNMPLIB_LIBRARY_DIRS ${CMAKE_CURRENT_LIST_DIR}/env/SNMPLib/lib)
+set(SNMPLIB_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/env/SNMPLib/inc)
+
+find_library(
+    SNMPLIB_LIBRARIES
+    NAMES SNMPLib
+    PATHS ${CMAKE_CURRENT_LIST_DIR}/env/SNMPLib
+    PATH_SUFFIXES "lib"
+    NO_DEFAULT_PATH
+)
+
+include_directories(${SNMPDAO_INCLUDE_DIRS} ${SNMPLIB_INCLUDE_DIRS})
+link_directories(${SNMPDAO_LIBRARY_DIRS} ${SNMPLIB_LIBRARY_DIRS})
+target_link_libraries(Nemsta ${SNMPDAO_LIBRARIES} ${SNMPLIB_LIBRARIES} Threads::Threads)

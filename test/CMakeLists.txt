@@ -45,16 +45,6 @@ set_property(TARGET NemstaTest PROPERTY CXX_STANDARD 11)
 set_property(TARGET NemstaTest PROPERTY CXX_STANDARD_REQUIRED ON)
 
 ###############################################################################
-## generate documentation #####################################################
-###############################################################################
-
-find_package(Doxygen)
-add_custom_target (doc ALL
-	${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/doxy/*.doxyfile
-	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/doxy
-)
-
-###############################################################################
 ## dependencies ###############################################################
 ###############################################################################
 
@@ -115,4 +105,4 @@ find_library(
 
 include_directories(${SNMPDAO_INCLUDE_DIRS} ${SNMPLIB_INCLUDE_DIRS})
 link_directories(${CPPUNIT_LIBRARY} ${SNMPDAO_LIBRARY_DIRS} ${SNMPLIB_LIBRARY_DIRS})
-target_link_libraries(NemstaTest ${CPPUNIT_LIBRARY} ${SNMPDAO_LIBRARIES} ${SNMPLIB_LIBRARIES} Threads::Threads)
+target_link_libraries(NemstaTest ${CPPUNIT_LIBRARY} ${SNMPDAO_LIBRARIES} ${SNMPLIB_LIBRARIES} Threads::Threads ${CMAKE_DL_LIBS})

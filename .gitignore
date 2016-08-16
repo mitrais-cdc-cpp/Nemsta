@@ -7,5 +7,15 @@
 /Makefile
 /doxy/html/
 /doxy/latex/
+/doxy/man/
 /Nemsta
 /build/
+/Debug/
+*.log
+*.html
+/test/build
+/test/.cproject
+/test/.project
+/.sett.xml
+/sett.xml
+/Config.xml

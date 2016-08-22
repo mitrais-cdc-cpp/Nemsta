@@ -1,0 +1,6 @@
+[submodule "env/subSNMPLib"]
+	path = env/subSNMPLib
+	url = https://github.com/mitrais-cdc-cpp/SNMPLib.git
+[submodule "env/subSNMPDao"]
+	path = env/subSNMPDao
+	url = https://github.com/mitrais-cdc-cpp/SNMPDao.git

@@ -48,10 +48,6 @@ set_property(TARGET NemstaTest PROPERTY CXX_STANDARD_REQUIRED ON)
 ## dependencies ###############################################################
 ###############################################################################
 
-# THREADS
-set(THREADS_PREFER_PTHREAD_FLAG ON)
-find_package(Threads REQUIRED)
-
 # CPPUNIT
 find_library(CPPUNIT_LIBRARY_DEBUG NAMES cppunit cppunit_dll cppunitd cppunitd_dll
             	PATHS  
@@ -105,4 +101,4 @@ find_library(
 
 include_directories(${SNMPDAO_INCLUDE_DIRS} ${SNMPLIB_INCLUDE_DIRS})
 link_directories(${CPPUNIT_LIBRARY} ${SNMPDAO_LIBRARY_DIRS} ${SNMPLIB_LIBRARY_DIRS})
-target_link_libraries(NemstaTest ${CPPUNIT_LIBRARY} ${SNMPDAO_LIBRARIES} ${SNMPLIB_LIBRARIES} Threads::Threads ${CMAKE_DL_LIBS})
+target_link_libraries(NemstaTest ${CPPUNIT_LIBRARY} ${SNMPDAO_LIBRARIES} ${SNMPLIB_LIBRARIES} ${CMAKE_DL_LIBS})

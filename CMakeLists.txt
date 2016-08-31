@@ -70,6 +70,59 @@ find_library(
     NO_DEFAULT_PATH
 )
 
-include_directories(${SNMPDAO_INCLUDE_DIRS} ${SNMPLIB_INCLUDE_DIRS})
-link_directories(${SNMPDAO_LIBRARY_DIRS} ${SNMPLIB_LIBRARY_DIRS})
-target_link_libraries(Nemsta ${SNMPDAO_LIBRARIES} ${SNMPLIB_LIBRARIES} Threads::Threads)
+# ODB
+set(ODB_LIBRARY_DIRS ${CMAKE_CURRENT_LIST_DIR}/env/odb/lib)  
+set(ODB_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/env/odb/include)  
+find_library(  
+	ODB_LIBRARIES  
+	NAMES odb libodb
+	PATHS ${CMAKE_CURRENT_LIST_DIR}/env/odb/lib
+	PATH_SUFFIXES "lib"  
+	NO_DEFAULT_PATH  
+)
+
+# ODB_MYSQL
+set(ODB_MYSQL_LIBRARY_DIRS ${CMAKE_CURRENT_LIST_DIR}/env/odb-mysql/lib)  
+set(ODB_MYSQL_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/env/odb-mysql/include)  
+find_library(  
+	ODB_MYSQL_LIBRARIES  
+	NAMES odb-mysql libodb-mysql
+	PATHS ${CMAKE_CURRENT_LIST_DIR}/env/odb-mysql/lib
+	PATH_SUFFIXES "lib"  
+	NO_DEFAULT_PATH  
+)
+
+# ODB_BOOST
+set(ODB_BOOST_LIBRARY_DIRS ${CMAKE_CURRENT_LIST_DIR}/env/odb-boost/lib)  
+set(ODB_BOOST_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/env/odb-boost/include)  
+find_library(  
+	ODB_BOOST_LIBRARIES  
+	NAMES odb-boost libodb-boost
+	PATHS ${CMAKE_CURRENT_LIST_DIR}/env/odb-boost/lib
+	PATH_SUFFIXES "lib"  
+	NO_DEFAULT_PATH  
+)
+
+
+include_directories(${SNMPDAO_INCLUDE_DIRS}
+					${SNMPDAO_INCLUDE_DIRS}/Entity
+					${SNMPLIB_INCLUDE_DIRS}
+					${ODB_INCLUDE_DIRS}
+					${ODB_MYSQL_INCLUDE_DIRS}
+					${ODB_BOOST_INCLUDE_DIRS})
+
+
+link_directories(${SNMPDAO_LIBRARY_DIRS}
+				 ${SNMPLIB_LIBRARY_DIRS}
+				 ${ODB_LIBRARY_DIRS}
+				 ${ODB_MYSQL_LIBRARY_DIRS}
+				 ${ODB_BOOST_LIBRARY_DIRS})
+
+
+target_link_libraries(Nemsta
+					  ${SNMPDAO_LIBRARIES}
+					  ${SNMPLIB_LIBRARIES}
+					  ${ODB_LIBRARIES}
+					  ${ODB_MYSQL_LIBRARIES}
+					  ${ODB_BOOST_LIBRARIES}
+					  Threads::Threads)

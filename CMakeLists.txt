@@ -6,7 +6,11 @@ project(Nemsta VERSION 0.1 LANGUAGES CXX)
 ###############################################################################
 
 file(GLOB SOURCES
- 	main.cpp)
+ 	main.cpp
+ 	inc/*.hpp
+ 	inc/util/*.hpp
+ 	src/*.cpp
+ 	src/util/*.cpp)
  
  message("Following sources found:")
 foreach(a ${SOURCES})

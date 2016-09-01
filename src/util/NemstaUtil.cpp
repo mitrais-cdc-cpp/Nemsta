@@ -5,7 +5,7 @@
  *      Author: Ari Suarkadipa
  */
 
-#include "../../inc/util/NemstaUtil.h"
+#include "../../inc/util/NemstaUtil.hpp"
 
 using namespace Mitrais::Nemsta;
 

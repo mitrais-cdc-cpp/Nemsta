@@ -6,40 +6,41 @@
 // Description :
 //============================================================================
 
+#include <boost/shared_ptr.hpp>
 #include <fstream>
 #include <iostream>
 #include <memory>
-#include <odb/transaction.hxx>
+#include <odb/database.hxx>
 #include "env/SNMPDao/inc/DBFactory.hpp"
 #include "env/SNMPDao/inc/Entity/NetworkElement.hpp"
 #include "env/SNMPDao/inc/MySQLFactory.hpp"
-#include "env/SNMPDao/inc/odb_gen/NetworkElement_odb.h"
+#include "inc/util/DatabaseUtil.hpp"
 
 using namespace odb::core;
-using namespace Mitrais::SNMPDao::Entity;
+using namespace Mitrais::Nemsta;
 int main() {
-  std::ofstream myfile("example.txt");
+  // Database information
+  const char *_username = "NemsTA";
+  const char *_password = "N3m5TA4adm1n";
+  const char *_host = "172.19.12.251";
+  const char *_dbName = "nemstadb";
 
-  std::cout << "Creating the file" << std::endl;
-  if (myfile.is_open()) {
-    myfile << "This is a line.\n";
-    myfile << "This is another line.\n";
-    myfile.close();
-  } else
-    std::cout << "Unable to open file";
+  // Create database connection
+  std::auto_ptr<DB::DBFactory> dbFactory(
+      new DB::MySQLFactory(_username, _password, _dbName, _host));
+  std::auto_ptr<database> dbConn(dbFactory->createDatabase());
 
-  // Test to create database connection
-  std::unique_ptr<DB::DBFactory> dbFactory(new DB::MySQLFactory(
-      "NemsTA", "N3m5TA4adm1n", "nemstadb", "172.19.12.251"));
-  std::unique_ptr<database> dbConn(dbFactory->createDatabase());
-  if (dbConn) {
-    std::cout << "Connection Ok" << std::endl;
-  }
+  // Create database util and inject the database connection
+  DatabaseUtil databaseUtil(dbConn);
+  long networkElementId = databaseUtil.insertNetworkElement(
+      "element1", "DA:DB:32:35:88:97", "172.19.12.251");
 
-  // create transaction
-  transaction t(dbConn->begin());
-  NetworkElement element1("element1", "DA:DB:32:34", "172.19.12.251");
-  dbConn->persist(element1);
-  t.commit();
+  long networkElementId2 = databaseUtil.insertNetworkElement(
+      "element1", "DA:DB:32:35:89:OC", "172.19.12.251");
+
+  boost::shared_ptr<NetworkElement> element1 =
+      databaseUtil.getNetWorkElementById(networkElementId);
+  std::cout << "Network Element IP Address" << element1->IPAddress();
+  std::cout << "Network Element Mac" << element1->MACAddress();
   return 0;
 }

@@ -12,7 +12,7 @@
 #include <cppunit/TestFixture.h>
 #include <cppunit/extensions/HelperMacros.h>
 
-#include "../inc/util/NemstaUtil.h"
+#include "../inc/util/NemstaUtil.hpp"
 
 
 class TestNemstaUtil: public CppUnit::TestFixture

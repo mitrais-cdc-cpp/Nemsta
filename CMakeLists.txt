@@ -31,8 +31,8 @@ set_property(TARGET Nemsta PROPERTY CXX_STANDARD_REQUIRED ON)
 ## generate documentation #####################################################
 ###############################################################################
 
-#find_package(Doxygen)
-set(DOXYGEN_EXECUTABLE ${CMAKE_CURRENT_LIST_DIR}/env/doxygen-1.8.11/bin/doxygen)
+find_package(Doxygen)
+#set(DOXYGEN_EXECUTABLE ${CMAKE_CURRENT_LIST_DIR}/env/doxygen-1.8.11/bin/doxygen)
 add_custom_target (doc ALL
 	${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/doxy/*.doxyfile
 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/doxy

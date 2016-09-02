@@ -41,8 +41,9 @@ set(CMAKE_BUILD_TYPE Debug)
 ###############################################################################
 
 #enable c++11 and set it required
-set_property(TARGET NemstaTest PROPERTY CXX_STANDARD 11)
-set_property(TARGET NemstaTest PROPERTY CXX_STANDARD_REQUIRED ON)
+#set_property(TARGET NemstaTest PROPERTY CXX_STANDARD 11)
+#set_property(TARGET NemstaTest PROPERTY CXX_STANDARD_REQUIRED ON)
+add_definitions("-DSTDCXX_98_HEADERS -D_SNMPv3")
 
 ###############################################################################
 ## dependencies ###############################################################
@@ -83,6 +84,18 @@ find_library(
     NO_DEFAULT_PATH
 )
 
+#SNMP++
+set(SNMP_PP_LIBRARY_DIRS ${CMAKE_CURRENT_LIST_DIR}/../env/snmp_pp/lib)
+set(SNMP_PP_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/../env/snmp_pp/include)
+
+find_library(
+    SNMP_PP_LIBRARIES
+    NAMES snmp++
+    PATHS ${CMAKE_CURRENT_LIST_DIR}/../env/snmp_pp/lib
+    PATH_SUFFIXES "lib"
+    NO_DEFAULT_PATH
+)
+
 #SNMPLib
 set(SNMPLIB_LIBRARY_DIRS ${CMAKE_CURRENT_LIST_DIR}/env/SNMPLib/lib)
 set(SNMPLIB_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/env/SNMPLib/inc)
@@ -99,6 +112,6 @@ find_library(
 #file(GLOB TEST_FILES "test_files/*")
 #file(COPY ${TEST_FILES} DESTINATION .)
 
-include_directories(${SNMPDAO_INCLUDE_DIRS} ${SNMPLIB_INCLUDE_DIRS})
-link_directories(${CPPUNIT_LIBRARY} ${SNMPDAO_LIBRARY_DIRS} ${SNMPLIB_LIBRARY_DIRS})
-target_link_libraries(NemstaTest ${CPPUNIT_LIBRARY} ${SNMPDAO_LIBRARIES} ${SNMPLIB_LIBRARIES} ${CMAKE_DL_LIBS})
+include_directories(${SNMPDAO_INCLUDE_DIRS} ${SNMPLIB_INCLUDE_DIRS} ${SNMP_PP_INCLUDE_DIRS})
+link_directories(${CPPUNIT_LIBRARY} ${SNMPDAO_LIBRARY_DIRS} ${SNMPLIB_LIBRARY_DIRS} ${SNMP_PP_LIBRARY_DIRS})
+target_link_libraries(NemstaTest ${CPPUNIT_LIBRARY} ${SNMPDAO_LIBRARIES} ${SNMPLIB_LIBRARIES} ${CMAKE_DL_LIBS} ${SNMP_PP_LIBRARIES})

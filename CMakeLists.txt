@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.1.0 FATAL_ERROR)
-project(Nemsta VERSION 0.1 LANGUAGES CXX)
+set (EXECUTABLE_OUTPUT_FILE_NAME Nemsta)
+project(${EXECUTABLE_OUTPUT_FILE_NAME} VERSION 0.1 LANGUAGES CXX)
 
 ###############################################################################
 ## target definitions #########################################################
@@ -11,13 +12,13 @@ file(GLOB SOURCES
  src/util/*.cpp
  )
  
- message("Following sources found:")
+message("Following sources found:")
 foreach(a ${SOURCES})
   message("${a}")
 endforeach()
 
 #Generate the shared library from the sources
-add_executable(Nemsta ${SOURCES})
+add_executable(${EXECUTABLE_OUTPUT_FILE_NAME} ${SOURCES})
 
 #Set Debug or Release
 set(CMAKE_BUILD_TYPE Debug)
@@ -27,8 +28,8 @@ set(CMAKE_BUILD_TYPE Debug)
 ###############################################################################
 
 #enable c++11 and set it required
-#set_property(TARGET Nemsta PROPERTY CXX_STANDARD 11)
-#set_property(TARGET Nemsta PROPERTY CXX_STANDARD_REQUIRED ON)
+#set_property(TARGET ${EXECUTABLE_OUTPUT_FILE_NAME} PROPERTY CXX_STANDARD 11)
+#set_property(TARGET ${EXECUTABLE_OUTPUT_FILE_NAME} PROPERTY CXX_STANDARD_REQUIRED ON)
 add_definitions("-DSTDCXX_98_HEADERS -D_SNMPv3")
 
 ###############################################################################
@@ -45,6 +46,9 @@ add_custom_target (doc ALL
 ###############################################################################
 ## dependencies ###############################################################
 ###############################################################################
+#BOOST
+set( BOOST_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/env/boost/1.61.0/include)
+set( BOOST_LIBRARY_DIRS ${CMAKE_CURRENT_LIST_DIR}/env/boost/1.61.0/lib)
 
 # THREADS
 set(THREADS_PREFER_PTHREAD_FLAG ON)
@@ -86,6 +90,6 @@ find_library(
     NO_DEFAULT_PATH
 )
 
-include_directories(${SNMPDAO_INCLUDE_DIRS} ${SNMPLIB_INCLUDE_DIRS} ${SNMP_PP_INCLUDE_DIRS})
-link_directories(${SNMPDAO_LIBRARY_DIRS} ${SNMPLIB_LIBRARY_DIRS} ${SNMP_PP_LIBRARY_DIRS})
-target_link_libraries(Nemsta ${SNMPDAO_LIBRARIES} ${SNMPLIB_LIBRARIES} ${SNMP_PP_LIBRARIES} Threads::Threads)
+include_directories(${BOOST_INCLUDE_DIRS} ${SNMPDAO_INCLUDE_DIRS} ${SNMPLIB_INCLUDE_DIRS} ${SNMP_PP_INCLUDE_DIRS})
+link_directories(${BOOST_LIBRARY_DIRS} ${SNMPDAO_LIBRARY_DIRS} ${SNMPLIB_LIBRARY_DIRS} ${SNMP_PP_LIBRARY_DIRS})
+target_link_libraries(${EXECUTABLE_OUTPUT_FILE_NAME} ${SNMPDAO_LIBRARIES} ${SNMPLIB_LIBRARIES} ${SNMP_PP_LIBRARIES} Threads::Threads)

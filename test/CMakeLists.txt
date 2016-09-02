@@ -51,6 +51,9 @@ add_definitions("-DSTDCXX_98_HEADERS -D_SNMPv3")
 ###############################################################################
 ## dependencies ###############################################################
 ###############################################################################
+#BOOST
+set( BOOST_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/../env/boost/1.61.0/include)
+set( BOOST_LIBRARY_DIRS ${CMAKE_CURRENT_LIST_DIR}/../env/boost/1.61.0/lib)
 
 # CPPUNIT
 set( CPPUNIT_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/../env/cppunit/1.12.1/include)
@@ -96,6 +99,6 @@ find_library(
 #file(GLOB TEST_FILES "test_files/*")
 #file(COPY ${TEST_FILES} DESTINATION .)
 
-include_directories(${CPPUNIT_INCLUDE_DIRS} ${SNMPDAO_INCLUDE_DIRS} ${SNMPLIB_INCLUDE_DIRS} ${SNMP_PP_INCLUDE_DIRS})
-link_directories(${CPPUNIT_LIBRARY} ${SNMPDAO_LIBRARY_DIRS} ${SNMPLIB_LIBRARY_DIRS} ${SNMP_PP_LIBRARY_DIRS})
+include_directories(${BOOST_INCLUDE_DIRS} ${CPPUNIT_INCLUDE_DIRS} ${SNMPDAO_INCLUDE_DIRS} ${SNMPLIB_INCLUDE_DIRS} ${SNMP_PP_INCLUDE_DIRS})
+link_directories(${BOOST_LIBRARY_DIRS} ${CPPUNIT_LIBRARY} ${SNMPDAO_LIBRARY_DIRS} ${SNMPLIB_LIBRARY_DIRS} ${SNMP_PP_LIBRARY_DIRS})
 target_link_libraries(${EXECUTABLE_OUTPUT_FILE_NAME} ${CPPUNIT_LIBRARY} ${SNMPDAO_LIBRARIES} ${SNMPLIB_LIBRARIES} ${CMAKE_DL_LIBS} ${SNMP_PP_LIBRARIES})

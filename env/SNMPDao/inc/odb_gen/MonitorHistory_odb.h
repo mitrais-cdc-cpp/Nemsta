@@ -174,18 +174,6 @@ namespace odb
     note_type_;
 
     static const note_type_ note;
-
-    // snmpObjectValueId
-    //
-    typedef
-    mysql::query_column<
-      mysql::value_traits<
-        long unsigned int,
-        mysql::id_ulonglong >::query_type,
-      mysql::id_ulonglong >
-    snmpObjectValueId_type_;
-
-    static const snmpObjectValueId_type_ snmpObjectValueId;
   };
 
   template <typename A>
@@ -202,11 +190,6 @@ namespace odb
   const typename query_columns< ::Mitrais::SNMPDao::Entity::MonitorHistory, id_mysql, A >::note_type_
   query_columns< ::Mitrais::SNMPDao::Entity::MonitorHistory, id_mysql, A >::
   note (A::table_name, "`note`", 0);
-
-  template <typename A>
-  const typename query_columns< ::Mitrais::SNMPDao::Entity::MonitorHistory, id_mysql, A >::snmpObjectValueId_type_
-  query_columns< ::Mitrais::SNMPDao::Entity::MonitorHistory, id_mysql, A >::
-  snmpObjectValueId (A::table_name, "`snmpObjectValueId`", 0);
 
   template <typename A>
   struct pointer_query_columns< ::Mitrais::SNMPDao::Entity::MonitorHistory, id_mysql, A >:
@@ -244,11 +227,6 @@ namespace odb
       details::buffer note_value;
       unsigned long note_size;
       my_bool note_null;
-
-      // snmpObjectValueId_
-      //
-      unsigned long long snmpObjectValueId_value;
-      my_bool snmpObjectValueId_null;
 
       std::size_t version;
     };
@@ -292,7 +270,7 @@ namespace odb
 
     typedef mysql::query_base query_base_type;
 
-    static const std::size_t column_count = 4UL;
+    static const std::size_t column_count = 3UL;
     static const std::size_t id_column_count = 1UL;
     static const std::size_t inverse_column_count = 0UL;
     static const std::size_t readonly_column_count = 0UL;

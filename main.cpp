@@ -26,21 +26,26 @@ int main() {
   const char *_dbName = "nemstadb";
 
   // Create database connection
-  std::auto_ptr<DB::DBFactory> dbFactory(
+  boost::shared_ptr<DB::DBFactory> dbFactory(
       new DB::MySQLFactory(_username, _password, _dbName, _host));
-  std::auto_ptr<database> dbConn(dbFactory->createDatabase());
+  boost::shared_ptr<database> dbConn(dbFactory->createDatabase());
 
   // Create database util and inject the database connection
   DatabaseUtil databaseUtil(dbConn);
-  long networkElementId = databaseUtil.insertNetworkElement(
-      "element1", "DA:DB:32:35:88:97", "172.19.12.251");
+  /*long networkElementId = databaseUtil.insertNetworkElement(
+      "element1", "DA:DB:32:35:88:97:9B", "172.19.12.251");*/
 
-  long networkElementId2 = databaseUtil.insertNetworkElement(
-      "element1", "DA:DB:32:35:89:OC", "172.19.12.251");
+  // long networkElementId2 = databaseUtil.insertNetworkElement(
+  //      "element2", "DA:DB:32:35:89:OC:8B", "172.19.12.251");
 
-  boost::shared_ptr<NetworkElement> element1 =
+  /*boost::shared_ptr<NetworkElement> element1 =
       databaseUtil.getNetWorkElementById(networkElementId);
-  std::cout << "Network Element IP Address" << element1->IPAddress();
-  std::cout << "Network Element Mac" << element1->MACAddress();
+  std::cout << "Network Element IP Address" << element1->IPAddress()
+            << std::endl;*/
+  // std::cout << "Network Element Mac" << element1->MACAddress()
+  // << std::endl;
+
+  long test = databaseUtil.insertSNMPValue(1, "1.3.6.1.2.1.1.1.0", "TestInsert",
+                                           "string");
   return 0;
 }

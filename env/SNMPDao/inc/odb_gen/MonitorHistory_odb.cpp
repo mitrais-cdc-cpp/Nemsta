@@ -106,10 +106,6 @@ namespace odb
       grew = true;
     }
 
-    // snmpObjectValueId_
-    //
-    t[3UL] = 0;
-
     return grew;
   }
 
@@ -150,14 +146,6 @@ namespace odb
       i.note_value.capacity ());
     b[n].length = &i.note_size;
     b[n].is_null = &i.note_null;
-    n++;
-
-    // snmpObjectValueId_
-    //
-    b[n].buffer_type = MYSQL_TYPE_LONGLONG;
-    b[n].is_unsigned = 1;
-    b[n].buffer = &i.snmpObjectValueId_value;
-    b[n].is_null = &i.snmpObjectValueId_null;
     n++;
   }
 
@@ -234,20 +222,6 @@ namespace odb
       grew = grew || (cap != i.note_value.capacity ());
     }
 
-    // snmpObjectValueId_
-    //
-    {
-      long unsigned int const& v =
-        o.snmpObjectValueId_;
-
-      bool is_null (false);
-      mysql::value_traits<
-          long unsigned int,
-          mysql::id_ulonglong >::set_image (
-        i.snmpObjectValueId_value, is_null, v);
-      i.snmpObjectValueId_null = is_null;
-    }
-
     return grew;
   }
 
@@ -302,20 +276,6 @@ namespace odb
         i.note_size,
         i.note_null);
     }
-
-    // snmpObjectValueId_
-    //
-    {
-      long unsigned int& v =
-        o.snmpObjectValueId_;
-
-      mysql::value_traits<
-          long unsigned int,
-          mysql::id_ulonglong >::set_value (
-        v,
-        i.snmpObjectValueId_value,
-        i.snmpObjectValueId_null);
-    }
   }
 
   void access::object_traits_impl< ::Mitrais::SNMPDao::Entity::MonitorHistory, id_mysql >::
@@ -335,17 +295,15 @@ namespace odb
   "INSERT INTO `MonitorHistory` "
   "(`monitorHistoryId`, "
   "`lastUpdate`, "
-  "`note`, "
-  "`snmpObjectValueId`) "
+  "`note`) "
   "VALUES "
-  "(?, ?, ?, ?)";
+  "(?, ?, ?)";
 
   const char access::object_traits_impl< ::Mitrais::SNMPDao::Entity::MonitorHistory, id_mysql >::find_statement[] =
   "SELECT "
   "`MonitorHistory`.`monitorHistoryId`, "
   "`MonitorHistory`.`lastUpdate`, "
-  "`MonitorHistory`.`note`, "
-  "`MonitorHistory`.`snmpObjectValueId` "
+  "`MonitorHistory`.`note` "
   "FROM `MonitorHistory` "
   "WHERE `MonitorHistory`.`monitorHistoryId`=?";
 
@@ -353,8 +311,7 @@ namespace odb
   "UPDATE `MonitorHistory` "
   "SET "
   "`lastUpdate`=?, "
-  "`note`=?, "
-  "`snmpObjectValueId`=? "
+  "`note`=? "
   "WHERE `monitorHistoryId`=?";
 
   const char access::object_traits_impl< ::Mitrais::SNMPDao::Entity::MonitorHistory, id_mysql >::erase_statement[] =
@@ -365,8 +322,7 @@ namespace odb
   "SELECT "
   "`MonitorHistory`.`monitorHistoryId`, "
   "`MonitorHistory`.`lastUpdate`, "
-  "`MonitorHistory`.`note`, "
-  "`MonitorHistory`.`snmpObjectValueId` "
+  "`MonitorHistory`.`note` "
   "FROM `MonitorHistory`";
 
   const char access::object_traits_impl< ::Mitrais::SNMPDao::Entity::MonitorHistory, id_mysql >::erase_query_statement[] =

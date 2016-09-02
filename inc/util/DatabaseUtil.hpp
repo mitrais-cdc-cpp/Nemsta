@@ -10,19 +10,31 @@
 #include <boost/shared_ptr.hpp>
 #include <iostream>
 //#include <memory>
+#include <boost/date_time/gregorian/gregorian.hpp>
+#include <boost/date_time/posix_time/ptime.hpp>
 #include <odb/database.hxx>
 #include <odb/transaction.hxx>
 #include <string>
 #include "../../env/SNMPDao/inc/DBFactory.hpp"
+#include "../../env/SNMPDao/inc/Entity/MonitorHistory.hpp"
 #include "../../env/SNMPDao/inc/Entity/NetworkElement.hpp"
+#include "../../env/SNMPDao/inc/Entity/SnmpObject.hpp"
+#include "../../env/SNMPDao/inc/Entity/SnmpObjectType.hpp"
+#include "../../env/SNMPDao/inc/Entity/SnmpObjectValue.hpp"
 #include "../../env/SNMPDao/inc/MySQLFactory.hpp"
+#include "../../env/SNMPDao/inc/odb_gen/MonitorHistory_odb.h"
 #include "../../env/SNMPDao/inc/odb_gen/NetworkElement_odb.h"
+#include "../../env/SNMPDao/inc/odb_gen/SnmpObjectType_odb.h"
+#include "../../env/SNMPDao/inc/odb_gen/SnmpObjectValue_odb.h"
+#include "../../env/SNMPDao/inc/odb_gen/SnmpObject_odb.h"
 
 using namespace odb::core;
 using namespace Mitrais::SNMPDao::Entity;
 
-typedef odb::query<NetworkElement> query;
-typedef odb::result<NetworkElement> result;
+typedef odb::query<SnmpObjectType> query_snmpmobject_type;
+typedef odb::result<SnmpObjectType> result_snmpmobject_type;
+typedef odb::query<SnmpObject> query_snmpmobject;
+typedef odb::result<SnmpObject> result_snmpmobject;
 namespace Mitrais {
 namespace Nemsta {
 class DatabaseUtil {
@@ -31,7 +43,7 @@ class DatabaseUtil {
    * Default constructor
    * @param dbConn: Database connection
    */
-  DatabaseUtil(std::auto_ptr<database> &_dbConn);
+  DatabaseUtil(boost::shared_ptr<database> &_dbConn);
 
   /**
    * Default destructor
@@ -48,6 +60,10 @@ class DatabaseUtil {
                             const std::string &macAddress,
                             const std::string &ipAddress);
 
+  // Method
+  long insertSNMPValue(const int &networkElementId, const std::string &OID,
+                       const std::string &value, const std::string &typeName);
+
   /**
    * Function to get NetworkElement by id
    * @param id: NetworkElement id
@@ -60,7 +76,20 @@ class DatabaseUtil {
   /**
    * Database connection
    */
-  std::auto_ptr<database> _dbConn;
+  boost::shared_ptr<database> _dbConn;
+
+  boost::shared_ptr<SnmpObjectType> getSnmpObjectTypeByTypeName(
+      const std::string &value);
+
+  boost::shared_ptr<SnmpObject> getSnmpObjectByOid(const std::string &value);
+
+  long insertMonitorHistory(const boost::posix_time::ptime &lastUpdate,
+                            const std::string note);
+
+  long insertSnmpObjectValue(const std::string &value,
+                             boost::shared_ptr<SnmpObject> snmpObject,
+                             boost::shared_ptr<MonitorHistory> monitorHistory,
+                             boost::shared_ptr<SnmpObjectType> snmpObjectType);
 };
 }
 }

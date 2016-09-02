@@ -102,10 +102,6 @@ namespace odb
       grew = true;
     }
 
-    // snmpObjectValueId_
-    //
-    t[2UL] = 0;
-
     return grew;
   }
 
@@ -139,14 +135,6 @@ namespace odb
       i.typeName_value.capacity ());
     b[n].length = &i.typeName_size;
     b[n].is_null = &i.typeName_null;
-    n++;
-
-    // snmpObjectValueId_
-    //
-    b[n].buffer_type = MYSQL_TYPE_LONGLONG;
-    b[n].is_unsigned = 1;
-    b[n].buffer = &i.snmpObjectValueId_value;
-    b[n].is_null = &i.snmpObjectValueId_null;
     n++;
   }
 
@@ -209,20 +197,6 @@ namespace odb
       grew = grew || (cap != i.typeName_value.capacity ());
     }
 
-    // snmpObjectValueId_
-    //
-    {
-      long unsigned int const& v =
-        o.snmpObjectValueId_;
-
-      bool is_null (false);
-      mysql::value_traits<
-          long unsigned int,
-          mysql::id_ulonglong >::set_image (
-        i.snmpObjectValueId_value, is_null, v);
-      i.snmpObjectValueId_null = is_null;
-    }
-
     return grew;
   }
 
@@ -263,20 +237,6 @@ namespace odb
         i.typeName_size,
         i.typeName_null);
     }
-
-    // snmpObjectValueId_
-    //
-    {
-      long unsigned int& v =
-        o.snmpObjectValueId_;
-
-      mysql::value_traits<
-          long unsigned int,
-          mysql::id_ulonglong >::set_value (
-        v,
-        i.snmpObjectValueId_value,
-        i.snmpObjectValueId_null);
-    }
   }
 
   void access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectType, id_mysql >::
@@ -295,24 +255,21 @@ namespace odb
   const char access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectType, id_mysql >::persist_statement[] =
   "INSERT INTO `SnmpObjectType` "
   "(`snmpObjectTypeId`, "
-  "`typeName`, "
-  "`snmpObjectValueId`) "
+  "`typeName`) "
   "VALUES "
-  "(?, ?, ?)";
+  "(?, ?)";
 
   const char access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectType, id_mysql >::find_statement[] =
   "SELECT "
   "`SnmpObjectType`.`snmpObjectTypeId`, "
-  "`SnmpObjectType`.`typeName`, "
-  "`SnmpObjectType`.`snmpObjectValueId` "
+  "`SnmpObjectType`.`typeName` "
   "FROM `SnmpObjectType` "
   "WHERE `SnmpObjectType`.`snmpObjectTypeId`=?";
 
   const char access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectType, id_mysql >::update_statement[] =
   "UPDATE `SnmpObjectType` "
   "SET "
-  "`typeName`=?, "
-  "`snmpObjectValueId`=? "
+  "`typeName`=? "
   "WHERE `snmpObjectTypeId`=?";
 
   const char access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectType, id_mysql >::erase_statement[] =
@@ -322,8 +279,7 @@ namespace odb
   const char access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectType, id_mysql >::query_statement[] =
   "SELECT "
   "`SnmpObjectType`.`snmpObjectTypeId`, "
-  "`SnmpObjectType`.`typeName`, "
-  "`SnmpObjectType`.`snmpObjectValueId` "
+  "`SnmpObjectType`.`typeName` "
   "FROM `SnmpObjectType`";
 
   const char access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectType, id_mysql >::erase_query_statement[] =

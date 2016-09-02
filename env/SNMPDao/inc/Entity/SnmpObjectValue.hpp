@@ -1,61 +1,66 @@
-#ifndef NEMSTA_INC_ENTITY_ITEMIZEDOBJECT_HPP_
-#define NEMSTA_INC_ENTITY_ITEMIZEDOBJECT_HPP_
+#ifndef NEMSTA_INC_ENTITY_SNMPVALUES_HPP_
+#define NEMSTA_INC_ENTITY_SNMPVALUES_HPP_
 
-#include <string>
+#include <boost/shared_ptr.hpp>
 #include <cstddef>
-
 #include <odb/core.hxx>
+#include <string>
+#include "MonitorHistory.hpp"
+#include "SnmpObject.hpp"
+#include "SnmpObjectType.hpp"
 
 #pragma db object
 
-namespace Mitrais
-{
-namespace SNMPDao
-{
-namespace Entity
-{
-	class ItemizedObject
-	{
-		public:
-			ItemizedObject(const unsigned long networkElementId, const unsigned long snmpObjectId) :
-						networkElementId_(networkElementId), snmpObjectId_(snmpObjectId)
-			{
+namespace Mitrais {
+namespace SNMPDao {
+namespace Entity {
+class SnmpObjectValue {
+ public:
+  SnmpObjectValue(const std::string value,
+                  boost::shared_ptr<SnmpObject> snmpObject,
+                  boost::shared_ptr<MonitorHistory> monitorHistory,
+                  boost::shared_ptr<SnmpObjectType> snmpObjectType)
+      : value_(value),
+        snmpObject_(snmpObject),
+        snmpObjectType_(snmpObjectType),
+        monitorHistory_(monitorHistory) {}
 
-			}
+  const std::string& Value() const { return value_; }
 
-			const unsigned long&
-			NetworkElementId() const
-			{
-				return networkElementId_;
-			}
+  boost::shared_ptr<SnmpObject> getSnmpObject() const { return snmpObject_; }
+  boost::shared_ptr<SnmpObjectType> getSnmpObjectType() const {
+    return snmpObjectType_;
+  }
+  boost::shared_ptr<MonitorHistory> getMonitorHistory() const {
+    return monitorHistory_;
+  }
 
-			const unsigned long&
-			SnmpObjectId() const
-			{
-				return snmpObjectId_;
-			}
+ private:
+  friend class odb::access;
+  SnmpObjectValue() {}
+#pragma db id auto
+  unsigned long snmpObjectValueId_;
 
-		private:
-			friend class odb::access;
-			ItemizedObject ()
-			{
+#pragma db type("VARCHAR(45)")
+  std::string value_;
 
-			}
-			#pragma db id auto
-			unsigned long ItemizedObjectId_;
+#pragma db not_null
+  boost::shared_ptr<SnmpObject> snmpObject_;
 
-			unsigned long networkElementId_;
+#pragma db not_null
+  boost::shared_ptr<SnmpObjectType> snmpObjectType_;
 
-			unsigned long snmpObjectId_;	};
+#pragma db not_null
+  boost::shared_ptr<MonitorHistory> monitorHistory_;
+};
 
-	#pragma db view object(ItemizedObject)
-	struct ItemizedObject_stat
-	{
-	  #pragma db column("count(" + ItemizedObject::ItemizedObjectId_ + ")")
-	  std::size_t count;
-	};
+#pragma db view object(SnmpObjectValue)
+struct SnmpObjectValue_stat {
+#pragma db column("count(" + SnmpObjectValue::snmpObjectValueId_ + ")")
+  std::size_t count;
+};
 }
 }
 }
 
-#endif /* NEMSTA_INC_ENTITY_ITEMIZEDOBJECT_HPP_ */
+#endif /* NEMSTA_INC_ENTITY_SNMPVALUES_HPP_ */

@@ -1,6 +1,4 @@
 #include <iostream>
-#include <vector>
-#include <boost/algorithm/string.hpp>
 
 #include "inc/util/NemstaUtil.hpp"
 #include "env/SNMPLib/inc/PDU.hpp"

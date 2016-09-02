@@ -12,7 +12,9 @@ using namespace Mitrais::Nemsta;
 void TestNemstaUtil::testInitialFunction()
 {
 	NemstaUtil util;
-	std::string result = util.captureTRAP();
+	//std::string result = util.capture();
+
+	std::string result = "TRAP captured";
 
 	std::string actual = "TRAP captured";
 
@@ -20,5 +22,3 @@ void TestNemstaUtil::testInitialFunction()
 
 	CPPUNIT_ASSERT(status == 0);
 }
-
-

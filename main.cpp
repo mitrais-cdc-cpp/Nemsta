@@ -1,26 +1,19 @@
-//============================================================================
-// Name        : main.cpp
-// Author      : Ari Suarkadipa
-// Version     :
-// Copyright   : 
-// Description : 
-//============================================================================
-
 #include <iostream>
-#include <fstream>
+#include <vector>
+#include <boost/algorithm/string.hpp>
 
-int main() {
-	std::ofstream myfile ("example.txt");
+#include "inc/util/NemstaUtil.hpp"
+#include "env/SNMPLib/inc/PDU.hpp"
+#include "env/SNMPLib/inc/ReturnStatus.hpp"
 
-	std::cout << "Creating the file" << std::endl;
-	if (myfile.is_open())
-	{
-		myfile << "This is a line.\n";
-		myfile << "This is another line.\n";
-		myfile.close();
-	}
-	else
-		std::cout << "Unable to open file";
+using namespace Mitrais::SNMP;
+using namespace Mitrais::Nemsta;
+
+int main(int argc, char* argv[])
+{
+	NemstaUtil nemsta;
+	PDU pdu;
+	ReturnStatus status = nemsta.capture(argc, argv, pdu);
 
 	return 0;
 }

@@ -15,4 +15,4 @@ This is the repository for the training project Network Element Management Stati
 2. switch directory to build with $ cd build
 3. run cmake with $ cmake ..
 4. run make with $ make
-5. run the test with $ ./NemstaTest
+5. run the test with $ ./TestSuite

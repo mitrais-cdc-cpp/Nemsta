@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.1.0 FATAL_ERROR)
-project(NemstaTest VERSION 0.1 LANGUAGES CXX)
+
+set (EXECUTABLE_OUTPUT_FILE_NAME TestSuite)
+
+project(${EXECUTABLE_OUTPUT_FILE_NAME} VERSION 0.1 LANGUAGES CXX)
 
 set(_ECLIPSE_VERSION "4.5")
 
@@ -27,13 +30,13 @@ endforeach()
 ###############################################################################
 
 #Generate the shared library from the sources
-add_executable(NemstaTest ${SOURCES})
+add_executable(${EXECUTABLE_OUTPUT_FILE_NAME} ${SOURCES})
 
 #Set Debug or Release
 set(CMAKE_BUILD_TYPE Debug)
 
 # just for example add some compiler flags
-#target_compile_options(NemstaTest PUBLIC -Wextra)
+#target_compile_options(${EXECUTABLE_OUTPUT_FILE_NAME} PUBLIC -Wextra)
 
 
 ###############################################################################
@@ -41,8 +44,8 @@ set(CMAKE_BUILD_TYPE Debug)
 ###############################################################################
 
 #enable c++11 and set it required
-#set_property(TARGET NemstaTest PROPERTY CXX_STANDARD 11)
-#set_property(TARGET NemstaTest PROPERTY CXX_STANDARD_REQUIRED ON)
+#set_property(TARGET ${EXECUTABLE_OUTPUT_FILE_NAME} PROPERTY CXX_STANDARD 11)
+#set_property(TARGET ${EXECUTABLE_OUTPUT_FILE_NAME} PROPERTY CXX_STANDARD_REQUIRED ON)
 add_definitions("-DSTDCXX_98_HEADERS -D_SNMPv3")
 
 ###############################################################################
@@ -50,27 +53,8 @@ add_definitions("-DSTDCXX_98_HEADERS -D_SNMPv3")
 ###############################################################################
 
 # CPPUNIT
-find_library(CPPUNIT_LIBRARY_DEBUG NAMES cppunit cppunit_dll cppunitd cppunitd_dll
-            	PATHS  
-                    /usr/lib
-                    /usr/lib64
-                    /usr/local/lib
-                    /usr/local/lib64
-            PATH_SUFFIXES debug )
-
-find_library(CPPUNIT_LIBRARY_RELEASE NAMES cppunit cppunit_dll
-            PATHS   ${PATH}/lib
-                    /usr/lib
-                    /usr/lib64
-                    /usr/local/lib
-                    /usr/local/lib64
-            PATH_SUFFIXES release )
-
-if(CPPUNIT_LIBRARY_DEBUG AND NOT CPPUNIT_LIBRARY_RELEASE)
-    set(CPPUNIT_LIBRARY_RELEASE ${CPPUNIT_LIBRARY_DEBUG})
-endif(CPPUNIT_LIBRARY_DEBUG AND NOT CPPUNIT_LIBRARY_RELEASE)
-
-set( CPPUNIT_LIBRARY debug ${CPPUNIT_LIBRARY_DEBUG} optimized ${CPPUNIT_LIBRARY_RELEASE} )
+set( CPPUNIT_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/../env/cppunit/1.12.1/include)
+set( CPPUNIT_LIBRARY ${CMAKE_CURRENT_LIST_DIR}/../env/cppunit/1.12.1/lib/libcppunit.so)
 
 #SNMPDao
 set(SNMPDAO_LIBRARY_DIRS ${CMAKE_CURRENT_LIST_DIR}/env/SNMPDao/lib)
@@ -112,6 +96,6 @@ find_library(
 #file(GLOB TEST_FILES "test_files/*")
 #file(COPY ${TEST_FILES} DESTINATION .)
 
-include_directories(${SNMPDAO_INCLUDE_DIRS} ${SNMPLIB_INCLUDE_DIRS} ${SNMP_PP_INCLUDE_DIRS})
+include_directories(${CPPUNIT_INCLUDE_DIRS} ${SNMPDAO_INCLUDE_DIRS} ${SNMPLIB_INCLUDE_DIRS} ${SNMP_PP_INCLUDE_DIRS})
 link_directories(${CPPUNIT_LIBRARY} ${SNMPDAO_LIBRARY_DIRS} ${SNMPLIB_LIBRARY_DIRS} ${SNMP_PP_LIBRARY_DIRS})
-target_link_libraries(NemstaTest ${CPPUNIT_LIBRARY} ${SNMPDAO_LIBRARIES} ${SNMPLIB_LIBRARIES} ${CMAKE_DL_LIBS} ${SNMP_PP_LIBRARIES})
+target_link_libraries(${EXECUTABLE_OUTPUT_FILE_NAME} ${CPPUNIT_LIBRARY} ${SNMPDAO_LIBRARIES} ${SNMPLIB_LIBRARIES} ${CMAKE_DL_LIBS} ${SNMP_PP_LIBRARIES})

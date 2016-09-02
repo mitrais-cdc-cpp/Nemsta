@@ -1,0 +1,30 @@
+How was the CppUnit library obtained statically (into a certain local folder)?
+
+I. Background:
+There is a need to run the unit test of an application on a machine without CppUnit library installed globally (at the machine level).
+So, the library should be shipped along with the source code of the main app. During the compilation of the main app, the library is also called.
+
+
+II. Technical steps:
+The following steps will get the CppUnit library into a dedicated folder. That folder (including the content) then can be added into the main app source code as additional library.
+
+1. Find and download the source code of the tool
+https://sourceforge.net/projects/cppunit/files/cppunit/1.12.1/
+cppunit-1.12.1.tar.gz
+
+Note: The latest version on apt-get (when this article written) is 1.13.2-2.1
+
+2. Extract the file into a new folder
+3. Configure the compilation folder to the new folder also supply the LDFLAGS options, i.e. run the following command: 
+./configure --prefix ~/output/cppunit-1.12.1/ LDFLAGS='-ldl'
+
+Note: the LDFLAGS is to avoid error of DllPlugInTester
+https://answers.launchpad.net/ubuntu/+source/cppunit/+question/174811
+
+4. Call make
+5. Call make install
+6. See the output folder, there are 4 subfolders, i.e. bin, include, lib and share.
+include folder contains all the header files.
+lib folder contains the .so file
+
+The folder structure and content (as shipped with this ReadMe) are the result of the steps above.

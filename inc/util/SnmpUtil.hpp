@@ -40,7 +40,15 @@ namespace Mitrais
 			 * @return Return status
 			 */
 			Mitrais::SNMP::ReturnStatus set(Mitrais::SNMP::PDU& pdu, std::string ipAddress, Mitrais::SNMP::SnmpMode mode);
-
+			
+		private:			
+			/*
+			 * Set Variable Binding
+			 *
+			 * @param OID
+			 * @return Variable Binding
+			 */
+			Mitrais::SNMP::VariableBinding setVariableBinding(std::string oid);
 		};
 	}
 }

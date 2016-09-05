@@ -17,11 +17,9 @@
 #include <odb/mysql/statement.hxx>
 #include <odb/mysql/statement-cache.hxx>
 #include <odb/mysql/simple-object-statements.hxx>
-#include <odb/mysql/view-statements.hxx>
 #include <odb/mysql/container-statements.hxx>
 #include <odb/mysql/exceptions.hxx>
 #include <odb/mysql/simple-object-result.hxx>
-#include <odb/mysql/view-result.hxx>
 #include <odb/mysql/enum.hxx>
 
 namespace odb
@@ -29,7 +27,7 @@ namespace odb
   // MonitorHistory
   //
 
-  struct access::object_traits_impl< ::Mitrais::SNMPDao::Entity::MonitorHistory, id_mysql >::extra_statement_cache_type
+  struct access::object_traits_impl< ::MonitorHistory, id_mysql >::extra_statement_cache_type
   {
     extra_statement_cache_type (
       mysql::connection&,
@@ -41,8 +39,8 @@ namespace odb
     }
   };
 
-  access::object_traits_impl< ::Mitrais::SNMPDao::Entity::MonitorHistory, id_mysql >::id_type
-  access::object_traits_impl< ::Mitrais::SNMPDao::Entity::MonitorHistory, id_mysql >::
+  access::object_traits_impl< ::MonitorHistory, id_mysql >::id_type
+  access::object_traits_impl< ::MonitorHistory, id_mysql >::
   id (const id_image_type& i)
   {
     mysql::database* db (0);
@@ -61,8 +59,8 @@ namespace odb
     return id;
   }
 
-  access::object_traits_impl< ::Mitrais::SNMPDao::Entity::MonitorHistory, id_mysql >::id_type
-  access::object_traits_impl< ::Mitrais::SNMPDao::Entity::MonitorHistory, id_mysql >::
+  access::object_traits_impl< ::MonitorHistory, id_mysql >::id_type
+  access::object_traits_impl< ::MonitorHistory, id_mysql >::
   id (const image_type& i)
   {
     mysql::database* db (0);
@@ -81,7 +79,7 @@ namespace odb
     return id;
   }
 
-  bool access::object_traits_impl< ::Mitrais::SNMPDao::Entity::MonitorHistory, id_mysql >::
+  bool access::object_traits_impl< ::MonitorHistory, id_mysql >::
   grow (image_type& i,
         my_bool* t)
   {
@@ -109,7 +107,7 @@ namespace odb
     return grew;
   }
 
-  void access::object_traits_impl< ::Mitrais::SNMPDao::Entity::MonitorHistory, id_mysql >::
+  void access::object_traits_impl< ::MonitorHistory, id_mysql >::
   bind (MYSQL_BIND* b,
         image_type& i,
         mysql::statement_kind sk)
@@ -150,7 +148,7 @@ namespace odb
     n++;
   }
 
-  void access::object_traits_impl< ::Mitrais::SNMPDao::Entity::MonitorHistory, id_mysql >::
+  void access::object_traits_impl< ::MonitorHistory, id_mysql >::
   bind (MYSQL_BIND* b, id_image_type& i)
   {
     std::size_t n (0);
@@ -160,7 +158,7 @@ namespace odb
     b[n].is_null = &i.id_null;
   }
 
-  bool access::object_traits_impl< ::Mitrais::SNMPDao::Entity::MonitorHistory, id_mysql >::
+  bool access::object_traits_impl< ::MonitorHistory, id_mysql >::
   init (image_type& i,
         const object_type& o,
         mysql::statement_kind sk)
@@ -226,7 +224,7 @@ namespace odb
     return grew;
   }
 
-  void access::object_traits_impl< ::Mitrais::SNMPDao::Entity::MonitorHistory, id_mysql >::
+  void access::object_traits_impl< ::MonitorHistory, id_mysql >::
   init (object_type& o,
         const image_type& i,
         database* db)
@@ -279,7 +277,7 @@ namespace odb
     }
   }
 
-  void access::object_traits_impl< ::Mitrais::SNMPDao::Entity::MonitorHistory, id_mysql >::
+  void access::object_traits_impl< ::MonitorHistory, id_mysql >::
   init (id_image_type& i, const id_type& id)
   {
     {
@@ -292,7 +290,7 @@ namespace odb
     }
   }
 
-  const char access::object_traits_impl< ::Mitrais::SNMPDao::Entity::MonitorHistory, id_mysql >::persist_statement[] =
+  const char access::object_traits_impl< ::MonitorHistory, id_mysql >::persist_statement[] =
   "INSERT INTO `MonitorHistory` "
   "(`monitorHistoryId`, "
   "`lastUpdate`, "
@@ -300,7 +298,7 @@ namespace odb
   "VALUES "
   "(?, ?, ?)";
 
-  const char access::object_traits_impl< ::Mitrais::SNMPDao::Entity::MonitorHistory, id_mysql >::find_statement[] =
+  const char access::object_traits_impl< ::MonitorHistory, id_mysql >::find_statement[] =
   "SELECT "
   "`MonitorHistory`.`monitorHistoryId`, "
   "`MonitorHistory`.`lastUpdate`, "
@@ -308,31 +306,31 @@ namespace odb
   "FROM `MonitorHistory` "
   "WHERE `MonitorHistory`.`monitorHistoryId`=?";
 
-  const char access::object_traits_impl< ::Mitrais::SNMPDao::Entity::MonitorHistory, id_mysql >::update_statement[] =
+  const char access::object_traits_impl< ::MonitorHistory, id_mysql >::update_statement[] =
   "UPDATE `MonitorHistory` "
   "SET "
   "`lastUpdate`=?, "
   "`note`=? "
   "WHERE `monitorHistoryId`=?";
 
-  const char access::object_traits_impl< ::Mitrais::SNMPDao::Entity::MonitorHistory, id_mysql >::erase_statement[] =
+  const char access::object_traits_impl< ::MonitorHistory, id_mysql >::erase_statement[] =
   "DELETE FROM `MonitorHistory` "
   "WHERE `monitorHistoryId`=?";
 
-  const char access::object_traits_impl< ::Mitrais::SNMPDao::Entity::MonitorHistory, id_mysql >::query_statement[] =
+  const char access::object_traits_impl< ::MonitorHistory, id_mysql >::query_statement[] =
   "SELECT "
   "`MonitorHistory`.`monitorHistoryId`, "
   "`MonitorHistory`.`lastUpdate`, "
   "`MonitorHistory`.`note` "
   "FROM `MonitorHistory`";
 
-  const char access::object_traits_impl< ::Mitrais::SNMPDao::Entity::MonitorHistory, id_mysql >::erase_query_statement[] =
+  const char access::object_traits_impl< ::MonitorHistory, id_mysql >::erase_query_statement[] =
   "DELETE FROM `MonitorHistory`";
 
-  const char access::object_traits_impl< ::Mitrais::SNMPDao::Entity::MonitorHistory, id_mysql >::table_name[] =
+  const char access::object_traits_impl< ::MonitorHistory, id_mysql >::table_name[] =
   "`MonitorHistory`";
 
-  void access::object_traits_impl< ::Mitrais::SNMPDao::Entity::MonitorHistory, id_mysql >::
+  void access::object_traits_impl< ::MonitorHistory, id_mysql >::
   persist (database& db, object_type& obj)
   {
     ODB_POTENTIALLY_UNUSED (db);
@@ -386,7 +384,7 @@ namespace odb
               callback_event::post_persist);
   }
 
-  void access::object_traits_impl< ::Mitrais::SNMPDao::Entity::MonitorHistory, id_mysql >::
+  void access::object_traits_impl< ::MonitorHistory, id_mysql >::
   update (database& db, const object_type& obj)
   {
     ODB_POTENTIALLY_UNUSED (db);
@@ -447,7 +445,7 @@ namespace odb
     pointer_cache_traits::update (db, obj);
   }
 
-  void access::object_traits_impl< ::Mitrais::SNMPDao::Entity::MonitorHistory, id_mysql >::
+  void access::object_traits_impl< ::MonitorHistory, id_mysql >::
   erase (database& db, const id_type& id)
   {
     using namespace mysql;
@@ -476,8 +474,8 @@ namespace odb
     pointer_cache_traits::erase (db, id);
   }
 
-  access::object_traits_impl< ::Mitrais::SNMPDao::Entity::MonitorHistory, id_mysql >::pointer_type
-  access::object_traits_impl< ::Mitrais::SNMPDao::Entity::MonitorHistory, id_mysql >::
+  access::object_traits_impl< ::MonitorHistory, id_mysql >::pointer_type
+  access::object_traits_impl< ::MonitorHistory, id_mysql >::
   find (database& db, const id_type& id)
   {
     using namespace mysql;
@@ -532,7 +530,7 @@ namespace odb
     return p;
   }
 
-  bool access::object_traits_impl< ::Mitrais::SNMPDao::Entity::MonitorHistory, id_mysql >::
+  bool access::object_traits_impl< ::MonitorHistory, id_mysql >::
   find (database& db, const id_type& id, object_type& obj)
   {
     using namespace mysql;
@@ -565,7 +563,7 @@ namespace odb
     return true;
   }
 
-  bool access::object_traits_impl< ::Mitrais::SNMPDao::Entity::MonitorHistory, id_mysql >::
+  bool access::object_traits_impl< ::MonitorHistory, id_mysql >::
   reload (database& db, object_type& obj)
   {
     using namespace mysql;
@@ -595,7 +593,7 @@ namespace odb
     return true;
   }
 
-  bool access::object_traits_impl< ::Mitrais::SNMPDao::Entity::MonitorHistory, id_mysql >::
+  bool access::object_traits_impl< ::MonitorHistory, id_mysql >::
   find_ (statements_type& sts,
          const id_type* id)
   {
@@ -646,8 +644,8 @@ namespace odb
     return r != select_statement::no_data;
   }
 
-  result< access::object_traits_impl< ::Mitrais::SNMPDao::Entity::MonitorHistory, id_mysql >::object_type >
-  access::object_traits_impl< ::Mitrais::SNMPDao::Entity::MonitorHistory, id_mysql >::
+  result< access::object_traits_impl< ::MonitorHistory, id_mysql >::object_type >
+  access::object_traits_impl< ::MonitorHistory, id_mysql >::
   query (database&, const query_base_type& q)
   {
     using namespace mysql;
@@ -697,7 +695,7 @@ namespace odb
     return result<object_type> (r);
   }
 
-  unsigned long long access::object_traits_impl< ::Mitrais::SNMPDao::Entity::MonitorHistory, id_mysql >::
+  unsigned long long access::object_traits_impl< ::MonitorHistory, id_mysql >::
   erase_query (database&, const query_base_type& q)
   {
     using namespace mysql;
@@ -719,132 +717,6 @@ namespace odb
       q.parameters_binding ());
 
     return st.execute ();
-  }
-
-  // MonitorHistory_stat
-  //
-
-  bool access::view_traits_impl< ::Mitrais::SNMPDao::Entity::MonitorHistory_stat, id_mysql >::
-  grow (image_type& i,
-        my_bool* t)
-  {
-    ODB_POTENTIALLY_UNUSED (i);
-    ODB_POTENTIALLY_UNUSED (t);
-
-    bool grew (false);
-
-    // count
-    //
-    t[0UL] = 0;
-
-    return grew;
-  }
-
-  void access::view_traits_impl< ::Mitrais::SNMPDao::Entity::MonitorHistory_stat, id_mysql >::
-  bind (MYSQL_BIND* b,
-        image_type& i)
-  {
-    using namespace mysql;
-
-    mysql::statement_kind sk (statement_select);
-    ODB_POTENTIALLY_UNUSED (sk);
-
-    std::size_t n (0);
-
-    // count
-    //
-    b[n].buffer_type = MYSQL_TYPE_LONGLONG;
-    b[n].is_unsigned = 1;
-    b[n].buffer = &i.count_value;
-    b[n].is_null = &i.count_null;
-    n++;
-  }
-
-  void access::view_traits_impl< ::Mitrais::SNMPDao::Entity::MonitorHistory_stat, id_mysql >::
-  init (view_type& o,
-        const image_type& i,
-        database* db)
-  {
-    ODB_POTENTIALLY_UNUSED (o);
-    ODB_POTENTIALLY_UNUSED (i);
-    ODB_POTENTIALLY_UNUSED (db);
-
-    // count
-    //
-    {
-      ::std::size_t& v =
-        o.count;
-
-      mysql::value_traits<
-          ::std::size_t,
-          mysql::id_ulonglong >::set_value (
-        v,
-        i.count_value,
-        i.count_null);
-    }
-  }
-
-  access::view_traits_impl< ::Mitrais::SNMPDao::Entity::MonitorHistory_stat, id_mysql >::query_base_type
-  access::view_traits_impl< ::Mitrais::SNMPDao::Entity::MonitorHistory_stat, id_mysql >::
-  query_statement (const query_base_type& q)
-  {
-    query_base_type r (
-      "SELECT "
-      "count(`MonitorHistory`.`monitorHistoryId`) ");
-
-    r += "FROM `MonitorHistory`";
-
-    if (!q.empty ())
-    {
-      r += " ";
-      r += q.clause_prefix ();
-      r += q;
-    }
-
-    return r;
-  }
-
-  result< access::view_traits_impl< ::Mitrais::SNMPDao::Entity::MonitorHistory_stat, id_mysql >::view_type >
-  access::view_traits_impl< ::Mitrais::SNMPDao::Entity::MonitorHistory_stat, id_mysql >::
-  query (database&, const query_base_type& q)
-  {
-    using namespace mysql;
-    using odb::details::shared;
-    using odb::details::shared_ptr;
-
-    mysql::connection& conn (
-      mysql::transaction::current ().connection ());
-    statements_type& sts (
-      conn.statement_cache ().find_view<view_type> ());
-
-    image_type& im (sts.image ());
-    binding& imb (sts.image_binding ());
-
-    if (im.version != sts.image_version () || imb.version == 0)
-    {
-      bind (imb.bind, im);
-      sts.image_version (im.version);
-      imb.version++;
-    }
-
-    const query_base_type& qs (query_statement (q));
-    qs.init_parameters ();
-    shared_ptr<select_statement> st (
-      new (shared) select_statement (
-        conn,
-        qs.clause (),
-        false,
-        true,
-        qs.parameters_binding (),
-        imb));
-
-    st->execute ();
-
-    shared_ptr< odb::view_result_impl<view_type> > r (
-      new (shared) mysql::view_result_impl<view_type> (
-        qs, st, sts, 0));
-
-    return result<view_type> (r);
   }
 }
 

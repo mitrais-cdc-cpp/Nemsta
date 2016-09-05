@@ -29,7 +29,6 @@
 #include "../../env/SNMPDao/inc/odb_gen/SnmpObject_odb.h"
 
 using namespace odb::core;
-using namespace Mitrais::SNMPDao::Entity;
 
 typedef odb::query<SnmpObjectType> query_snmpmobject_type;
 typedef odb::result<SnmpObjectType> result_snmpmobject_type;

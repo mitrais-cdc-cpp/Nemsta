@@ -8,15 +8,15 @@ namespace odb
   //
 
   inline
-  access::object_traits< ::Mitrais::SNMPDao::Entity::SnmpObjectType >::id_type
-  access::object_traits< ::Mitrais::SNMPDao::Entity::SnmpObjectType >::
+  access::object_traits< ::SnmpObjectType >::id_type
+  access::object_traits< ::SnmpObjectType >::
   id (const object_type& o)
   {
     return o.snmpObjectTypeId_;
   }
 
   inline
-  void access::object_traits< ::Mitrais::SNMPDao::Entity::SnmpObjectType >::
+  void access::object_traits< ::SnmpObjectType >::
   callback (database& db, object_type& x, callback_event e)
   {
     ODB_POTENTIALLY_UNUSED (db);
@@ -25,20 +25,8 @@ namespace odb
   }
 
   inline
-  void access::object_traits< ::Mitrais::SNMPDao::Entity::SnmpObjectType >::
+  void access::object_traits< ::SnmpObjectType >::
   callback (database& db, const object_type& x, callback_event e)
-  {
-    ODB_POTENTIALLY_UNUSED (db);
-    ODB_POTENTIALLY_UNUSED (x);
-    ODB_POTENTIALLY_UNUSED (e);
-  }
-
-  // SnmpObjectType_stat
-  //
-
-  inline
-  void access::view_traits< ::Mitrais::SNMPDao::Entity::SnmpObjectType_stat >::
-  callback (database& db, view_type& x, callback_event e)
   {
     ODB_POTENTIALLY_UNUSED (db);
     ODB_POTENTIALLY_UNUSED (x);
@@ -52,7 +40,7 @@ namespace odb
   //
 
   inline
-  void access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectType, id_mysql >::
+  void access::object_traits_impl< ::SnmpObjectType, id_mysql >::
   erase (database& db, const object_type& obj)
   {
     callback (db, obj, callback_event::pre_erase);
@@ -61,7 +49,7 @@ namespace odb
   }
 
   inline
-  void access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectType, id_mysql >::
+  void access::object_traits_impl< ::SnmpObjectType, id_mysql >::
   load_ (statements_type& sts,
          object_type& obj,
          bool)
@@ -69,8 +57,5 @@ namespace odb
     ODB_POTENTIALLY_UNUSED (sts);
     ODB_POTENTIALLY_UNUSED (obj);
   }
-
-  // SnmpObjectType_stat
-  //
 }
 

@@ -107,20 +107,32 @@ find_library(
 	NO_DEFAULT_PATH  
 )
 
+#MYSQL_CLIENT
+set(MYSQL_CLIENT_LIBRARY_DIRS ${CMAKE_CURRENT_LIST_DIR}/env/mysql-connector/lib)  
+set(MYSQL_CLIENT_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/env/mysql-connector/include)  
+find_library(  
+	MYSQL_CLIENT_LIBRARIES  
+	NAMES mysqlclient
+	PATHS ${CMAKE_CURRENT_LIST_DIR}/env/mysql-connector/lib
+	PATH_SUFFIXES "lib"  
+	NO_DEFAULT_PATH
+)
 
 include_directories(${SNMPDAO_INCLUDE_DIRS}
 					${SNMPDAO_INCLUDE_DIRS}/Entity
 					${SNMPLIB_INCLUDE_DIRS}
 					${ODB_INCLUDE_DIRS}
 					${ODB_MYSQL_INCLUDE_DIRS}
-					${ODB_BOOST_INCLUDE_DIRS})
+					${ODB_BOOST_INCLUDE_DIRS}
+					${MYSQL_CLIENT_INCLUDE_DIRS})
 
 
 link_directories(${SNMPDAO_LIBRARY_DIRS}
 				 ${SNMPLIB_LIBRARY_DIRS}
 				 ${ODB_LIBRARY_DIRS}
 				 ${ODB_MYSQL_LIBRARY_DIRS}
-				 ${ODB_BOOST_LIBRARY_DIRS})
+				 ${ODB_BOOST_LIBRARY_DIRS}
+				 ${MYSQL_CLIENT_LIBRARY_DIRS})
 
 
 target_link_libraries(Nemsta
@@ -129,4 +141,5 @@ target_link_libraries(Nemsta
 					  ${ODB_LIBRARIES}
 					  ${ODB_MYSQL_LIBRARIES}
 					  ${ODB_BOOST_LIBRARIES}
+					  ${MYSQL_CLIENT_LIBRARIES}
 					  Threads::Threads)

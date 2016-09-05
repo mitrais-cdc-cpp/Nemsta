@@ -17,11 +17,9 @@
 #include <odb/mysql/statement.hxx>
 #include <odb/mysql/statement-cache.hxx>
 #include <odb/mysql/simple-object-statements.hxx>
-#include <odb/mysql/view-statements.hxx>
 #include <odb/mysql/container-statements.hxx>
 #include <odb/mysql/exceptions.hxx>
 #include <odb/mysql/simple-object-result.hxx>
-#include <odb/mysql/view-result.hxx>
 #include <odb/mysql/enum.hxx>
 
 namespace odb
@@ -29,22 +27,22 @@ namespace odb
   // SnmpObjectValue
   //
 
-  const char alias_traits<  ::Mitrais::SNMPDao::Entity::SnmpObject,
+  const char alias_traits<  ::SnmpObject,
     id_mysql,
-    access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::snmpObject_tag>::
+    access::object_traits_impl< ::SnmpObjectValue, id_mysql >::snmpObject_tag>::
   table_name[] = "`snmpObject`";
 
-  const char alias_traits<  ::Mitrais::SNMPDao::Entity::SnmpObjectType,
+  const char alias_traits<  ::SnmpObjectType,
     id_mysql,
-    access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::snmpObjectType_tag>::
+    access::object_traits_impl< ::SnmpObjectValue, id_mysql >::snmpObjectType_tag>::
   table_name[] = "`snmpObjectType`";
 
-  const char alias_traits<  ::Mitrais::SNMPDao::Entity::MonitorHistory,
+  const char alias_traits<  ::MonitorHistory,
     id_mysql,
-    access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::monitorHistory_tag>::
+    access::object_traits_impl< ::SnmpObjectValue, id_mysql >::monitorHistory_tag>::
   table_name[] = "`monitorHistory`";
 
-  struct access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::extra_statement_cache_type
+  struct access::object_traits_impl< ::SnmpObjectValue, id_mysql >::extra_statement_cache_type
   {
     extra_statement_cache_type (
       mysql::connection&,
@@ -56,8 +54,8 @@ namespace odb
     }
   };
 
-  access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::id_type
-  access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::
+  access::object_traits_impl< ::SnmpObjectValue, id_mysql >::id_type
+  access::object_traits_impl< ::SnmpObjectValue, id_mysql >::
   id (const id_image_type& i)
   {
     mysql::database* db (0);
@@ -76,8 +74,8 @@ namespace odb
     return id;
   }
 
-  access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::id_type
-  access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::
+  access::object_traits_impl< ::SnmpObjectValue, id_mysql >::id_type
+  access::object_traits_impl< ::SnmpObjectValue, id_mysql >::
   id (const image_type& i)
   {
     mysql::database* db (0);
@@ -96,7 +94,7 @@ namespace odb
     return id;
   }
 
-  bool access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::
+  bool access::object_traits_impl< ::SnmpObjectValue, id_mysql >::
   grow (image_type& i,
         my_bool* t)
   {
@@ -132,7 +130,7 @@ namespace odb
     return grew;
   }
 
-  void access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::
+  void access::object_traits_impl< ::SnmpObjectValue, id_mysql >::
   bind (MYSQL_BIND* b,
         image_type& i,
         mysql::statement_kind sk)
@@ -189,7 +187,7 @@ namespace odb
     n++;
   }
 
-  void access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::
+  void access::object_traits_impl< ::SnmpObjectValue, id_mysql >::
   bind (MYSQL_BIND* b, id_image_type& i)
   {
     std::size_t n (0);
@@ -199,7 +197,7 @@ namespace odb
     b[n].is_null = &i.id_null;
   }
 
-  bool access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::
+  bool access::object_traits_impl< ::SnmpObjectValue, id_mysql >::
   init (image_type& i,
         const object_type& o,
         mysql::statement_kind sk)
@@ -251,11 +249,11 @@ namespace odb
     // snmpObject_
     //
     {
-      ::boost::shared_ptr< ::Mitrais::SNMPDao::Entity::SnmpObject > const& v =
+      ::std::shared_ptr< ::SnmpObject > const& v =
         o.snmpObject_;
 
-      typedef object_traits< ::Mitrais::SNMPDao::Entity::SnmpObject > obj_traits;
-      typedef odb::pointer_traits< ::boost::shared_ptr< ::Mitrais::SNMPDao::Entity::SnmpObject > > ptr_traits;
+      typedef object_traits< ::SnmpObject > obj_traits;
+      typedef odb::pointer_traits< ::std::shared_ptr< ::SnmpObject > > ptr_traits;
 
       bool is_null (ptr_traits::null_ptr (v));
       if (!is_null)
@@ -276,11 +274,11 @@ namespace odb
     // snmpObjectType_
     //
     {
-      ::boost::shared_ptr< ::Mitrais::SNMPDao::Entity::SnmpObjectType > const& v =
+      ::std::shared_ptr< ::SnmpObjectType > const& v =
         o.snmpObjectType_;
 
-      typedef object_traits< ::Mitrais::SNMPDao::Entity::SnmpObjectType > obj_traits;
-      typedef odb::pointer_traits< ::boost::shared_ptr< ::Mitrais::SNMPDao::Entity::SnmpObjectType > > ptr_traits;
+      typedef object_traits< ::SnmpObjectType > obj_traits;
+      typedef odb::pointer_traits< ::std::shared_ptr< ::SnmpObjectType > > ptr_traits;
 
       bool is_null (ptr_traits::null_ptr (v));
       if (!is_null)
@@ -301,11 +299,11 @@ namespace odb
     // monitorHistory_
     //
     {
-      ::boost::shared_ptr< ::Mitrais::SNMPDao::Entity::MonitorHistory > const& v =
+      ::std::shared_ptr< ::MonitorHistory > const& v =
         o.monitorHistory_;
 
-      typedef object_traits< ::Mitrais::SNMPDao::Entity::MonitorHistory > obj_traits;
-      typedef odb::pointer_traits< ::boost::shared_ptr< ::Mitrais::SNMPDao::Entity::MonitorHistory > > ptr_traits;
+      typedef object_traits< ::MonitorHistory > obj_traits;
+      typedef odb::pointer_traits< ::std::shared_ptr< ::MonitorHistory > > ptr_traits;
 
       bool is_null (ptr_traits::null_ptr (v));
       if (!is_null)
@@ -326,7 +324,7 @@ namespace odb
     return grew;
   }
 
-  void access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::
+  void access::object_traits_impl< ::SnmpObjectValue, id_mysql >::
   init (object_type& o,
         const image_type& i,
         database* db)
@@ -367,11 +365,11 @@ namespace odb
     // snmpObject_
     //
     {
-      ::boost::shared_ptr< ::Mitrais::SNMPDao::Entity::SnmpObject >& v =
+      ::std::shared_ptr< ::SnmpObject >& v =
         o.snmpObject_;
 
-      typedef object_traits< ::Mitrais::SNMPDao::Entity::SnmpObject > obj_traits;
-      typedef odb::pointer_traits< ::boost::shared_ptr< ::Mitrais::SNMPDao::Entity::SnmpObject > > ptr_traits;
+      typedef object_traits< ::SnmpObject > obj_traits;
+      typedef odb::pointer_traits< ::std::shared_ptr< ::SnmpObject > > ptr_traits;
 
       if (i.snmpObject_null)
         v = ptr_traits::pointer_type ();
@@ -398,11 +396,11 @@ namespace odb
     // snmpObjectType_
     //
     {
-      ::boost::shared_ptr< ::Mitrais::SNMPDao::Entity::SnmpObjectType >& v =
+      ::std::shared_ptr< ::SnmpObjectType >& v =
         o.snmpObjectType_;
 
-      typedef object_traits< ::Mitrais::SNMPDao::Entity::SnmpObjectType > obj_traits;
-      typedef odb::pointer_traits< ::boost::shared_ptr< ::Mitrais::SNMPDao::Entity::SnmpObjectType > > ptr_traits;
+      typedef object_traits< ::SnmpObjectType > obj_traits;
+      typedef odb::pointer_traits< ::std::shared_ptr< ::SnmpObjectType > > ptr_traits;
 
       if (i.snmpObjectType_null)
         v = ptr_traits::pointer_type ();
@@ -429,11 +427,11 @@ namespace odb
     // monitorHistory_
     //
     {
-      ::boost::shared_ptr< ::Mitrais::SNMPDao::Entity::MonitorHistory >& v =
+      ::std::shared_ptr< ::MonitorHistory >& v =
         o.monitorHistory_;
 
-      typedef object_traits< ::Mitrais::SNMPDao::Entity::MonitorHistory > obj_traits;
-      typedef odb::pointer_traits< ::boost::shared_ptr< ::Mitrais::SNMPDao::Entity::MonitorHistory > > ptr_traits;
+      typedef object_traits< ::MonitorHistory > obj_traits;
+      typedef odb::pointer_traits< ::std::shared_ptr< ::MonitorHistory > > ptr_traits;
 
       if (i.monitorHistory_null)
         v = ptr_traits::pointer_type ();
@@ -458,7 +456,7 @@ namespace odb
     }
   }
 
-  void access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::
+  void access::object_traits_impl< ::SnmpObjectValue, id_mysql >::
   init (id_image_type& i, const id_type& id)
   {
     {
@@ -471,7 +469,7 @@ namespace odb
     }
   }
 
-  const char access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::persist_statement[] =
+  const char access::object_traits_impl< ::SnmpObjectValue, id_mysql >::persist_statement[] =
   "INSERT INTO `SnmpObjectValue` "
   "(`snmpObjectValueId`, "
   "`value`, "
@@ -481,7 +479,7 @@ namespace odb
   "VALUES "
   "(?, ?, ?, ?, ?)";
 
-  const char access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::find_statement[] =
+  const char access::object_traits_impl< ::SnmpObjectValue, id_mysql >::find_statement[] =
   "SELECT "
   "`SnmpObjectValue`.`snmpObjectValueId`, "
   "`SnmpObjectValue`.`value`, "
@@ -491,7 +489,7 @@ namespace odb
   "FROM `SnmpObjectValue` "
   "WHERE `SnmpObjectValue`.`snmpObjectValueId`=?";
 
-  const char access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::update_statement[] =
+  const char access::object_traits_impl< ::SnmpObjectValue, id_mysql >::update_statement[] =
   "UPDATE `SnmpObjectValue` "
   "SET "
   "`value`=?, "
@@ -500,11 +498,11 @@ namespace odb
   "`monitorHistory`=? "
   "WHERE `snmpObjectValueId`=?";
 
-  const char access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::erase_statement[] =
+  const char access::object_traits_impl< ::SnmpObjectValue, id_mysql >::erase_statement[] =
   "DELETE FROM `SnmpObjectValue` "
   "WHERE `snmpObjectValueId`=?";
 
-  const char access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::query_statement[] =
+  const char access::object_traits_impl< ::SnmpObjectValue, id_mysql >::query_statement[] =
   "SELECT\n"
   "`SnmpObjectValue`.`snmpObjectValueId`,\n"
   "`SnmpObjectValue`.`value`,\n"
@@ -516,13 +514,13 @@ namespace odb
   "LEFT JOIN `SnmpObjectType` AS `snmpObjectType` ON `snmpObjectType`.`snmpObjectTypeId`=`SnmpObjectValue`.`snmpObjectType`\n"
   "LEFT JOIN `MonitorHistory` AS `monitorHistory` ON `monitorHistory`.`monitorHistoryId`=`SnmpObjectValue`.`monitorHistory`";
 
-  const char access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::erase_query_statement[] =
+  const char access::object_traits_impl< ::SnmpObjectValue, id_mysql >::erase_query_statement[] =
   "DELETE FROM `SnmpObjectValue`";
 
-  const char access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::table_name[] =
+  const char access::object_traits_impl< ::SnmpObjectValue, id_mysql >::table_name[] =
   "`SnmpObjectValue`";
 
-  void access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::
+  void access::object_traits_impl< ::SnmpObjectValue, id_mysql >::
   persist (database& db, object_type& obj)
   {
     ODB_POTENTIALLY_UNUSED (db);
@@ -576,7 +574,7 @@ namespace odb
               callback_event::post_persist);
   }
 
-  void access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::
+  void access::object_traits_impl< ::SnmpObjectValue, id_mysql >::
   update (database& db, const object_type& obj)
   {
     ODB_POTENTIALLY_UNUSED (db);
@@ -637,7 +635,7 @@ namespace odb
     pointer_cache_traits::update (db, obj);
   }
 
-  void access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::
+  void access::object_traits_impl< ::SnmpObjectValue, id_mysql >::
   erase (database& db, const id_type& id)
   {
     using namespace mysql;
@@ -666,8 +664,8 @@ namespace odb
     pointer_cache_traits::erase (db, id);
   }
 
-  access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::pointer_type
-  access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::
+  access::object_traits_impl< ::SnmpObjectValue, id_mysql >::pointer_type
+  access::object_traits_impl< ::SnmpObjectValue, id_mysql >::
   find (database& db, const id_type& id)
   {
     using namespace mysql;
@@ -722,7 +720,7 @@ namespace odb
     return p;
   }
 
-  bool access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::
+  bool access::object_traits_impl< ::SnmpObjectValue, id_mysql >::
   find (database& db, const id_type& id, object_type& obj)
   {
     using namespace mysql;
@@ -755,7 +753,7 @@ namespace odb
     return true;
   }
 
-  bool access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::
+  bool access::object_traits_impl< ::SnmpObjectValue, id_mysql >::
   reload (database& db, object_type& obj)
   {
     using namespace mysql;
@@ -785,7 +783,7 @@ namespace odb
     return true;
   }
 
-  bool access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::
+  bool access::object_traits_impl< ::SnmpObjectValue, id_mysql >::
   find_ (statements_type& sts,
          const id_type* id)
   {
@@ -836,8 +834,8 @@ namespace odb
     return r != select_statement::no_data;
   }
 
-  result< access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::object_type >
-  access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::
+  result< access::object_traits_impl< ::SnmpObjectValue, id_mysql >::object_type >
+  access::object_traits_impl< ::SnmpObjectValue, id_mysql >::
   query (database&, const query_base_type& q)
   {
     using namespace mysql;
@@ -887,7 +885,7 @@ namespace odb
     return result<object_type> (r);
   }
 
-  unsigned long long access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::
+  unsigned long long access::object_traits_impl< ::SnmpObjectValue, id_mysql >::
   erase_query (database&, const query_base_type& q)
   {
     using namespace mysql;
@@ -909,132 +907,6 @@ namespace odb
       q.parameters_binding ());
 
     return st.execute ();
-  }
-
-  // SnmpObjectValue_stat
-  //
-
-  bool access::view_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue_stat, id_mysql >::
-  grow (image_type& i,
-        my_bool* t)
-  {
-    ODB_POTENTIALLY_UNUSED (i);
-    ODB_POTENTIALLY_UNUSED (t);
-
-    bool grew (false);
-
-    // count
-    //
-    t[0UL] = 0;
-
-    return grew;
-  }
-
-  void access::view_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue_stat, id_mysql >::
-  bind (MYSQL_BIND* b,
-        image_type& i)
-  {
-    using namespace mysql;
-
-    mysql::statement_kind sk (statement_select);
-    ODB_POTENTIALLY_UNUSED (sk);
-
-    std::size_t n (0);
-
-    // count
-    //
-    b[n].buffer_type = MYSQL_TYPE_LONGLONG;
-    b[n].is_unsigned = 1;
-    b[n].buffer = &i.count_value;
-    b[n].is_null = &i.count_null;
-    n++;
-  }
-
-  void access::view_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue_stat, id_mysql >::
-  init (view_type& o,
-        const image_type& i,
-        database* db)
-  {
-    ODB_POTENTIALLY_UNUSED (o);
-    ODB_POTENTIALLY_UNUSED (i);
-    ODB_POTENTIALLY_UNUSED (db);
-
-    // count
-    //
-    {
-      ::std::size_t& v =
-        o.count;
-
-      mysql::value_traits<
-          ::std::size_t,
-          mysql::id_ulonglong >::set_value (
-        v,
-        i.count_value,
-        i.count_null);
-    }
-  }
-
-  access::view_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue_stat, id_mysql >::query_base_type
-  access::view_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue_stat, id_mysql >::
-  query_statement (const query_base_type& q)
-  {
-    query_base_type r (
-      "SELECT "
-      "count(`SnmpObjectValue`.`snmpObjectValueId`) ");
-
-    r += "FROM `SnmpObjectValue`";
-
-    if (!q.empty ())
-    {
-      r += " ";
-      r += q.clause_prefix ();
-      r += q;
-    }
-
-    return r;
-  }
-
-  result< access::view_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue_stat, id_mysql >::view_type >
-  access::view_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue_stat, id_mysql >::
-  query (database&, const query_base_type& q)
-  {
-    using namespace mysql;
-    using odb::details::shared;
-    using odb::details::shared_ptr;
-
-    mysql::connection& conn (
-      mysql::transaction::current ().connection ());
-    statements_type& sts (
-      conn.statement_cache ().find_view<view_type> ());
-
-    image_type& im (sts.image ());
-    binding& imb (sts.image_binding ());
-
-    if (im.version != sts.image_version () || imb.version == 0)
-    {
-      bind (imb.bind, im);
-      sts.image_version (im.version);
-      imb.version++;
-    }
-
-    const query_base_type& qs (query_statement (q));
-    qs.init_parameters ();
-    shared_ptr<select_statement> st (
-      new (shared) select_statement (
-        conn,
-        qs.clause (),
-        false,
-        true,
-        qs.parameters_binding (),
-        imb));
-
-    st->execute ();
-
-    shared_ptr< odb::view_result_impl<view_type> > r (
-      new (shared) mysql::view_result_impl<view_type> (
-        qs, st, sts, 0));
-
-    return result<view_type> (r);
   }
 }
 

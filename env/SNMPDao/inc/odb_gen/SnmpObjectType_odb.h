@@ -35,23 +35,18 @@
 
 #include <memory>
 #include <cstddef>
+#include <utility>
 
 #include <odb/core.hxx>
 #include <odb/traits.hxx>
 #include <odb/callback.hxx>
 #include <odb/wrapper-traits.hxx>
 #include <odb/pointer-traits.hxx>
-#ifdef BOOST_TR1_MEMORY_HPP_INCLUDED
-#  include <odb/tr1/wrapper-traits.hxx>
-#  include <odb/tr1/pointer-traits.hxx>
-#endif
 #include <odb/container-traits.hxx>
 #include <odb/session.hxx>
 #include <odb/cache-traits.hxx>
 #include <odb/result.hxx>
 #include <odb/simple-object-result.hxx>
-#include <odb/view-image.hxx>
-#include <odb/view-result.hxx>
 
 #include <odb/details/unused.hxx>
 #include <odb/details/shared-ptr.hxx>
@@ -61,17 +56,17 @@ namespace odb
   // SnmpObjectType
   //
   template <>
-  struct class_traits< ::Mitrais::SNMPDao::Entity::SnmpObjectType >
+  struct class_traits< ::SnmpObjectType >
   {
     static const class_kind kind = class_object;
   };
 
   template <>
-  class access::object_traits< ::Mitrais::SNMPDao::Entity::SnmpObjectType >
+  class access::object_traits< ::SnmpObjectType >
   {
     public:
-    typedef ::Mitrais::SNMPDao::Entity::SnmpObjectType object_type;
-    typedef ::boost::shared_ptr< ::Mitrais::SNMPDao::Entity::SnmpObjectType > pointer_type;
+    typedef ::SnmpObjectType object_type;
+    typedef ::std::shared_ptr< ::SnmpObjectType > pointer_type;
     typedef odb::pointer_traits<pointer_type> pointer_traits;
 
     static const bool polymorphic = false;
@@ -103,25 +98,6 @@ namespace odb
     static void
     callback (database&, const object_type&, callback_event);
   };
-
-  // SnmpObjectType_stat
-  //
-  template <>
-  struct class_traits< ::Mitrais::SNMPDao::Entity::SnmpObjectType_stat >
-  {
-    static const class_kind kind = class_view;
-  };
-
-  template <>
-  class access::view_traits< ::Mitrais::SNMPDao::Entity::SnmpObjectType_stat >
-  {
-    public:
-    typedef ::Mitrais::SNMPDao::Entity::SnmpObjectType_stat view_type;
-    typedef ::boost::shared_ptr< ::Mitrais::SNMPDao::Entity::SnmpObjectType_stat > pointer_type;
-
-    static void
-    callback (database&, view_type&, callback_event);
-  };
 }
 
 #include <odb/details/buffer.hxx>
@@ -137,7 +113,7 @@ namespace odb
   // SnmpObjectType
   //
   template <typename A>
-  struct query_columns< ::Mitrais::SNMPDao::Entity::SnmpObjectType, id_mysql, A >
+  struct query_columns< ::SnmpObjectType, id_mysql, A >
   {
     // snmpObjectTypeId
     //
@@ -165,24 +141,24 @@ namespace odb
   };
 
   template <typename A>
-  const typename query_columns< ::Mitrais::SNMPDao::Entity::SnmpObjectType, id_mysql, A >::snmpObjectTypeId_type_
-  query_columns< ::Mitrais::SNMPDao::Entity::SnmpObjectType, id_mysql, A >::
+  const typename query_columns< ::SnmpObjectType, id_mysql, A >::snmpObjectTypeId_type_
+  query_columns< ::SnmpObjectType, id_mysql, A >::
   snmpObjectTypeId (A::table_name, "`snmpObjectTypeId`", 0);
 
   template <typename A>
-  const typename query_columns< ::Mitrais::SNMPDao::Entity::SnmpObjectType, id_mysql, A >::typeName_type_
-  query_columns< ::Mitrais::SNMPDao::Entity::SnmpObjectType, id_mysql, A >::
+  const typename query_columns< ::SnmpObjectType, id_mysql, A >::typeName_type_
+  query_columns< ::SnmpObjectType, id_mysql, A >::
   typeName (A::table_name, "`typeName`", 0);
 
   template <typename A>
-  struct pointer_query_columns< ::Mitrais::SNMPDao::Entity::SnmpObjectType, id_mysql, A >:
-    query_columns< ::Mitrais::SNMPDao::Entity::SnmpObjectType, id_mysql, A >
+  struct pointer_query_columns< ::SnmpObjectType, id_mysql, A >:
+    query_columns< ::SnmpObjectType, id_mysql, A >
   {
   };
 
   template <>
-  class access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectType, id_mysql >:
-    public access::object_traits< ::Mitrais::SNMPDao::Entity::SnmpObjectType >
+  class access::object_traits_impl< ::SnmpObjectType, id_mysql >:
+    public access::object_traits< ::SnmpObjectType >
   {
     public:
     struct id_image_type
@@ -307,74 +283,13 @@ namespace odb
   };
 
   template <>
-  class access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectType, id_common >:
-    public access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectType, id_mysql >
-  {
-  };
-
-  // SnmpObjectType_stat
-  //
-  template <>
-  class access::view_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectType_stat, id_mysql >:
-    public access::view_traits< ::Mitrais::SNMPDao::Entity::SnmpObjectType_stat >
-  {
-    public:
-    struct image_type
-    {
-      // count
-      //
-      unsigned long long count_value;
-      my_bool count_null;
-
-      std::size_t version;
-    };
-
-    typedef mysql::view_statements<view_type> statements_type;
-
-    typedef mysql::query_base query_base_type;
-    struct query_columns;
-
-    static const bool versioned = false;
-
-    static bool
-    grow (image_type&,
-          my_bool*);
-
-    static void
-    bind (MYSQL_BIND*,
-          image_type&);
-
-    static void
-    init (view_type&,
-          const image_type&,
-          database*);
-
-    static const std::size_t column_count = 1UL;
-
-    static query_base_type
-    query_statement (const query_base_type&);
-
-    static result<view_type>
-    query (database&, const query_base_type&);
-  };
-
-  template <>
-  class access::view_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectType_stat, id_common >:
-    public access::view_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectType_stat, id_mysql >
+  class access::object_traits_impl< ::SnmpObjectType, id_common >:
+    public access::object_traits_impl< ::SnmpObjectType, id_mysql >
   {
   };
 
   // SnmpObjectType
   //
-  // SnmpObjectType_stat
-  //
-  struct access::view_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectType_stat, id_mysql >::query_columns:
-    odb::pointer_query_columns<
-      ::Mitrais::SNMPDao::Entity::SnmpObjectType,
-      id_mysql,
-      odb::access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectType, id_mysql > >
-  {
-  };
 }
 
 #include "SnmpObjectType_odb_inline.h"

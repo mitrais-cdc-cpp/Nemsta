@@ -1,17 +1,13 @@
 #ifndef NEMSTA_INC_ENTITY_MONITORHISTORY_HPP_
 #define NEMSTA_INC_ENTITY_MONITORHISTORY_HPP_
 
+#include <boost/date_time/posix_time/ptime.hpp>
 #include <cstddef>
+#include <memory>
+#include <odb/core.hxx>
 #include <string>
 
-#include <boost/date_time/posix_time/ptime.hpp>
-#include <odb/core.hxx>
-
-#pragma db object
-
-namespace Mitrais {
-namespace SNMPDao {
-namespace Entity {
+#pragma db object pointer(std::shared_ptr) session
 class MonitorHistory {
  public:
   MonitorHistory(const unsigned long long lastUpdate, const std::string note)
@@ -33,14 +29,5 @@ class MonitorHistory {
 #pragma db type("VARCHAR(45)")
   std::string note_;
 };
-
-#pragma db view object(MonitorHistory)
-struct MonitorHistory_stat {
-#pragma db column("count(" + MonitorHistory::monitorHistoryId_ + ")")
-  std::size_t count;
-};
-}
-}
-}
 
 #endif /* NEMSTA_INC_ENTITY_MONITORHISTORY_HPP_ */

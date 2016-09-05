@@ -133,7 +133,8 @@ namespace odb
 
     // lastUpdate_
     //
-    b[n].buffer_type = MYSQL_TYPE_TIMESTAMP;
+    b[n].buffer_type = MYSQL_TYPE_LONGLONG;
+    b[n].is_unsigned = 0;
     b[n].buffer = &i.lastUpdate_value;
     b[n].is_null = &i.lastUpdate_null;
     n++;
@@ -190,13 +191,13 @@ namespace odb
     // lastUpdate_
     //
     {
-      ::boost::posix_time::ptime const& v =
+      long long unsigned int const& v =
         o.lastUpdate_;
 
-      bool is_null (true);
+      bool is_null (false);
       mysql::value_traits<
-          ::boost::posix_time::ptime,
-          mysql::id_timestamp >::set_image (
+          long long unsigned int,
+          mysql::id_longlong >::set_image (
         i.lastUpdate_value, is_null, v);
       i.lastUpdate_null = is_null;
     }
@@ -251,12 +252,12 @@ namespace odb
     // lastUpdate_
     //
     {
-      ::boost::posix_time::ptime& v =
+      long long unsigned int& v =
         o.lastUpdate_;
 
       mysql::value_traits<
-          ::boost::posix_time::ptime,
-          mysql::id_timestamp >::set_value (
+          long long unsigned int,
+          mysql::id_longlong >::set_value (
         v,
         i.lastUpdate_value,
         i.lastUpdate_null);

@@ -9,29 +9,49 @@
 #include "SnmpObject.hpp"
 #include "SnmpObjectType.hpp"
 
-#pragma db object
-
 namespace Mitrais {
 namespace SNMPDao {
 namespace Entity {
+class SnmpObject;
+class SnmpObjectType;
+class MonitorHistory;
+
+#pragma db object
 class SnmpObjectValue {
  public:
+  typedef ::Mitrais::SNMPDao::Entity::SnmpObject snmpObjectTypeDef;
+  typedef ::Mitrais::SNMPDao::Entity::SnmpObjectType snmpObjectTypeTypeDef;
+  typedef ::Mitrais::SNMPDao::Entity::MonitorHistory monitorHistoryTypeDef;
   SnmpObjectValue(const std::string value,
-                  boost::shared_ptr<SnmpObject> snmpObject,
-                  boost::shared_ptr<MonitorHistory> monitorHistory,
-                  boost::shared_ptr<SnmpObjectType> snmpObjectType)
+                  boost::shared_ptr<snmpObjectTypeDef> snmpObject,
+                  boost::shared_ptr<snmpObjectTypeTypeDef> snmpObjectType,
+                  boost::shared_ptr<monitorHistoryTypeDef> monitorHistory)
       : value_(value),
         snmpObject_(snmpObject),
         snmpObjectType_(snmpObjectType),
         monitorHistory_(monitorHistory) {}
 
-  const std::string& Value() const { return value_; }
+  const std::string& value() const { return value_; }
 
-  boost::shared_ptr<SnmpObject> getSnmpObject() const { return snmpObject_; }
-  boost::shared_ptr<SnmpObjectType> getSnmpObjectType() const {
+  void snmpObject(boost::shared_ptr<snmpObjectTypeDef> snmpObject) {
+    snmpObject_ = snmpObject;
+  }
+
+  void snmpObjectType(boost::shared_ptr<snmpObjectTypeTypeDef> snmpObjectType) {
+    snmpObjectType_ = snmpObjectType;
+  }
+
+  void monitorHistory(boost::shared_ptr<monitorHistoryTypeDef> monitorHistory) {
+    monitorHistory_ = monitorHistory;
+  }
+
+  boost::shared_ptr<snmpObjectTypeDef> snmpObject() const {
+    return snmpObject_;
+  }
+  boost::shared_ptr<snmpObjectTypeTypeDef> snmpObjectType() const {
     return snmpObjectType_;
   }
-  boost::shared_ptr<MonitorHistory> getMonitorHistory() const {
+  boost::shared_ptr<monitorHistoryTypeDef> monitorHistory() const {
     return monitorHistory_;
   }
 
@@ -45,13 +65,13 @@ class SnmpObjectValue {
   std::string value_;
 
 #pragma db not_null
-  boost::shared_ptr<SnmpObject> snmpObject_;
+  boost::shared_ptr<snmpObjectTypeDef> snmpObject_;
 
 #pragma db not_null
-  boost::shared_ptr<SnmpObjectType> snmpObjectType_;
+  boost::shared_ptr<snmpObjectTypeTypeDef> snmpObjectType_;
 
 #pragma db not_null
-  boost::shared_ptr<MonitorHistory> monitorHistory_;
+  boost::shared_ptr<monitorHistoryTypeDef> monitorHistory_;
 };
 
 #pragma db view object(SnmpObjectValue)

@@ -13,7 +13,7 @@ namespace Nemsta {
  * Default contructor
  * @param dbConn
  */
-DatabaseUtil::DatabaseUtil(boost::shared_ptr<database>& dbConn)
+DatabaseUtil::DatabaseUtil(std::unique_ptr<database>& dbConn)
     : _dbConn(std::move(dbConn)) {}
 
 /**
@@ -56,17 +56,15 @@ long DatabaseUtil::insertSNMPValue(const int& networkElementId,
       std::cout << "Hello, " << i->TypeName() << "!" << std::endl;
     }*/
 
-    boost::shared_ptr<SnmpObjectType> snmpObjectType(
+    std::shared_ptr<SnmpObjectType> snmpObjectType(
         getSnmpObjectTypeByTypeName(typeName));
 
-    boost::shared_ptr<SnmpObject> snmpObject(getSnmpObjectByOid(OID));
+    std::shared_ptr<SnmpObject> snmpObject(getSnmpObjectByOid(OID));
 
-    long monitorHistoryId = insertMonitorHistory(
-        boost::posix_time::ptime(boost::posix_time::second_clock::local_time()),
-        "Test");
+    // long monitorHistoryId = insertMonitorHistory(12345, "Test");
 
-    boost::shared_ptr<MonitorHistory> monitorHistory(
-        _dbConn->load<MonitorHistory>(monitorHistoryId));
+    std::shared_ptr<MonitorHistory> monitorHistory(
+        new MonitorHistory(12345, "Test 123"));
 
     long snmpValueId = insertSnmpObjectValue(value, snmpObject, monitorHistory,
                                              snmpObjectType);
@@ -87,12 +85,12 @@ long DatabaseUtil::insertSNMPValue(const int& networkElementId,
    * @param id: NetworkElement id
    * @return pointer to NetworkElement
    */
-boost::shared_ptr<NetworkElement> DatabaseUtil::getNetWorkElementById(
+std::shared_ptr<NetworkElement> DatabaseUtil::getNetWorkElementById(
     unsigned long networkElementId) {
   transaction t(_dbConn->begin());
-  boost::shared_ptr<NetworkElement> element1;
+  std::shared_ptr<NetworkElement> element1;
   try {
-    boost::shared_ptr<NetworkElement> element(
+    std::shared_ptr<NetworkElement> element(
         _dbConn->load<NetworkElement>(networkElementId));
     t.commit();
     return element;
@@ -104,9 +102,9 @@ boost::shared_ptr<NetworkElement> DatabaseUtil::getNetWorkElementById(
 }
 
 // TODO: give back collection of SnmpObjectType
-boost::shared_ptr<SnmpObjectType> DatabaseUtil::getSnmpObjectTypeByTypeName(
+std::shared_ptr<SnmpObjectType> DatabaseUtil::getSnmpObjectTypeByTypeName(
     const std::string& value) {
-  boost::shared_ptr<SnmpObjectType> object1;
+  std::shared_ptr<SnmpObjectType> object1;
 
   result_snmpmobject_type r(_dbConn->query<SnmpObjectType>(
       query_snmpmobject_type::typeName == value));
@@ -114,16 +112,16 @@ boost::shared_ptr<SnmpObjectType> DatabaseUtil::getSnmpObjectTypeByTypeName(
   if (r.size() > 0) {
     result_snmpmobject_type::iterator i(r.begin());
 
-    object1 = boost::shared_ptr<SnmpObjectType>(i.load());
+    object1 = std::shared_ptr<SnmpObjectType>(i.load());
     return object1;
   } else {
     return object1;
   }
 }
 
-boost::shared_ptr<SnmpObject> DatabaseUtil::getSnmpObjectByOid(
+std::shared_ptr<SnmpObject> DatabaseUtil::getSnmpObjectByOid(
     const std::string& value) {
-  boost::shared_ptr<SnmpObject> object;
+  std::shared_ptr<SnmpObject> object;
 
   result_snmpmobject r(
       _dbConn->query<SnmpObject>(query_snmpmobject::oid == value));
@@ -131,7 +129,7 @@ boost::shared_ptr<SnmpObject> DatabaseUtil::getSnmpObjectByOid(
   if (r.size() > 0) {
     result_snmpmobject::iterator i(r.begin());
 
-    object = boost::shared_ptr<SnmpObject>(i.load());
+    object = std::shared_ptr<SnmpObject>(i.load());
     return object;
   } else {
     return object;
@@ -139,8 +137,8 @@ boost::shared_ptr<SnmpObject> DatabaseUtil::getSnmpObjectByOid(
 }
 
 //
-long DatabaseUtil::insertMonitorHistory(
-    const boost::posix_time::ptime& lastUpdate, const std::string note) {
+long DatabaseUtil::insertMonitorHistory(const unsigned long long& lastUpdate,
+                                        const std::string& note) {
   MonitorHistory entity(lastUpdate, note);
   long id = _dbConn->persist(entity);
 
@@ -149,10 +147,10 @@ long DatabaseUtil::insertMonitorHistory(
 
 //
 long DatabaseUtil::insertSnmpObjectValue(
-    const std::string& value, boost::shared_ptr<SnmpObject> snmpObject,
-    boost::shared_ptr<MonitorHistory> monitorHistory,
-    boost::shared_ptr<SnmpObjectType> snmpObjectType) {
-  SnmpObjectValue entity(value, snmpObject, monitorHistory, snmpObjectType);
+    const std::string& value, std::shared_ptr<SnmpObject> snmpObject,
+    std::shared_ptr<MonitorHistory> monitorHistory,
+    std::shared_ptr<SnmpObjectType> snmpObjectType) {
+  SnmpObjectValue entity(value, snmpObject, snmpObjectType, monitorHistory);
   long id = _dbConn->persist(entity);
 }
 }

@@ -26,9 +26,9 @@ int main() {
   const char *_dbName = "nemstadb";
 
   // Create database connection
-  boost::shared_ptr<DB::DBFactory> dbFactory(
+  std::unique_ptr<DB::DBFactory> dbFactory(
       new DB::MySQLFactory(_username, _password, _dbName, _host));
-  boost::shared_ptr<database> dbConn(dbFactory->createDatabase());
+  std::unique_ptr<database> dbConn(dbFactory->createDatabase());
 
   // Create database util and inject the database connection
   DatabaseUtil databaseUtil(dbConn);

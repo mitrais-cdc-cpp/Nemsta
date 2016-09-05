@@ -14,11 +14,10 @@ namespace SNMPDao {
 namespace Entity {
 class MonitorHistory {
  public:
-  MonitorHistory(const boost::posix_time::ptime& lastUpdate,
-                 const std::string note)
+  MonitorHistory(const unsigned long long lastUpdate, const std::string note)
       : lastUpdate_(lastUpdate), note_(note) {}
 
-  const boost::posix_time::ptime& LastUdpate_() const { return lastUpdate_; }
+  const unsigned long long& LastUdpate_() const { return lastUpdate_; }
 
   const std::string& Note() const { return note_; }
 
@@ -28,8 +27,8 @@ class MonitorHistory {
 #pragma db id auto
   unsigned long monitorHistoryId_;
 
-#pragma db type("TIMESTAMP")  // Microsecond precision.
-  boost::posix_time::ptime lastUpdate_;
+#pragma db type("BIGINT")  // Microsecond precision.
+  unsigned long long lastUpdate_;
 
 #pragma db type("VARCHAR(45)")
   std::string note_;

@@ -7,11 +7,11 @@
 
 #ifndef INC_UTIL_DATABASEUTIL_HPP_
 #define INC_UTIL_DATABASEUTIL_HPP_
-#include <boost/shared_ptr.hpp>
+//#include <std/date_time/gregorian/gregorian.hpp>
+//#include <std/date_time/posix_time/ptime.hpp>
+//#include <std/shared_ptr.hpp>
 #include <iostream>
-//#include <memory>
-#include <boost/date_time/gregorian/gregorian.hpp>
-#include <boost/date_time/posix_time/ptime.hpp>
+#include <memory>
 #include <odb/database.hxx>
 #include <odb/transaction.hxx>
 #include <string>
@@ -43,7 +43,7 @@ class DatabaseUtil {
    * Default constructor
    * @param dbConn: Database connection
    */
-  DatabaseUtil(boost::shared_ptr<database> &_dbConn);
+  DatabaseUtil(std::unique_ptr<database> &_dbConn);
 
   /**
    * Default destructor
@@ -69,27 +69,27 @@ class DatabaseUtil {
    * @param id: NetworkElement id
    * @return pointer to NetworkElement
    */
-  boost::shared_ptr<NetworkElement> getNetWorkElementById(
+  std::shared_ptr<NetworkElement> getNetWorkElementById(
       unsigned long networkElementId);
 
  private:
   /**
    * Database connection
    */
-  boost::shared_ptr<database> _dbConn;
+  std::shared_ptr<database> _dbConn;
 
-  boost::shared_ptr<SnmpObjectType> getSnmpObjectTypeByTypeName(
+  std::shared_ptr<SnmpObjectType> getSnmpObjectTypeByTypeName(
       const std::string &value);
 
-  boost::shared_ptr<SnmpObject> getSnmpObjectByOid(const std::string &value);
+  std::shared_ptr<SnmpObject> getSnmpObjectByOid(const std::string &value);
 
-  long insertMonitorHistory(const boost::posix_time::ptime &lastUpdate,
-                            const std::string note);
+  long insertMonitorHistory(const unsigned long long &lastUpdate,
+                            const std::string &note);
 
   long insertSnmpObjectValue(const std::string &value,
-                             boost::shared_ptr<SnmpObject> snmpObject,
-                             boost::shared_ptr<MonitorHistory> monitorHistory,
-                             boost::shared_ptr<SnmpObjectType> snmpObjectType);
+                             std::shared_ptr<SnmpObject> snmpObject,
+                             std::shared_ptr<MonitorHistory> monitorHistory,
+                             std::shared_ptr<SnmpObjectType> snmpObjectType);
 };
 }
 }

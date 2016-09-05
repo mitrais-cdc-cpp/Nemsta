@@ -156,9 +156,9 @@ namespace odb
     typedef
     mysql::query_column<
       mysql::value_traits<
-        ::boost::posix_time::ptime,
-        mysql::id_timestamp >::query_type,
-      mysql::id_timestamp >
+        long long unsigned int,
+        mysql::id_longlong >::query_type,
+      mysql::id_longlong >
     lastUpdate_type_;
 
     static const lastUpdate_type_ lastUpdate;
@@ -219,7 +219,7 @@ namespace odb
 
       // lastUpdate_
       //
-      MYSQL_TIME lastUpdate_value;
+      long long lastUpdate_value;
       my_bool lastUpdate_null;
 
       // note_

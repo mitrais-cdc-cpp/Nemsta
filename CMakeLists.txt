@@ -46,10 +46,6 @@ add_custom_target (doc ALL
 ###############################################################################
 ## dependencies ###############################################################
 ###############################################################################
-#BOOST
-set( BOOST_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/env/boost/1.61.0/include)
-set( BOOST_LIBRARY_DIRS ${CMAKE_CURRENT_LIST_DIR}/env/boost/1.61.0/lib)
-
 # THREADS
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
@@ -90,6 +86,6 @@ find_library(
     NO_DEFAULT_PATH
 )
 
-include_directories(${BOOST_INCLUDE_DIRS} ${SNMPDAO_INCLUDE_DIRS} ${SNMPLIB_INCLUDE_DIRS} ${SNMP_PP_INCLUDE_DIRS})
-link_directories(${BOOST_LIBRARY_DIRS} ${SNMPDAO_LIBRARY_DIRS} ${SNMPLIB_LIBRARY_DIRS} ${SNMP_PP_LIBRARY_DIRS})
+include_directories(${SNMPDAO_INCLUDE_DIRS} ${SNMPLIB_INCLUDE_DIRS} ${SNMP_PP_INCLUDE_DIRS})
+link_directories(${SNMPDAO_LIBRARY_DIRS} ${SNMPLIB_LIBRARY_DIRS} ${SNMP_PP_LIBRARY_DIRS})
 target_link_libraries(${EXECUTABLE_OUTPUT_FILE_NAME} ${SNMPDAO_LIBRARIES} ${SNMPLIB_LIBRARIES} ${SNMP_PP_LIBRARIES} Threads::Threads)

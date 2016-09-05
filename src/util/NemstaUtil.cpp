@@ -95,15 +95,16 @@ std::string NemstaUtil::getMacAddress()
 
 	std::string macAddressOid = RFC1213_MIB_IF_PHYS_ADDRESS;
 	
-	for (std::vector<std::string>::iterator it = vbs.begin() ; it != vbs.end(); ++it)
+	for (std::vector<Mitrais::SNMP::VariableBinding>::iterator it = vbs.begin(); it != vbs.end(); ++it)
 	{
-		if (*it->getOID().oid.compare(macAddressOid) == 0)
+		Mitrais::SNMP::VariableBinding vb = *it;
+		if (vb.getOID().oid.compare(macAddressOid) == 0)
 		{
-			*it->getValue(macAddress_);
+			vb.getValue(macAddress_);
 			break;
 		}
 	}
 	
-	return macAddress_;
+	return macAddress_.substr(2, 18);
 }
 

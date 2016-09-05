@@ -39,7 +39,7 @@ ReturnStatus SnmpUtil::set(PDU& pdu, std::string ipAddress, SnmpMode mode)
 	vbs.push_back(setVariableBinding(SYSTEM_UP_TIME));
 	
 	vbs.push_back(setVariableBinding(SYSTEM_NAME));
-	
+
 	vbs.push_back(setVariableBinding(RFC1213_MIB_SNMP_IN_PKTS));
 	
 	vbs.push_back(setVariableBinding(RFC1213_MIB_SNMP_IN_TRAPS));
@@ -61,9 +61,7 @@ ReturnStatus SnmpUtil::set(PDU& pdu, std::string ipAddress, SnmpMode mode)
 	vbs.push_back(setVariableBinding(HOST_RESOURCES_MIB_HR_STORAGE_ALLOCATION_UNITS));
 	
 	vbs.push_back(setVariableBinding(RFC1213_MIB_IF_PHYS_ADDRESS));
-	
-	vbs.push_back(setVariableBinding(RFC1213_MIB_SYS_NAME));
-	
+
 	// construct the target
 	Target target;
 	target.Ip.IpAddress = ipAddress;

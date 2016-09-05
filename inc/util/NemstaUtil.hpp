@@ -55,7 +55,7 @@ namespace Mitrais
 			private:
 				std::string ipAddress_;
 				std::string macAddress_;
-				Mitrais::SNMP::PDU& pdu_;
+				Mitrais::SNMP::PDU pdu_;
 
 		};
 	}

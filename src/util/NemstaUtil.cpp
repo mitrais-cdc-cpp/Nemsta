@@ -25,6 +25,15 @@ NemstaUtil::~NemstaUtil()
 
 }
 
+/*
+ * Capture the SNMP Value
+ *
+ *@param number of argment (argc)
+ *@param string parameter
+ *@param PDU&
+ *
+ *@return Return Status
+ */
 Mitrais::SNMP::ReturnStatus NemstaUtil::capture(int argc, char* argv[], Mitrais::SNMP::PDU& pdu)
 {
 	std::string ipAddress;
@@ -60,12 +69,15 @@ Mitrais::SNMP::ReturnStatus NemstaUtil::capture(int argc, char* argv[], Mitrais:
 
 	Mitrais::Nemsta::SnmpUtil snmp;
 	Mitrais::SNMP::ReturnStatus status = snmp.set(pdu, ipAddress_, mode);
+	pdu_ = pdu;
 
 	return status;
 }
 
 /*
  * Get IP Address
+ *
+ *@return IP Address
  */
 std::string NemstaUtil::getIpAddress()
 {
@@ -73,10 +85,26 @@ std::string NemstaUtil::getIpAddress()
 }
 
 /*
- * get MAC Address
+ * Get MAC Address
+ *
+ *@return MAC Address
  */
 std::string NemstaUtil::getMacAddress()
 {
-	return macAddress_;
+	std::vector<Mitrais::SNMP::VariableBinding> vbs = pdu_.getBindingList();
+
+	std::string macAddressOid = RFC1213_MIB_IF_PHYS_ADDRESS;
+	
+	for (std::vector<Mitrais::SNMP::VariableBinding>::iterator it = vbs.begin(); it != vbs.end(); ++it)
+	{
+		Mitrais::SNMP::VariableBinding vb = *it;
+		if (vb.getOID().oid.compare(macAddressOid) == 0)
+		{
+			vb.getValue(macAddress_);
+			break;
+		}
+	}
+	
+	return macAddress_.substr(2, 18);
 }
 

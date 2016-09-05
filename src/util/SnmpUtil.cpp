@@ -33,38 +33,34 @@ ReturnStatus SnmpUtil::set(PDU& pdu, std::string ipAddress, SnmpMode mode)
 	// construct vector of variable binding
 	std::vector<VariableBinding> vbs;
 
-	// construct OID
-	OID oid1;
-	oid1.oid = SYSTEM_DESCRIPTION;
-
-	// insert OID into variable binding
-	VariableBinding vb1;
-	vb1.setOID(oid1);
-
 	// store into vector
-	vbs.push_back(vb1);
+	vbs.push_back(setVariableBinding(SYSTEM_DESCRIPTION));
+	
+	vbs.push_back(setVariableBinding(SYSTEM_UP_TIME));
+	
+	vbs.push_back(setVariableBinding(SYSTEM_NAME));
 
-	// construct OID
-	OID oid2;
-	oid2.oid = SYSTEM_UP_TIME;
-
-	// insert OID into variable binding
-	VariableBinding vb2;
-	vb2.setOID(oid2);
-
-	// store into vector
-	vbs.push_back(vb2);
-
-	// construct OID
-	OID oid3;
-	oid3.oid = SYSTEM_NAME;
-
-	// insert OID into variable binding
-	VariableBinding vb3;
-	vb3.setOID(oid3);
-
-	// store into vector
-	vbs.push_back(vb3);
+	vbs.push_back(setVariableBinding(RFC1213_MIB_SNMP_IN_PKTS));
+	
+	vbs.push_back(setVariableBinding(RFC1213_MIB_SNMP_IN_TRAPS));
+	
+	vbs.push_back(setVariableBinding(HOST_RESOURCES_MIB_HR_MEMORY_SIZE));
+	
+	vbs.push_back(setVariableBinding(HOST_RESOURCES_MIB_HR_PROCESSOR_FRW_ID));
+	
+	vbs.push_back(setVariableBinding(HOST_RESOURCES_MIB_HR_PROCESSOR_LOAD));
+	
+	vbs.push_back(setVariableBinding(HOST_RESOURCES_MIB_HR_PRINTER_STATUS));
+	
+	vbs.push_back(setVariableBinding(HOST_RESOURCES_MIB_HR_STORAGE_TYPE));
+	
+	vbs.push_back(setVariableBinding(HOST_RESOURCES_MIB_HR_STORAGE_DESCR));
+	
+	vbs.push_back(setVariableBinding(HOST_RESOURCES_MIB_HR_STORAGE_USED));
+	
+	vbs.push_back(setVariableBinding(HOST_RESOURCES_MIB_HR_STORAGE_ALLOCATION_UNITS));
+	
+	vbs.push_back(setVariableBinding(RFC1213_MIB_IF_PHYS_ADDRESS));
 
 	// construct the target
 	Target target;
@@ -78,4 +74,22 @@ ReturnStatus SnmpUtil::set(PDU& pdu, std::string ipAddress, SnmpMode mode)
 	return status;
 }
 
+/*
+ * Set Variable Binding
+ *
+ * @param OID
+ * @return Variable Binding
+ */
+VariableBinding SnmpUtil::setVariableBinding(std::string oid)
+{
+	// construct OID
+	OID oidSnmp;
+	oidSnmp.oid = oid;
+	
+	// construct Variable Binding
+	VariableBinding vb;
+	vb.setOID(oidSnmp);
+	
+	return vb;
+}
 

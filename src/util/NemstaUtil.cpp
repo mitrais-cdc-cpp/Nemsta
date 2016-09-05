@@ -57,7 +57,7 @@ Mitrais::SNMP::ReturnStatus NemstaUtil::capture(int argc, char* argv[], Mitrais:
 		{
 			std::string modeString(argv[2]);
 
-			boost::to_lower(modeString);
+			toLower(modeString);
 
 			// check the mode
 			if (modeString.compare("trap") == 0)
@@ -72,6 +72,19 @@ Mitrais::SNMP::ReturnStatus NemstaUtil::capture(int argc, char* argv[], Mitrais:
 	pdu_ = pdu;
 
 	return status;
+}
+
+/**
+ * Converts string to lowercase
+ *
+ * @param str the string
+ */
+void NemstaUtil::toLower(std::string& str)
+{
+	for(int i=0; i<str.length(); i++)
+	{
+		str[i] = tolower(str[i]);
+	}
 }
 
 /*

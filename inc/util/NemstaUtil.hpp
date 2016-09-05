@@ -2,7 +2,6 @@
 #define NEMSTA_INC_NEMSTAUTIL_H_
 
 #include <iostream>
-#include <boost/algorithm/string.hpp>
 
 #include "SnmpUtil.hpp"
 
@@ -57,6 +56,7 @@ namespace Mitrais
 				std::string macAddress_;
 				Mitrais::SNMP::PDU pdu_;
 
+				void toLower(std::string& str);
 		};
 	}
 }

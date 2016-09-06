@@ -13,11 +13,27 @@
 using namespace odb::core;
 
 namespace DB {
+/**
+ * The base class for database factory
+ */
 class DBFactory {
  public:
+  /**
+   * Default constructor
+   */
   DBFactory() {}
+
+  /**
+   * Default destructor
+   */
   virtual ~DBFactory() {}
-  virtual std::auto_ptr<odb::database> createDatabase() = 0;
+
+  /**
+   * The function to create database connection.
+   * It will be overridden on child class.
+   * @return
+   */
+  virtual std::unique_ptr<odb::database> createDatabase() = 0;
 };
 }
 #endif /* INC_DBFACTORY_HPP_ */

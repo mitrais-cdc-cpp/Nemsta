@@ -8,15 +8,15 @@ namespace odb
   //
 
   inline
-  access::object_traits< ::Mitrais::SNMPDao::Entity::NetworkElement >::id_type
-  access::object_traits< ::Mitrais::SNMPDao::Entity::NetworkElement >::
+  access::object_traits< ::NetworkElement >::id_type
+  access::object_traits< ::NetworkElement >::
   id (const object_type& o)
   {
     return o.networkElementId_;
   }
 
   inline
-  void access::object_traits< ::Mitrais::SNMPDao::Entity::NetworkElement >::
+  void access::object_traits< ::NetworkElement >::
   callback (database& db, object_type& x, callback_event e)
   {
     ODB_POTENTIALLY_UNUSED (db);
@@ -25,20 +25,8 @@ namespace odb
   }
 
   inline
-  void access::object_traits< ::Mitrais::SNMPDao::Entity::NetworkElement >::
+  void access::object_traits< ::NetworkElement >::
   callback (database& db, const object_type& x, callback_event e)
-  {
-    ODB_POTENTIALLY_UNUSED (db);
-    ODB_POTENTIALLY_UNUSED (x);
-    ODB_POTENTIALLY_UNUSED (e);
-  }
-
-  // NetworkElement_stat
-  //
-
-  inline
-  void access::view_traits< ::Mitrais::SNMPDao::Entity::NetworkElement_stat >::
-  callback (database& db, view_type& x, callback_event e)
   {
     ODB_POTENTIALLY_UNUSED (db);
     ODB_POTENTIALLY_UNUSED (x);
@@ -52,7 +40,7 @@ namespace odb
   //
 
   inline
-  void access::object_traits_impl< ::Mitrais::SNMPDao::Entity::NetworkElement, id_mysql >::
+  void access::object_traits_impl< ::NetworkElement, id_mysql >::
   erase (database& db, const object_type& obj)
   {
     callback (db, obj, callback_event::pre_erase);
@@ -61,7 +49,7 @@ namespace odb
   }
 
   inline
-  void access::object_traits_impl< ::Mitrais::SNMPDao::Entity::NetworkElement, id_mysql >::
+  void access::object_traits_impl< ::NetworkElement, id_mysql >::
   load_ (statements_type& sts,
          object_type& obj,
          bool)
@@ -69,8 +57,5 @@ namespace odb
     ODB_POTENTIALLY_UNUSED (sts);
     ODB_POTENTIALLY_UNUSED (obj);
   }
-
-  // NetworkElement_stat
-  //
 }
 

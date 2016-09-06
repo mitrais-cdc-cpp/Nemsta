@@ -1,63 +1,31 @@
-#ifndef NEMSTA_INC_ENTITY_SNMPVALUES_HPP_
-#define NEMSTA_INC_ENTITY_SNMPVALUES_HPP_
+#ifndef NEMSTA_INC_ENTITY_ITEMIZEDOBJECT_HPP_
+#define NEMSTA_INC_ENTITY_ITEMIZEDOBJECT_HPP_
 
-#include <string>
 #include <cstddef>
+#include <string>
 
 #include <odb/core.hxx>
 
-#pragma db object
+#pragma db object pointer(std::shared_ptr) session
+class ItemizedObject {
+ public:
+  ItemizedObject(const unsigned long networkElementId,
+                 const unsigned long snmpObjectId)
+      : networkElementId_(networkElementId), snmpObjectId_(snmpObjectId) {}
 
-namespace Mitrais
-{
-namespace SNMPDao
-{
-namespace Entity
-{
-	class SnmpObjectValue
-	{
-		public:
-			SnmpObjectValue(const std::string value, const unsigned long snmpObjectId) :
-						value_(value), snmpObjectId_(snmpObjectId)
-			{
+  const unsigned long& NetworkElementId() const { return networkElementId_; }
 
-			}
+  const unsigned long& SnmpObjectId() const { return snmpObjectId_; }
 
-			const std::string&
-			Value() const
-			{
-				return value_;
-			}
+ private:
+  friend class odb::access;
+  ItemizedObject() {}
+#pragma db id auto
+  unsigned long ItemizedObjectId_;
 
-			const unsigned long&
-			SnmpObjectId() const
-			{
-				return snmpObjectId_;
-			}
+  unsigned long networkElementId_;
 
-		private:
-			friend class odb::access;
-			SnmpObjectValue ()
-			{
+  unsigned long snmpObjectId_;
+};
 
-			}
-			#pragma db id auto
-			unsigned long snmpObjectValueId_;
-
-			#pragma db type("VARCHAR(45)")
-			std::string value_;
-
-			unsigned long snmpObjectId_;
-	};
-
-	#pragma db view object(SnmpObjectValue)
-	struct SnmpObjectValue_stat
-	{
-	  #pragma db column("count(" + SnmpObjectValue::snmpObjectValueId_ + ")")
-	  std::size_t count;
-	};
-}
-}
-}
-
-#endif /* NEMSTA_INC_ENTITY_SNMPVALUES_HPP_ */
+#endif /* NEMSTA_INC_ENTITY_ITEMIZEDOBJECT_HPP_ */

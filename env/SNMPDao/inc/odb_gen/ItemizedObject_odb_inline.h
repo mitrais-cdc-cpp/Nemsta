@@ -4,19 +4,19 @@
 
 namespace odb
 {
-  // SnmpObjectValue
+  // ItemizedObject
   //
 
   inline
-  access::object_traits< ::Mitrais::SNMPDao::Entity::SnmpObjectValue >::id_type
-  access::object_traits< ::Mitrais::SNMPDao::Entity::SnmpObjectValue >::
+  access::object_traits< ::ItemizedObject >::id_type
+  access::object_traits< ::ItemizedObject >::
   id (const object_type& o)
   {
-    return o.snmpObjectValueId_;
+    return o.ItemizedObjectId_;
   }
 
   inline
-  void access::object_traits< ::Mitrais::SNMPDao::Entity::SnmpObjectValue >::
+  void access::object_traits< ::ItemizedObject >::
   callback (database& db, object_type& x, callback_event e)
   {
     ODB_POTENTIALLY_UNUSED (db);
@@ -25,20 +25,8 @@ namespace odb
   }
 
   inline
-  void access::object_traits< ::Mitrais::SNMPDao::Entity::SnmpObjectValue >::
+  void access::object_traits< ::ItemizedObject >::
   callback (database& db, const object_type& x, callback_event e)
-  {
-    ODB_POTENTIALLY_UNUSED (db);
-    ODB_POTENTIALLY_UNUSED (x);
-    ODB_POTENTIALLY_UNUSED (e);
-  }
-
-  // SnmpObjectValue_stat
-  //
-
-  inline
-  void access::view_traits< ::Mitrais::SNMPDao::Entity::SnmpObjectValue_stat >::
-  callback (database& db, view_type& x, callback_event e)
   {
     ODB_POTENTIALLY_UNUSED (db);
     ODB_POTENTIALLY_UNUSED (x);
@@ -48,11 +36,11 @@ namespace odb
 
 namespace odb
 {
-  // SnmpObjectValue
+  // ItemizedObject
   //
 
   inline
-  void access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::
+  void access::object_traits_impl< ::ItemizedObject, id_mysql >::
   erase (database& db, const object_type& obj)
   {
     callback (db, obj, callback_event::pre_erase);
@@ -61,7 +49,7 @@ namespace odb
   }
 
   inline
-  void access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::
+  void access::object_traits_impl< ::ItemizedObject, id_mysql >::
   load_ (statements_type& sts,
          object_type& obj,
          bool)
@@ -69,8 +57,5 @@ namespace odb
     ODB_POTENTIALLY_UNUSED (sts);
     ODB_POTENTIALLY_UNUSED (obj);
   }
-
-  // SnmpObjectValue_stat
-  //
 }
 

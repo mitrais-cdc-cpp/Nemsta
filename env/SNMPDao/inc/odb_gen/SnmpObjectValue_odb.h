@@ -5,24 +5,6 @@
 #ifndef SNMP_OBJECT_VALUE_ODB_H
 #define SNMP_OBJECT_VALUE_ODB_H
 
-// Begin prologue.
-//
-#include <odb/boost/version.hxx>
-#if ODB_BOOST_VERSION != 2040000 // 2.4.0
-#  error ODB and C++ compilers see different libodb-boost interface versions
-#endif
-#include <boost/shared_ptr.hpp>
-#include <odb/boost/smart-ptr/pointer-traits.hxx>
-#include <odb/boost/smart-ptr/wrapper-traits.hxx>
-#include <odb/boost/optional/wrapper-traits.hxx>
-#include <odb/boost/unordered/container-traits.hxx>
-#include <odb/boost/date-time/mysql/gregorian-traits.hxx>
-#include <odb/boost/date-time/mysql/posix-time-traits.hxx>
-#include <odb/boost/multi-index/container-traits.hxx>
-#include <odb/boost/uuid/mysql/uuid-traits.hxx>
-//
-// End prologue.
-
 #include <odb/version.hxx>
 
 #if (ODB_VERSION != 20400UL)
@@ -33,45 +15,44 @@
 
 #include "SnmpObjectValue.hpp"
 
+#include "MonitorHistory_odb.h"
+#include "SnmpObject_odb.h"
+#include "SnmpObjectType_odb.h"
+
 #include <memory>
 #include <cstddef>
+#include <utility>
 
 #include <odb/core.hxx>
 #include <odb/traits.hxx>
 #include <odb/callback.hxx>
 #include <odb/wrapper-traits.hxx>
 #include <odb/pointer-traits.hxx>
-#ifdef BOOST_TR1_MEMORY_HPP_INCLUDED
-#  include <odb/tr1/wrapper-traits.hxx>
-#  include <odb/tr1/pointer-traits.hxx>
-#endif
 #include <odb/container-traits.hxx>
 #include <odb/session.hxx>
 #include <odb/cache-traits.hxx>
 #include <odb/result.hxx>
 #include <odb/simple-object-result.hxx>
-#include <odb/view-image.hxx>
-#include <odb/view-result.hxx>
 
 #include <odb/details/unused.hxx>
 #include <odb/details/shared-ptr.hxx>
 
 namespace odb
 {
-  // ItemizedObject
+  // SnmpObjectValue
   //
   template <>
-  struct class_traits< ::Mitrais::SNMPDao::Entity::ItemizedObject >
+  struct class_traits< ::SnmpObjectValue >
   {
     static const class_kind kind = class_object;
   };
 
   template <>
-  class access::object_traits< ::Mitrais::SNMPDao::Entity::ItemizedObject >
+  class access::object_traits< ::SnmpObjectValue >
   {
     public:
-    typedef ::Mitrais::SNMPDao::Entity::ItemizedObject object_type;
-    typedef ::boost::shared_ptr< ::Mitrais::SNMPDao::Entity::ItemizedObject > pointer_type;
+    typedef ::SnmpObjectValue object_type;
+    typedef ::std::shared_ptr< ::SnmpObjectValue > pointer_type;
     typedef odb::pointer_traits<pointer_type> pointer_traits;
 
     static const bool polymorphic = false;
@@ -103,25 +84,6 @@ namespace odb
     static void
     callback (database&, const object_type&, callback_event);
   };
-
-  // ItemizedObject_stat
-  //
-  template <>
-  struct class_traits< ::Mitrais::SNMPDao::Entity::ItemizedObject_stat >
-  {
-    static const class_kind kind = class_view;
-  };
-
-  template <>
-  class access::view_traits< ::Mitrais::SNMPDao::Entity::ItemizedObject_stat >
-  {
-    public:
-    typedef ::Mitrais::SNMPDao::Entity::ItemizedObject_stat view_type;
-    typedef ::boost::shared_ptr< ::Mitrais::SNMPDao::Entity::ItemizedObject_stat > pointer_type;
-
-    static void
-    callback (database&, view_type&, callback_event);
-  };
 }
 
 #include <odb/details/buffer.hxx>
@@ -134,12 +96,12 @@ namespace odb
 
 namespace odb
 {
-  // ItemizedObject
+  // SnmpObjectValue
   //
   template <typename A>
-  struct query_columns< ::Mitrais::SNMPDao::Entity::ItemizedObject, id_mysql, A >
+  struct pointer_query_columns< ::SnmpObjectValue, id_mysql, A >
   {
-    // ItemizedObjectId
+    // snmpObjectValueId
     //
     typedef
     mysql::query_column<
@@ -147,11 +109,23 @@ namespace odb
         long unsigned int,
         mysql::id_ulonglong >::query_type,
       mysql::id_ulonglong >
-    ItemizedObjectId_type_;
+    snmpObjectValueId_type_;
 
-    static const ItemizedObjectId_type_ ItemizedObjectId;
+    static const snmpObjectValueId_type_ snmpObjectValueId;
 
-    // networkElementId
+    // value
+    //
+    typedef
+    mysql::query_column<
+      mysql::value_traits<
+        ::std::string,
+        mysql::id_string >::query_type,
+      mysql::id_string >
+    value_type_;
+
+    static const value_type_ value;
+
+    // snmpObjectFk
     //
     typedef
     mysql::query_column<
@@ -159,11 +133,11 @@ namespace odb
         long unsigned int,
         mysql::id_ulonglong >::query_type,
       mysql::id_ulonglong >
-    networkElementId_type_;
+    snmpObjectFk_type_;
 
-    static const networkElementId_type_ networkElementId;
+    static const snmpObjectFk_type_ snmpObjectFk;
 
-    // snmpObjectId
+    // snmpObjectTypeFk
     //
     typedef
     mysql::query_column<
@@ -171,35 +145,51 @@ namespace odb
         long unsigned int,
         mysql::id_ulonglong >::query_type,
       mysql::id_ulonglong >
-    snmpObjectId_type_;
+    snmpObjectTypeFk_type_;
 
-    static const snmpObjectId_type_ snmpObjectId;
+    static const snmpObjectTypeFk_type_ snmpObjectTypeFk;
+
+    // monitorHistoryFk
+    //
+    typedef
+    mysql::query_column<
+      mysql::value_traits<
+        long unsigned int,
+        mysql::id_ulonglong >::query_type,
+      mysql::id_ulonglong >
+    monitorHistoryFk_type_;
+
+    static const monitorHistoryFk_type_ monitorHistoryFk;
   };
 
   template <typename A>
-  const typename query_columns< ::Mitrais::SNMPDao::Entity::ItemizedObject, id_mysql, A >::ItemizedObjectId_type_
-  query_columns< ::Mitrais::SNMPDao::Entity::ItemizedObject, id_mysql, A >::
-  ItemizedObjectId (A::table_name, "`ItemizedObjectId`", 0);
+  const typename pointer_query_columns< ::SnmpObjectValue, id_mysql, A >::snmpObjectValueId_type_
+  pointer_query_columns< ::SnmpObjectValue, id_mysql, A >::
+  snmpObjectValueId (A::table_name, "`snmpObjectValueId`", 0);
 
   template <typename A>
-  const typename query_columns< ::Mitrais::SNMPDao::Entity::ItemizedObject, id_mysql, A >::networkElementId_type_
-  query_columns< ::Mitrais::SNMPDao::Entity::ItemizedObject, id_mysql, A >::
-  networkElementId (A::table_name, "`networkElementId`", 0);
+  const typename pointer_query_columns< ::SnmpObjectValue, id_mysql, A >::value_type_
+  pointer_query_columns< ::SnmpObjectValue, id_mysql, A >::
+  value (A::table_name, "`value`", 0);
 
   template <typename A>
-  const typename query_columns< ::Mitrais::SNMPDao::Entity::ItemizedObject, id_mysql, A >::snmpObjectId_type_
-  query_columns< ::Mitrais::SNMPDao::Entity::ItemizedObject, id_mysql, A >::
-  snmpObjectId (A::table_name, "`snmpObjectId`", 0);
+  const typename pointer_query_columns< ::SnmpObjectValue, id_mysql, A >::snmpObjectFk_type_
+  pointer_query_columns< ::SnmpObjectValue, id_mysql, A >::
+  snmpObjectFk (A::table_name, "`snmpObjectFk`", 0);
 
   template <typename A>
-  struct pointer_query_columns< ::Mitrais::SNMPDao::Entity::ItemizedObject, id_mysql, A >:
-    query_columns< ::Mitrais::SNMPDao::Entity::ItemizedObject, id_mysql, A >
-  {
-  };
+  const typename pointer_query_columns< ::SnmpObjectValue, id_mysql, A >::snmpObjectTypeFk_type_
+  pointer_query_columns< ::SnmpObjectValue, id_mysql, A >::
+  snmpObjectTypeFk (A::table_name, "`snmpObjectTypeFk`", 0);
+
+  template <typename A>
+  const typename pointer_query_columns< ::SnmpObjectValue, id_mysql, A >::monitorHistoryFk_type_
+  pointer_query_columns< ::SnmpObjectValue, id_mysql, A >::
+  monitorHistoryFk (A::table_name, "`monitorHistoryFk`", 0);
 
   template <>
-  class access::object_traits_impl< ::Mitrais::SNMPDao::Entity::ItemizedObject, id_mysql >:
-    public access::object_traits< ::Mitrais::SNMPDao::Entity::ItemizedObject >
+  class access::object_traits_impl< ::SnmpObjectValue, id_mysql >:
+    public access::object_traits< ::SnmpObjectValue >
   {
     public:
     struct id_image_type
@@ -212,25 +202,40 @@ namespace odb
 
     struct image_type
     {
-      // ItemizedObjectId_
+      // snmpObjectValueId_
       //
-      unsigned long long ItemizedObjectId_value;
-      my_bool ItemizedObjectId_null;
+      unsigned long long snmpObjectValueId_value;
+      my_bool snmpObjectValueId_null;
 
-      // networkElementId_
+      // value_
       //
-      unsigned long long networkElementId_value;
-      my_bool networkElementId_null;
+      details::buffer value_value;
+      unsigned long value_size;
+      my_bool value_null;
 
-      // snmpObjectId_
+      // snmpObjectFk_
       //
-      unsigned long long snmpObjectId_value;
-      my_bool snmpObjectId_null;
+      unsigned long long snmpObjectFk_value;
+      my_bool snmpObjectFk_null;
+
+      // snmpObjectTypeFk_
+      //
+      unsigned long long snmpObjectTypeFk_value;
+      my_bool snmpObjectTypeFk_null;
+
+      // monitorHistoryFk_
+      //
+      unsigned long long monitorHistoryFk_value;
+      my_bool monitorHistoryFk_null;
 
       std::size_t version;
     };
 
     struct extra_statement_cache_type;
+
+    struct snmpObjectFk_tag;
+    struct snmpObjectTypeFk_tag;
+    struct monitorHistoryFk_tag;
 
     using object_traits<object_type>::id;
 
@@ -269,7 +274,7 @@ namespace odb
 
     typedef mysql::query_base query_base_type;
 
-    static const std::size_t column_count = 3UL;
+    static const std::size_t column_count = 5UL;
     static const std::size_t id_column_count = 1UL;
     static const std::size_t inverse_column_count = 0UL;
     static const std::size_t readonly_column_count = 0UL;
@@ -328,74 +333,208 @@ namespace odb
   };
 
   template <>
-  class access::object_traits_impl< ::Mitrais::SNMPDao::Entity::ItemizedObject, id_common >:
-    public access::object_traits_impl< ::Mitrais::SNMPDao::Entity::ItemizedObject, id_mysql >
+  class access::object_traits_impl< ::SnmpObjectValue, id_common >:
+    public access::object_traits_impl< ::SnmpObjectValue, id_mysql >
   {
   };
 
-  // ItemizedObject_stat
+  // SnmpObjectValue
   //
   template <>
-  class access::view_traits_impl< ::Mitrais::SNMPDao::Entity::ItemizedObject_stat, id_mysql >:
-    public access::view_traits< ::Mitrais::SNMPDao::Entity::ItemizedObject_stat >
+  struct alias_traits<
+    ::SnmpObject,
+    id_mysql,
+    access::object_traits_impl< ::SnmpObjectValue, id_mysql >::snmpObjectFk_tag>
   {
-    public:
-    struct image_type
-    {
-      // count
-      //
-      unsigned long long count_value;
-      my_bool count_null;
+    static const char table_name[];
+  };
 
-      std::size_t version;
+  template <>
+  struct alias_traits<
+    ::SnmpObjectType,
+    id_mysql,
+    access::object_traits_impl< ::SnmpObjectValue, id_mysql >::snmpObjectTypeFk_tag>
+  {
+    static const char table_name[];
+  };
+
+  template <>
+  struct alias_traits<
+    ::MonitorHistory,
+    id_mysql,
+    access::object_traits_impl< ::SnmpObjectValue, id_mysql >::monitorHistoryFk_tag>
+  {
+    static const char table_name[];
+  };
+
+  template <>
+  struct query_columns_base< ::SnmpObjectValue, id_mysql >
+  {
+    // snmpObjectFk
+    //
+    typedef
+    odb::alias_traits<
+      ::SnmpObject,
+      id_mysql,
+      access::object_traits_impl< ::SnmpObjectValue, id_mysql >::snmpObjectFk_tag>
+    snmpObjectFk_alias_;
+
+    // snmpObjectTypeFk
+    //
+    typedef
+    odb::alias_traits<
+      ::SnmpObjectType,
+      id_mysql,
+      access::object_traits_impl< ::SnmpObjectValue, id_mysql >::snmpObjectTypeFk_tag>
+    snmpObjectTypeFk_alias_;
+
+    // monitorHistoryFk
+    //
+    typedef
+    odb::alias_traits<
+      ::MonitorHistory,
+      id_mysql,
+      access::object_traits_impl< ::SnmpObjectValue, id_mysql >::monitorHistoryFk_tag>
+    monitorHistoryFk_alias_;
+  };
+
+  template <typename A>
+  struct query_columns< ::SnmpObjectValue, id_mysql, A >:
+    query_columns_base< ::SnmpObjectValue, id_mysql >
+  {
+    // snmpObjectValueId
+    //
+    typedef
+    mysql::query_column<
+      mysql::value_traits<
+        long unsigned int,
+        mysql::id_ulonglong >::query_type,
+      mysql::id_ulonglong >
+    snmpObjectValueId_type_;
+
+    static const snmpObjectValueId_type_ snmpObjectValueId;
+
+    // value
+    //
+    typedef
+    mysql::query_column<
+      mysql::value_traits<
+        ::std::string,
+        mysql::id_string >::query_type,
+      mysql::id_string >
+    value_type_;
+
+    static const value_type_ value;
+
+    // snmpObjectFk
+    //
+    typedef
+    mysql::query_column<
+      mysql::value_traits<
+        long unsigned int,
+        mysql::id_ulonglong >::query_type,
+      mysql::id_ulonglong >
+    snmpObjectFk_column_type_;
+
+    typedef
+    odb::query_pointer<
+      odb::pointer_query_columns<
+        ::SnmpObject,
+        id_mysql,
+        snmpObjectFk_alias_ > >
+    snmpObjectFk_pointer_type_;
+
+    struct snmpObjectFk_type_: snmpObjectFk_pointer_type_, snmpObjectFk_column_type_
+    {
+      snmpObjectFk_type_ (const char* t, const char* c, const char* conv)
+        : snmpObjectFk_column_type_ (t, c, conv)
+      {
+      }
     };
 
-    typedef mysql::view_statements<view_type> statements_type;
+    static const snmpObjectFk_type_ snmpObjectFk;
 
-    typedef mysql::query_base query_base_type;
-    struct query_columns;
+    // snmpObjectTypeFk
+    //
+    typedef
+    mysql::query_column<
+      mysql::value_traits<
+        long unsigned int,
+        mysql::id_ulonglong >::query_type,
+      mysql::id_ulonglong >
+    snmpObjectTypeFk_column_type_;
 
-    static const bool versioned = false;
+    typedef
+    odb::query_pointer<
+      odb::pointer_query_columns<
+        ::SnmpObjectType,
+        id_mysql,
+        snmpObjectTypeFk_alias_ > >
+    snmpObjectTypeFk_pointer_type_;
 
-    static bool
-    grow (image_type&,
-          my_bool*);
+    struct snmpObjectTypeFk_type_: snmpObjectTypeFk_pointer_type_, snmpObjectTypeFk_column_type_
+    {
+      snmpObjectTypeFk_type_ (const char* t, const char* c, const char* conv)
+        : snmpObjectTypeFk_column_type_ (t, c, conv)
+      {
+      }
+    };
 
-    static void
-    bind (MYSQL_BIND*,
-          image_type&);
+    static const snmpObjectTypeFk_type_ snmpObjectTypeFk;
 
-    static void
-    init (view_type&,
-          const image_type&,
-          database*);
+    // monitorHistoryFk
+    //
+    typedef
+    mysql::query_column<
+      mysql::value_traits<
+        long unsigned int,
+        mysql::id_ulonglong >::query_type,
+      mysql::id_ulonglong >
+    monitorHistoryFk_column_type_;
 
-    static const std::size_t column_count = 1UL;
+    typedef
+    odb::query_pointer<
+      odb::pointer_query_columns<
+        ::MonitorHistory,
+        id_mysql,
+        monitorHistoryFk_alias_ > >
+    monitorHistoryFk_pointer_type_;
 
-    static query_base_type
-    query_statement (const query_base_type&);
+    struct monitorHistoryFk_type_: monitorHistoryFk_pointer_type_, monitorHistoryFk_column_type_
+    {
+      monitorHistoryFk_type_ (const char* t, const char* c, const char* conv)
+        : monitorHistoryFk_column_type_ (t, c, conv)
+      {
+      }
+    };
 
-    static result<view_type>
-    query (database&, const query_base_type&);
+    static const monitorHistoryFk_type_ monitorHistoryFk;
   };
 
-  template <>
-  class access::view_traits_impl< ::Mitrais::SNMPDao::Entity::ItemizedObject_stat, id_common >:
-    public access::view_traits_impl< ::Mitrais::SNMPDao::Entity::ItemizedObject_stat, id_mysql >
-  {
-  };
+  template <typename A>
+  const typename query_columns< ::SnmpObjectValue, id_mysql, A >::snmpObjectValueId_type_
+  query_columns< ::SnmpObjectValue, id_mysql, A >::
+  snmpObjectValueId (A::table_name, "`snmpObjectValueId`", 0);
 
-  // ItemizedObject
-  //
-  // ItemizedObject_stat
-  //
-  struct access::view_traits_impl< ::Mitrais::SNMPDao::Entity::ItemizedObject_stat, id_mysql >::query_columns:
-    odb::pointer_query_columns<
-      ::Mitrais::SNMPDao::Entity::ItemizedObject,
-      id_mysql,
-      odb::access::object_traits_impl< ::Mitrais::SNMPDao::Entity::ItemizedObject, id_mysql > >
-  {
-  };
+  template <typename A>
+  const typename query_columns< ::SnmpObjectValue, id_mysql, A >::value_type_
+  query_columns< ::SnmpObjectValue, id_mysql, A >::
+  value (A::table_name, "`value`", 0);
+
+  template <typename A>
+  const typename query_columns< ::SnmpObjectValue, id_mysql, A >::snmpObjectFk_type_
+  query_columns< ::SnmpObjectValue, id_mysql, A >::
+  snmpObjectFk (A::table_name, "`snmpObjectFk`", 0);
+
+  template <typename A>
+  const typename query_columns< ::SnmpObjectValue, id_mysql, A >::snmpObjectTypeFk_type_
+  query_columns< ::SnmpObjectValue, id_mysql, A >::
+  snmpObjectTypeFk (A::table_name, "`snmpObjectTypeFk`", 0);
+
+  template <typename A>
+  const typename query_columns< ::SnmpObjectValue, id_mysql, A >::monitorHistoryFk_type_
+  query_columns< ::SnmpObjectValue, id_mysql, A >::
+  monitorHistoryFk (A::table_name, "`monitorHistoryFk`", 0);
 }
 
 #include "SnmpObjectValue_odb_inline.h"

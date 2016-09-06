@@ -1,61 +1,75 @@
-#ifndef NEMSTA_INC_ENTITY_ITEMIZEDOBJECT_HPP_
-#define NEMSTA_INC_ENTITY_ITEMIZEDOBJECT_HPP_
+#ifndef NEMSTA_INC_ENTITY_SNMPVALUES_HPP_
+#define NEMSTA_INC_ENTITY_SNMPVALUES_HPP_
 
-#include <string>
+//#include <boost/shared_ptr.hpp>
 #include <cstddef>
-
+#include <memory>
 #include <odb/core.hxx>
+#include <string>
+#include "MonitorHistory.hpp"
+#include "SnmpObject.hpp"
+#include "SnmpObjectType.hpp"
 
-#pragma db object
+class SnmpObject;
+class SnmpObjectType;
+class MonitorHistory;
 
-namespace Mitrais
-{
-namespace SNMPDao
-{
-namespace Entity
-{
-	class ItemizedObject
-	{
-		public:
-			ItemizedObject(const unsigned long networkElementId, const unsigned long snmpObjectId) :
-						networkElementId_(networkElementId), snmpObjectId_(snmpObjectId)
-			{
+#pragma db object pointer(std::shared_ptr) session
+class SnmpObjectValue {
+ public:
+  typedef ::SnmpObject snmpObjectTypeDef;
+  typedef ::SnmpObjectType snmpObjectTypeTypeDef;
+  typedef ::MonitorHistory monitorHistoryTypeDef;
+  SnmpObjectValue(const std::string value,
+                  std::shared_ptr<snmpObjectTypeDef> snmpObject,
+                  std::shared_ptr<snmpObjectTypeTypeDef> snmpObjectType,
+                  std::shared_ptr<monitorHistoryTypeDef> monitorHistory)
+      : value_(value),
+        snmpObjectFk_(snmpObject),
+        snmpObjectTypeFk_(snmpObjectType),
+        monitorHistoryFk_(monitorHistory) {}
 
-			}
+  const std::string& value() const { return value_; }
 
-			const unsigned long&
-			NetworkElementId() const
-			{
-				return networkElementId_;
-			}
+  void snmpObject(std::shared_ptr<snmpObjectTypeDef> snmpObject) {
+    snmpObjectFk_ = snmpObject;
+  }
 
-			const unsigned long&
-			SnmpObjectId() const
-			{
-				return snmpObjectId_;
-			}
+  void snmpObjectType(std::shared_ptr<snmpObjectTypeTypeDef> snmpObjectType) {
+    snmpObjectTypeFk_ = snmpObjectType;
+  }
 
-		private:
-			friend class odb::access;
-			ItemizedObject ()
-			{
+  void monitorHistory(std::shared_ptr<monitorHistoryTypeDef> monitorHistory) {
+    monitorHistoryFk_ = monitorHistory;
+  }
 
-			}
-			#pragma db id auto
-			unsigned long ItemizedObjectId_;
+  std::shared_ptr<snmpObjectTypeDef> snmpObject() const {
+    return snmpObjectFk_;
+  }
+  std::shared_ptr<snmpObjectTypeTypeDef> snmpObjectType() const {
+    return snmpObjectTypeFk_;
+  }
+  std::shared_ptr<monitorHistoryTypeDef> monitorHistory() const {
+    return monitorHistoryFk_;
+  }
 
-			unsigned long networkElementId_;
+ private:
+  friend class odb::access;
+  SnmpObjectValue() {}
+#pragma db id auto
+  unsigned long snmpObjectValueId_;
 
-			unsigned long snmpObjectId_;	};
+#pragma db type("VARCHAR(45)")
+  std::string value_;
 
-	#pragma db view object(ItemizedObject)
-	struct ItemizedObject_stat
-	{
-	  #pragma db column("count(" + ItemizedObject::ItemizedObjectId_ + ")")
-	  std::size_t count;
-	};
-}
-}
-}
+#pragma db not_null
+  std::shared_ptr<snmpObjectTypeDef> snmpObjectFk_;
 
-#endif /* NEMSTA_INC_ENTITY_ITEMIZEDOBJECT_HPP_ */
+#pragma db not_null
+  std::shared_ptr<snmpObjectTypeTypeDef> snmpObjectTypeFk_;
+
+#pragma db not_null
+  std::shared_ptr<monitorHistoryTypeDef> monitorHistoryFk_;
+};
+
+#endif /* NEMSTA_INC_ENTITY_SNMPVALUES_HPP_ */

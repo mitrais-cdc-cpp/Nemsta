@@ -5,24 +5,6 @@
 #ifndef ITEMIZED_OBJECT_ODB_H
 #define ITEMIZED_OBJECT_ODB_H
 
-// Begin prologue.
-//
-#include <odb/boost/version.hxx>
-#if ODB_BOOST_VERSION != 2040000 // 2.4.0
-#  error ODB and C++ compilers see different libodb-boost interface versions
-#endif
-#include <boost/shared_ptr.hpp>
-#include <odb/boost/smart-ptr/pointer-traits.hxx>
-#include <odb/boost/smart-ptr/wrapper-traits.hxx>
-#include <odb/boost/optional/wrapper-traits.hxx>
-#include <odb/boost/unordered/container-traits.hxx>
-#include <odb/boost/date-time/mysql/gregorian-traits.hxx>
-#include <odb/boost/date-time/mysql/posix-time-traits.hxx>
-#include <odb/boost/multi-index/container-traits.hxx>
-#include <odb/boost/uuid/mysql/uuid-traits.hxx>
-//
-// End prologue.
-
 #include <odb/version.hxx>
 
 #if (ODB_VERSION != 20400UL)
@@ -35,43 +17,38 @@
 
 #include <memory>
 #include <cstddef>
+#include <utility>
 
 #include <odb/core.hxx>
 #include <odb/traits.hxx>
 #include <odb/callback.hxx>
 #include <odb/wrapper-traits.hxx>
 #include <odb/pointer-traits.hxx>
-#ifdef BOOST_TR1_MEMORY_HPP_INCLUDED
-#  include <odb/tr1/wrapper-traits.hxx>
-#  include <odb/tr1/pointer-traits.hxx>
-#endif
 #include <odb/container-traits.hxx>
 #include <odb/session.hxx>
 #include <odb/cache-traits.hxx>
 #include <odb/result.hxx>
 #include <odb/simple-object-result.hxx>
-#include <odb/view-image.hxx>
-#include <odb/view-result.hxx>
 
 #include <odb/details/unused.hxx>
 #include <odb/details/shared-ptr.hxx>
 
 namespace odb
 {
-  // SnmpObjectValue
+  // ItemizedObject
   //
   template <>
-  struct class_traits< ::Mitrais::SNMPDao::Entity::SnmpObjectValue >
+  struct class_traits< ::ItemizedObject >
   {
     static const class_kind kind = class_object;
   };
 
   template <>
-  class access::object_traits< ::Mitrais::SNMPDao::Entity::SnmpObjectValue >
+  class access::object_traits< ::ItemizedObject >
   {
     public:
-    typedef ::Mitrais::SNMPDao::Entity::SnmpObjectValue object_type;
-    typedef ::boost::shared_ptr< ::Mitrais::SNMPDao::Entity::SnmpObjectValue > pointer_type;
+    typedef ::ItemizedObject object_type;
+    typedef ::std::shared_ptr< ::ItemizedObject > pointer_type;
     typedef odb::pointer_traits<pointer_type> pointer_traits;
 
     static const bool polymorphic = false;
@@ -103,25 +80,6 @@ namespace odb
     static void
     callback (database&, const object_type&, callback_event);
   };
-
-  // SnmpObjectValue_stat
-  //
-  template <>
-  struct class_traits< ::Mitrais::SNMPDao::Entity::SnmpObjectValue_stat >
-  {
-    static const class_kind kind = class_view;
-  };
-
-  template <>
-  class access::view_traits< ::Mitrais::SNMPDao::Entity::SnmpObjectValue_stat >
-  {
-    public:
-    typedef ::Mitrais::SNMPDao::Entity::SnmpObjectValue_stat view_type;
-    typedef ::boost::shared_ptr< ::Mitrais::SNMPDao::Entity::SnmpObjectValue_stat > pointer_type;
-
-    static void
-    callback (database&, view_type&, callback_event);
-  };
 }
 
 #include <odb/details/buffer.hxx>
@@ -134,12 +92,12 @@ namespace odb
 
 namespace odb
 {
-  // SnmpObjectValue
+  // ItemizedObject
   //
   template <typename A>
-  struct query_columns< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql, A >
+  struct query_columns< ::ItemizedObject, id_mysql, A >
   {
-    // snmpObjectValueId
+    // ItemizedObjectId
     //
     typedef
     mysql::query_column<
@@ -147,21 +105,21 @@ namespace odb
         long unsigned int,
         mysql::id_ulonglong >::query_type,
       mysql::id_ulonglong >
-    snmpObjectValueId_type_;
+    ItemizedObjectId_type_;
 
-    static const snmpObjectValueId_type_ snmpObjectValueId;
+    static const ItemizedObjectId_type_ ItemizedObjectId;
 
-    // value
+    // networkElementId
     //
     typedef
     mysql::query_column<
       mysql::value_traits<
-        ::std::string,
-        mysql::id_string >::query_type,
-      mysql::id_string >
-    value_type_;
+        long unsigned int,
+        mysql::id_ulonglong >::query_type,
+      mysql::id_ulonglong >
+    networkElementId_type_;
 
-    static const value_type_ value;
+    static const networkElementId_type_ networkElementId;
 
     // snmpObjectId
     //
@@ -177,29 +135,29 @@ namespace odb
   };
 
   template <typename A>
-  const typename query_columns< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql, A >::snmpObjectValueId_type_
-  query_columns< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql, A >::
-  snmpObjectValueId (A::table_name, "`snmpObjectValueId`", 0);
+  const typename query_columns< ::ItemizedObject, id_mysql, A >::ItemizedObjectId_type_
+  query_columns< ::ItemizedObject, id_mysql, A >::
+  ItemizedObjectId (A::table_name, "`ItemizedObjectId`", 0);
 
   template <typename A>
-  const typename query_columns< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql, A >::value_type_
-  query_columns< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql, A >::
-  value (A::table_name, "`value`", 0);
+  const typename query_columns< ::ItemizedObject, id_mysql, A >::networkElementId_type_
+  query_columns< ::ItemizedObject, id_mysql, A >::
+  networkElementId (A::table_name, "`networkElementId`", 0);
 
   template <typename A>
-  const typename query_columns< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql, A >::snmpObjectId_type_
-  query_columns< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql, A >::
+  const typename query_columns< ::ItemizedObject, id_mysql, A >::snmpObjectId_type_
+  query_columns< ::ItemizedObject, id_mysql, A >::
   snmpObjectId (A::table_name, "`snmpObjectId`", 0);
 
   template <typename A>
-  struct pointer_query_columns< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql, A >:
-    query_columns< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql, A >
+  struct pointer_query_columns< ::ItemizedObject, id_mysql, A >:
+    query_columns< ::ItemizedObject, id_mysql, A >
   {
   };
 
   template <>
-  class access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >:
-    public access::object_traits< ::Mitrais::SNMPDao::Entity::SnmpObjectValue >
+  class access::object_traits_impl< ::ItemizedObject, id_mysql >:
+    public access::object_traits< ::ItemizedObject >
   {
     public:
     struct id_image_type
@@ -212,16 +170,15 @@ namespace odb
 
     struct image_type
     {
-      // snmpObjectValueId_
+      // ItemizedObjectId_
       //
-      unsigned long long snmpObjectValueId_value;
-      my_bool snmpObjectValueId_null;
+      unsigned long long ItemizedObjectId_value;
+      my_bool ItemizedObjectId_null;
 
-      // value_
+      // networkElementId_
       //
-      details::buffer value_value;
-      unsigned long value_size;
-      my_bool value_null;
+      unsigned long long networkElementId_value;
+      my_bool networkElementId_null;
 
       // snmpObjectId_
       //
@@ -329,74 +286,13 @@ namespace odb
   };
 
   template <>
-  class access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_common >:
-    public access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >
+  class access::object_traits_impl< ::ItemizedObject, id_common >:
+    public access::object_traits_impl< ::ItemizedObject, id_mysql >
   {
   };
 
-  // SnmpObjectValue_stat
+  // ItemizedObject
   //
-  template <>
-  class access::view_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue_stat, id_mysql >:
-    public access::view_traits< ::Mitrais::SNMPDao::Entity::SnmpObjectValue_stat >
-  {
-    public:
-    struct image_type
-    {
-      // count
-      //
-      unsigned long long count_value;
-      my_bool count_null;
-
-      std::size_t version;
-    };
-
-    typedef mysql::view_statements<view_type> statements_type;
-
-    typedef mysql::query_base query_base_type;
-    struct query_columns;
-
-    static const bool versioned = false;
-
-    static bool
-    grow (image_type&,
-          my_bool*);
-
-    static void
-    bind (MYSQL_BIND*,
-          image_type&);
-
-    static void
-    init (view_type&,
-          const image_type&,
-          database*);
-
-    static const std::size_t column_count = 1UL;
-
-    static query_base_type
-    query_statement (const query_base_type&);
-
-    static result<view_type>
-    query (database&, const query_base_type&);
-  };
-
-  template <>
-  class access::view_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue_stat, id_common >:
-    public access::view_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue_stat, id_mysql >
-  {
-  };
-
-  // SnmpObjectValue
-  //
-  // SnmpObjectValue_stat
-  //
-  struct access::view_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue_stat, id_mysql >::query_columns:
-    odb::pointer_query_columns<
-      ::Mitrais::SNMPDao::Entity::SnmpObjectValue,
-      id_mysql,
-      odb::access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql > >
-  {
-  };
 }
 
 #include "ItemizedObject_odb_inline.h"

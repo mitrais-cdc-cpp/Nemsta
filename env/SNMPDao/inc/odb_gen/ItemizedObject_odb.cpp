@@ -17,19 +17,17 @@
 #include <odb/mysql/statement.hxx>
 #include <odb/mysql/statement-cache.hxx>
 #include <odb/mysql/simple-object-statements.hxx>
-#include <odb/mysql/view-statements.hxx>
 #include <odb/mysql/container-statements.hxx>
 #include <odb/mysql/exceptions.hxx>
 #include <odb/mysql/simple-object-result.hxx>
-#include <odb/mysql/view-result.hxx>
 #include <odb/mysql/enum.hxx>
 
 namespace odb
 {
-  // SnmpObjectValue
+  // ItemizedObject
   //
 
-  struct access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::extra_statement_cache_type
+  struct access::object_traits_impl< ::ItemizedObject, id_mysql >::extra_statement_cache_type
   {
     extra_statement_cache_type (
       mysql::connection&,
@@ -41,8 +39,8 @@ namespace odb
     }
   };
 
-  access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::id_type
-  access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::
+  access::object_traits_impl< ::ItemizedObject, id_mysql >::id_type
+  access::object_traits_impl< ::ItemizedObject, id_mysql >::
   id (const id_image_type& i)
   {
     mysql::database* db (0);
@@ -61,8 +59,8 @@ namespace odb
     return id;
   }
 
-  access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::id_type
-  access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::
+  access::object_traits_impl< ::ItemizedObject, id_mysql >::id_type
+  access::object_traits_impl< ::ItemizedObject, id_mysql >::
   id (const image_type& i)
   {
     mysql::database* db (0);
@@ -74,14 +72,14 @@ namespace odb
           long unsigned int,
           mysql::id_ulonglong >::set_value (
         id,
-        i.snmpObjectValueId_value,
-        i.snmpObjectValueId_null);
+        i.ItemizedObjectId_value,
+        i.ItemizedObjectId_null);
     }
 
     return id;
   }
 
-  bool access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::
+  bool access::object_traits_impl< ::ItemizedObject, id_mysql >::
   grow (image_type& i,
         my_bool* t)
   {
@@ -90,17 +88,13 @@ namespace odb
 
     bool grew (false);
 
-    // snmpObjectValueId_
+    // ItemizedObjectId_
     //
     t[0UL] = 0;
 
-    // value_
+    // networkElementId_
     //
-    if (t[1UL])
-    {
-      i.value_value.capacity (i.value_size);
-      grew = true;
-    }
+    t[1UL] = 0;
 
     // snmpObjectId_
     //
@@ -109,7 +103,7 @@ namespace odb
     return grew;
   }
 
-  void access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::
+  void access::object_traits_impl< ::ItemizedObject, id_mysql >::
   bind (MYSQL_BIND* b,
         image_type& i,
         mysql::statement_kind sk)
@@ -120,25 +114,23 @@ namespace odb
 
     std::size_t n (0);
 
-    // snmpObjectValueId_
+    // ItemizedObjectId_
     //
     if (sk != statement_update)
     {
       b[n].buffer_type = MYSQL_TYPE_LONGLONG;
       b[n].is_unsigned = 1;
-      b[n].buffer = &i.snmpObjectValueId_value;
-      b[n].is_null = &i.snmpObjectValueId_null;
+      b[n].buffer = &i.ItemizedObjectId_value;
+      b[n].is_null = &i.ItemizedObjectId_null;
       n++;
     }
 
-    // value_
+    // networkElementId_
     //
-    b[n].buffer_type = MYSQL_TYPE_STRING;
-    b[n].buffer = i.value_value.data ();
-    b[n].buffer_length = static_cast<unsigned long> (
-      i.value_value.capacity ());
-    b[n].length = &i.value_size;
-    b[n].is_null = &i.value_null;
+    b[n].buffer_type = MYSQL_TYPE_LONGLONG;
+    b[n].is_unsigned = 1;
+    b[n].buffer = &i.networkElementId_value;
+    b[n].is_null = &i.networkElementId_null;
     n++;
 
     // snmpObjectId_
@@ -150,7 +142,7 @@ namespace odb
     n++;
   }
 
-  void access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::
+  void access::object_traits_impl< ::ItemizedObject, id_mysql >::
   bind (MYSQL_BIND* b, id_image_type& i)
   {
     std::size_t n (0);
@@ -160,7 +152,7 @@ namespace odb
     b[n].is_null = &i.id_null;
   }
 
-  bool access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::
+  bool access::object_traits_impl< ::ItemizedObject, id_mysql >::
   init (image_type& i,
         const object_type& o,
         mysql::statement_kind sk)
@@ -173,40 +165,33 @@ namespace odb
 
     bool grew (false);
 
-    // snmpObjectValueId_
+    // ItemizedObjectId_
     //
     if (sk == statement_insert)
     {
       long unsigned int const& v =
-        o.snmpObjectValueId_;
+        o.ItemizedObjectId_;
 
       bool is_null (false);
       mysql::value_traits<
           long unsigned int,
           mysql::id_ulonglong >::set_image (
-        i.snmpObjectValueId_value, is_null, v);
-      i.snmpObjectValueId_null = is_null;
+        i.ItemizedObjectId_value, is_null, v);
+      i.ItemizedObjectId_null = is_null;
     }
 
-    // value_
+    // networkElementId_
     //
     {
-      ::std::string const& v =
-        o.value_;
+      long unsigned int const& v =
+        o.networkElementId_;
 
       bool is_null (false);
-      std::size_t size (0);
-      std::size_t cap (i.value_value.capacity ());
       mysql::value_traits<
-          ::std::string,
-          mysql::id_string >::set_image (
-        i.value_value,
-        size,
-        is_null,
-        v);
-      i.value_null = is_null;
-      i.value_size = static_cast<unsigned long> (size);
-      grew = grew || (cap != i.value_value.capacity ());
+          long unsigned int,
+          mysql::id_ulonglong >::set_image (
+        i.networkElementId_value, is_null, v);
+      i.networkElementId_null = is_null;
     }
 
     // snmpObjectId_
@@ -226,7 +211,7 @@ namespace odb
     return grew;
   }
 
-  void access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::
+  void access::object_traits_impl< ::ItemizedObject, id_mysql >::
   init (object_type& o,
         const image_type& i,
         database* db)
@@ -235,33 +220,32 @@ namespace odb
     ODB_POTENTIALLY_UNUSED (i);
     ODB_POTENTIALLY_UNUSED (db);
 
-    // snmpObjectValueId_
+    // ItemizedObjectId_
     //
     {
       long unsigned int& v =
-        o.snmpObjectValueId_;
+        o.ItemizedObjectId_;
 
       mysql::value_traits<
           long unsigned int,
           mysql::id_ulonglong >::set_value (
         v,
-        i.snmpObjectValueId_value,
-        i.snmpObjectValueId_null);
+        i.ItemizedObjectId_value,
+        i.ItemizedObjectId_null);
     }
 
-    // value_
+    // networkElementId_
     //
     {
-      ::std::string& v =
-        o.value_;
+      long unsigned int& v =
+        o.networkElementId_;
 
       mysql::value_traits<
-          ::std::string,
-          mysql::id_string >::set_value (
+          long unsigned int,
+          mysql::id_ulonglong >::set_value (
         v,
-        i.value_value,
-        i.value_size,
-        i.value_null);
+        i.networkElementId_value,
+        i.networkElementId_null);
     }
 
     // snmpObjectId_
@@ -279,7 +263,7 @@ namespace odb
     }
   }
 
-  void access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::
+  void access::object_traits_impl< ::ItemizedObject, id_mysql >::
   init (id_image_type& i, const id_type& id)
   {
     {
@@ -292,47 +276,47 @@ namespace odb
     }
   }
 
-  const char access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::persist_statement[] =
-  "INSERT INTO `SnmpObjectValue` "
-  "(`snmpObjectValueId`, "
-  "`value`, "
+  const char access::object_traits_impl< ::ItemizedObject, id_mysql >::persist_statement[] =
+  "INSERT INTO `ItemizedObject` "
+  "(`ItemizedObjectId`, "
+  "`networkElementId`, "
   "`snmpObjectId`) "
   "VALUES "
   "(?, ?, ?)";
 
-  const char access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::find_statement[] =
+  const char access::object_traits_impl< ::ItemizedObject, id_mysql >::find_statement[] =
   "SELECT "
-  "`SnmpObjectValue`.`snmpObjectValueId`, "
-  "`SnmpObjectValue`.`value`, "
-  "`SnmpObjectValue`.`snmpObjectId` "
-  "FROM `SnmpObjectValue` "
-  "WHERE `SnmpObjectValue`.`snmpObjectValueId`=?";
+  "`ItemizedObject`.`ItemizedObjectId`, "
+  "`ItemizedObject`.`networkElementId`, "
+  "`ItemizedObject`.`snmpObjectId` "
+  "FROM `ItemizedObject` "
+  "WHERE `ItemizedObject`.`ItemizedObjectId`=?";
 
-  const char access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::update_statement[] =
-  "UPDATE `SnmpObjectValue` "
+  const char access::object_traits_impl< ::ItemizedObject, id_mysql >::update_statement[] =
+  "UPDATE `ItemizedObject` "
   "SET "
-  "`value`=?, "
+  "`networkElementId`=?, "
   "`snmpObjectId`=? "
-  "WHERE `snmpObjectValueId`=?";
+  "WHERE `ItemizedObjectId`=?";
 
-  const char access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::erase_statement[] =
-  "DELETE FROM `SnmpObjectValue` "
-  "WHERE `snmpObjectValueId`=?";
+  const char access::object_traits_impl< ::ItemizedObject, id_mysql >::erase_statement[] =
+  "DELETE FROM `ItemizedObject` "
+  "WHERE `ItemizedObjectId`=?";
 
-  const char access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::query_statement[] =
+  const char access::object_traits_impl< ::ItemizedObject, id_mysql >::query_statement[] =
   "SELECT "
-  "`SnmpObjectValue`.`snmpObjectValueId`, "
-  "`SnmpObjectValue`.`value`, "
-  "`SnmpObjectValue`.`snmpObjectId` "
-  "FROM `SnmpObjectValue`";
+  "`ItemizedObject`.`ItemizedObjectId`, "
+  "`ItemizedObject`.`networkElementId`, "
+  "`ItemizedObject`.`snmpObjectId` "
+  "FROM `ItemizedObject`";
 
-  const char access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::erase_query_statement[] =
-  "DELETE FROM `SnmpObjectValue`";
+  const char access::object_traits_impl< ::ItemizedObject, id_mysql >::erase_query_statement[] =
+  "DELETE FROM `ItemizedObject`";
 
-  const char access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::table_name[] =
-  "`SnmpObjectValue`";
+  const char access::object_traits_impl< ::ItemizedObject, id_mysql >::table_name[] =
+  "`ItemizedObject`";
 
-  void access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::
+  void access::object_traits_impl< ::ItemizedObject, id_mysql >::
   persist (database& db, object_type& obj)
   {
     ODB_POTENTIALLY_UNUSED (db);
@@ -354,7 +338,7 @@ namespace odb
     if (init (im, obj, statement_insert))
       im.version++;
 
-    im.snmpObjectValueId_value = 0;
+    im.ItemizedObjectId_value = 0;
 
     if (im.version != sts.insert_image_version () ||
         imb.version == 0)
@@ -379,14 +363,14 @@ namespace odb
     if (!st.execute ())
       throw object_already_persistent ();
 
-    obj.snmpObjectValueId_ = id (sts.id_image ());
+    obj.ItemizedObjectId_ = id (sts.id_image ());
 
     callback (db,
               static_cast<const object_type&> (obj),
               callback_event::post_persist);
   }
 
-  void access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::
+  void access::object_traits_impl< ::ItemizedObject, id_mysql >::
   update (database& db, const object_type& obj)
   {
     ODB_POTENTIALLY_UNUSED (db);
@@ -402,7 +386,7 @@ namespace odb
       conn.statement_cache ().find_object<object_type> ());
 
     const id_type& id (
-      obj.snmpObjectValueId_);
+      obj.ItemizedObjectId_);
     id_image_type& idi (sts.id_image ());
     init (idi, id);
 
@@ -447,7 +431,7 @@ namespace odb
     pointer_cache_traits::update (db, obj);
   }
 
-  void access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::
+  void access::object_traits_impl< ::ItemizedObject, id_mysql >::
   erase (database& db, const id_type& id)
   {
     using namespace mysql;
@@ -476,8 +460,8 @@ namespace odb
     pointer_cache_traits::erase (db, id);
   }
 
-  access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::pointer_type
-  access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::
+  access::object_traits_impl< ::ItemizedObject, id_mysql >::pointer_type
+  access::object_traits_impl< ::ItemizedObject, id_mysql >::
   find (database& db, const id_type& id)
   {
     using namespace mysql;
@@ -532,7 +516,7 @@ namespace odb
     return p;
   }
 
-  bool access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::
+  bool access::object_traits_impl< ::ItemizedObject, id_mysql >::
   find (database& db, const id_type& id, object_type& obj)
   {
     using namespace mysql;
@@ -565,7 +549,7 @@ namespace odb
     return true;
   }
 
-  bool access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::
+  bool access::object_traits_impl< ::ItemizedObject, id_mysql >::
   reload (database& db, object_type& obj)
   {
     using namespace mysql;
@@ -578,7 +562,7 @@ namespace odb
     statements_type::auto_lock l (sts);
 
     const id_type& id  (
-      obj.snmpObjectValueId_);
+      obj.ItemizedObjectId_);
 
     if (!find_ (sts, &id))
       return false;
@@ -595,7 +579,7 @@ namespace odb
     return true;
   }
 
-  bool access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::
+  bool access::object_traits_impl< ::ItemizedObject, id_mysql >::
   find_ (statements_type& sts,
          const id_type* id)
   {
@@ -629,25 +613,11 @@ namespace odb
     auto_result ar (st);
     select_statement::result r (st.fetch ());
 
-    if (r == select_statement::truncated)
-    {
-      if (grow (im, sts.select_image_truncated ()))
-        im.version++;
-
-      if (im.version != sts.select_image_version ())
-      {
-        bind (imb.bind, im, statement_select);
-        sts.select_image_version (im.version);
-        imb.version++;
-        st.refetch ();
-      }
-    }
-
     return r != select_statement::no_data;
   }
 
-  result< access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::object_type >
-  access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::
+  result< access::object_traits_impl< ::ItemizedObject, id_mysql >::object_type >
+  access::object_traits_impl< ::ItemizedObject, id_mysql >::
   query (database&, const query_base_type& q)
   {
     using namespace mysql;
@@ -697,7 +667,7 @@ namespace odb
     return result<object_type> (r);
   }
 
-  unsigned long long access::object_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue, id_mysql >::
+  unsigned long long access::object_traits_impl< ::ItemizedObject, id_mysql >::
   erase_query (database&, const query_base_type& q)
   {
     using namespace mysql;
@@ -719,132 +689,6 @@ namespace odb
       q.parameters_binding ());
 
     return st.execute ();
-  }
-
-  // SnmpObjectValue_stat
-  //
-
-  bool access::view_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue_stat, id_mysql >::
-  grow (image_type& i,
-        my_bool* t)
-  {
-    ODB_POTENTIALLY_UNUSED (i);
-    ODB_POTENTIALLY_UNUSED (t);
-
-    bool grew (false);
-
-    // count
-    //
-    t[0UL] = 0;
-
-    return grew;
-  }
-
-  void access::view_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue_stat, id_mysql >::
-  bind (MYSQL_BIND* b,
-        image_type& i)
-  {
-    using namespace mysql;
-
-    mysql::statement_kind sk (statement_select);
-    ODB_POTENTIALLY_UNUSED (sk);
-
-    std::size_t n (0);
-
-    // count
-    //
-    b[n].buffer_type = MYSQL_TYPE_LONGLONG;
-    b[n].is_unsigned = 1;
-    b[n].buffer = &i.count_value;
-    b[n].is_null = &i.count_null;
-    n++;
-  }
-
-  void access::view_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue_stat, id_mysql >::
-  init (view_type& o,
-        const image_type& i,
-        database* db)
-  {
-    ODB_POTENTIALLY_UNUSED (o);
-    ODB_POTENTIALLY_UNUSED (i);
-    ODB_POTENTIALLY_UNUSED (db);
-
-    // count
-    //
-    {
-      ::std::size_t& v =
-        o.count;
-
-      mysql::value_traits<
-          ::std::size_t,
-          mysql::id_ulonglong >::set_value (
-        v,
-        i.count_value,
-        i.count_null);
-    }
-  }
-
-  access::view_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue_stat, id_mysql >::query_base_type
-  access::view_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue_stat, id_mysql >::
-  query_statement (const query_base_type& q)
-  {
-    query_base_type r (
-      "SELECT "
-      "count(`SnmpObjectValue`.`snmpObjectValueId`) ");
-
-    r += "FROM `SnmpObjectValue`";
-
-    if (!q.empty ())
-    {
-      r += " ";
-      r += q.clause_prefix ();
-      r += q;
-    }
-
-    return r;
-  }
-
-  result< access::view_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue_stat, id_mysql >::view_type >
-  access::view_traits_impl< ::Mitrais::SNMPDao::Entity::SnmpObjectValue_stat, id_mysql >::
-  query (database&, const query_base_type& q)
-  {
-    using namespace mysql;
-    using odb::details::shared;
-    using odb::details::shared_ptr;
-
-    mysql::connection& conn (
-      mysql::transaction::current ().connection ());
-    statements_type& sts (
-      conn.statement_cache ().find_view<view_type> ());
-
-    image_type& im (sts.image ());
-    binding& imb (sts.image_binding ());
-
-    if (im.version != sts.image_version () || imb.version == 0)
-    {
-      bind (imb.bind, im);
-      sts.image_version (im.version);
-      imb.version++;
-    }
-
-    const query_base_type& qs (query_statement (q));
-    qs.init_parameters ();
-    shared_ptr<select_statement> st (
-      new (shared) select_statement (
-        conn,
-        qs.clause (),
-        false,
-        true,
-        qs.parameters_binding (),
-        imb));
-
-    st->execute ();
-
-    shared_ptr< odb::view_result_impl<view_type> > r (
-      new (shared) mysql::view_result_impl<view_type> (
-        qs, st, sts, 0));
-
-    return result<view_type> (r);
   }
 }
 

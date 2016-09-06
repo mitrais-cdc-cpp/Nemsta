@@ -52,19 +52,18 @@ long DatabaseUtil::insertSNMPValue(const int& networkElementId,
   try {
     result_snmpmobject_type r(_dbConn->query<SnmpObjectType>());
 
-    /*for (result_snmpmobject_type::iterator i(r.begin()); i != r.end(); ++i) {
-      std::cout << "Hello, " << i->TypeName() << "!" << std::endl;
-    }*/
-
     std::shared_ptr<SnmpObjectType> snmpObjectType(
         getSnmpObjectTypeByTypeName(typeName));
 
     std::shared_ptr<SnmpObject> snmpObject(getSnmpObjectByOid(OID));
 
-    // long monitorHistoryId = insertMonitorHistory(12345, "Test");
+    long monitorHistoryId = insertMonitorHistory(12345, "Test");
 
     std::shared_ptr<MonitorHistory> monitorHistory(
-        new MonitorHistory(12345, "Test 123"));
+        _dbConn->load<MonitorHistory>(monitorHistoryId));
+
+    // std::shared_ptr<MonitorHistory> monitorHistory(
+    //    new MonitorHistory(12345, "Test 123"));
 
     long snmpValueId = insertSnmpObjectValue(value, snmpObject, monitorHistory,
                                              snmpObjectType);
@@ -150,8 +149,10 @@ long DatabaseUtil::insertSnmpObjectValue(
     const std::string& value, std::shared_ptr<SnmpObject> snmpObject,
     std::shared_ptr<MonitorHistory> monitorHistory,
     std::shared_ptr<SnmpObjectType> snmpObjectType) {
-  SnmpObjectValue entity(value, snmpObject, snmpObjectType, monitorHistory);
-  long id = _dbConn->persist(entity);
+  std::shared_ptr<SnmpObjectValue> entity(
+      new SnmpObjectValue(value, snmpObject, snmpObjectType, monitorHistory));
+  long id = _dbConn->persist(*entity);
+  return id;
 }
 }
 }

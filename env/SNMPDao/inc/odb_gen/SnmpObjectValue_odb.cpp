@@ -29,18 +29,18 @@ namespace odb
 
   const char alias_traits<  ::SnmpObject,
     id_mysql,
-    access::object_traits_impl< ::SnmpObjectValue, id_mysql >::snmpObject_tag>::
-  table_name[] = "`snmpObject`";
+    access::object_traits_impl< ::SnmpObjectValue, id_mysql >::snmpObjectFk_tag>::
+  table_name[] = "`snmpObjectFk`";
 
   const char alias_traits<  ::SnmpObjectType,
     id_mysql,
-    access::object_traits_impl< ::SnmpObjectValue, id_mysql >::snmpObjectType_tag>::
-  table_name[] = "`snmpObjectType`";
+    access::object_traits_impl< ::SnmpObjectValue, id_mysql >::snmpObjectTypeFk_tag>::
+  table_name[] = "`snmpObjectTypeFk`";
 
   const char alias_traits<  ::MonitorHistory,
     id_mysql,
-    access::object_traits_impl< ::SnmpObjectValue, id_mysql >::monitorHistory_tag>::
-  table_name[] = "`monitorHistory`";
+    access::object_traits_impl< ::SnmpObjectValue, id_mysql >::monitorHistoryFk_tag>::
+  table_name[] = "`monitorHistoryFk`";
 
   struct access::object_traits_impl< ::SnmpObjectValue, id_mysql >::extra_statement_cache_type
   {
@@ -115,15 +115,15 @@ namespace odb
       grew = true;
     }
 
-    // snmpObject_
+    // snmpObjectFk_
     //
     t[2UL] = 0;
 
-    // snmpObjectType_
+    // snmpObjectTypeFk_
     //
     t[3UL] = 0;
 
-    // monitorHistory_
+    // monitorHistoryFk_
     //
     t[4UL] = 0;
 
@@ -162,28 +162,28 @@ namespace odb
     b[n].is_null = &i.value_null;
     n++;
 
-    // snmpObject_
+    // snmpObjectFk_
     //
     b[n].buffer_type = MYSQL_TYPE_LONGLONG;
     b[n].is_unsigned = 1;
-    b[n].buffer = &i.snmpObject_value;
-    b[n].is_null = &i.snmpObject_null;
+    b[n].buffer = &i.snmpObjectFk_value;
+    b[n].is_null = &i.snmpObjectFk_null;
     n++;
 
-    // snmpObjectType_
+    // snmpObjectTypeFk_
     //
     b[n].buffer_type = MYSQL_TYPE_LONGLONG;
     b[n].is_unsigned = 1;
-    b[n].buffer = &i.snmpObjectType_value;
-    b[n].is_null = &i.snmpObjectType_null;
+    b[n].buffer = &i.snmpObjectTypeFk_value;
+    b[n].is_null = &i.snmpObjectTypeFk_null;
     n++;
 
-    // monitorHistory_
+    // monitorHistoryFk_
     //
     b[n].buffer_type = MYSQL_TYPE_LONGLONG;
     b[n].is_unsigned = 1;
-    b[n].buffer = &i.monitorHistory_value;
-    b[n].is_null = &i.monitorHistory_null;
+    b[n].buffer = &i.monitorHistoryFk_value;
+    b[n].is_null = &i.monitorHistoryFk_null;
     n++;
   }
 
@@ -246,11 +246,11 @@ namespace odb
       grew = grew || (cap != i.value_value.capacity ());
     }
 
-    // snmpObject_
+    // snmpObjectFk_
     //
     {
       ::std::shared_ptr< ::SnmpObject > const& v =
-        o.snmpObject_;
+        o.snmpObjectFk_;
 
       typedef object_traits< ::SnmpObject > obj_traits;
       typedef odb::pointer_traits< ::std::shared_ptr< ::SnmpObject > > ptr_traits;
@@ -264,18 +264,18 @@ namespace odb
         mysql::value_traits<
             obj_traits::id_type,
             mysql::id_ulonglong >::set_image (
-          i.snmpObject_value, is_null, id);
-        i.snmpObject_null = is_null;
+          i.snmpObjectFk_value, is_null, id);
+        i.snmpObjectFk_null = is_null;
       }
       else
         throw null_pointer ();
     }
 
-    // snmpObjectType_
+    // snmpObjectTypeFk_
     //
     {
       ::std::shared_ptr< ::SnmpObjectType > const& v =
-        o.snmpObjectType_;
+        o.snmpObjectTypeFk_;
 
       typedef object_traits< ::SnmpObjectType > obj_traits;
       typedef odb::pointer_traits< ::std::shared_ptr< ::SnmpObjectType > > ptr_traits;
@@ -289,18 +289,18 @@ namespace odb
         mysql::value_traits<
             obj_traits::id_type,
             mysql::id_ulonglong >::set_image (
-          i.snmpObjectType_value, is_null, id);
-        i.snmpObjectType_null = is_null;
+          i.snmpObjectTypeFk_value, is_null, id);
+        i.snmpObjectTypeFk_null = is_null;
       }
       else
         throw null_pointer ();
     }
 
-    // monitorHistory_
+    // monitorHistoryFk_
     //
     {
       ::std::shared_ptr< ::MonitorHistory > const& v =
-        o.monitorHistory_;
+        o.monitorHistoryFk_;
 
       typedef object_traits< ::MonitorHistory > obj_traits;
       typedef odb::pointer_traits< ::std::shared_ptr< ::MonitorHistory > > ptr_traits;
@@ -314,8 +314,8 @@ namespace odb
         mysql::value_traits<
             obj_traits::id_type,
             mysql::id_ulonglong >::set_image (
-          i.monitorHistory_value, is_null, id);
-        i.monitorHistory_null = is_null;
+          i.monitorHistoryFk_value, is_null, id);
+        i.monitorHistoryFk_null = is_null;
       }
       else
         throw null_pointer ();
@@ -362,16 +362,16 @@ namespace odb
         i.value_null);
     }
 
-    // snmpObject_
+    // snmpObjectFk_
     //
     {
       ::std::shared_ptr< ::SnmpObject >& v =
-        o.snmpObject_;
+        o.snmpObjectFk_;
 
       typedef object_traits< ::SnmpObject > obj_traits;
       typedef odb::pointer_traits< ::std::shared_ptr< ::SnmpObject > > ptr_traits;
 
-      if (i.snmpObject_null)
+      if (i.snmpObjectFk_null)
         v = ptr_traits::pointer_type ();
       else
       {
@@ -380,8 +380,8 @@ namespace odb
             obj_traits::id_type,
             mysql::id_ulonglong >::set_value (
           id,
-          i.snmpObject_value,
-          i.snmpObject_null);
+          i.snmpObjectFk_value,
+          i.snmpObjectFk_null);
 
         // If a compiler error points to the line below, then
         // it most likely means that a pointer used in a member
@@ -393,16 +393,16 @@ namespace odb
       }
     }
 
-    // snmpObjectType_
+    // snmpObjectTypeFk_
     //
     {
       ::std::shared_ptr< ::SnmpObjectType >& v =
-        o.snmpObjectType_;
+        o.snmpObjectTypeFk_;
 
       typedef object_traits< ::SnmpObjectType > obj_traits;
       typedef odb::pointer_traits< ::std::shared_ptr< ::SnmpObjectType > > ptr_traits;
 
-      if (i.snmpObjectType_null)
+      if (i.snmpObjectTypeFk_null)
         v = ptr_traits::pointer_type ();
       else
       {
@@ -411,8 +411,8 @@ namespace odb
             obj_traits::id_type,
             mysql::id_ulonglong >::set_value (
           id,
-          i.snmpObjectType_value,
-          i.snmpObjectType_null);
+          i.snmpObjectTypeFk_value,
+          i.snmpObjectTypeFk_null);
 
         // If a compiler error points to the line below, then
         // it most likely means that a pointer used in a member
@@ -424,16 +424,16 @@ namespace odb
       }
     }
 
-    // monitorHistory_
+    // monitorHistoryFk_
     //
     {
       ::std::shared_ptr< ::MonitorHistory >& v =
-        o.monitorHistory_;
+        o.monitorHistoryFk_;
 
       typedef object_traits< ::MonitorHistory > obj_traits;
       typedef odb::pointer_traits< ::std::shared_ptr< ::MonitorHistory > > ptr_traits;
 
-      if (i.monitorHistory_null)
+      if (i.monitorHistoryFk_null)
         v = ptr_traits::pointer_type ();
       else
       {
@@ -442,8 +442,8 @@ namespace odb
             obj_traits::id_type,
             mysql::id_ulonglong >::set_value (
           id,
-          i.monitorHistory_value,
-          i.monitorHistory_null);
+          i.monitorHistoryFk_value,
+          i.monitorHistoryFk_null);
 
         // If a compiler error points to the line below, then
         // it most likely means that a pointer used in a member
@@ -473,9 +473,9 @@ namespace odb
   "INSERT INTO `SnmpObjectValue` "
   "(`snmpObjectValueId`, "
   "`value`, "
-  "`snmpObject`, "
-  "`snmpObjectType`, "
-  "`monitorHistory`) "
+  "`snmpObjectFk`, "
+  "`snmpObjectTypeFk`, "
+  "`monitorHistoryFk`) "
   "VALUES "
   "(?, ?, ?, ?, ?)";
 
@@ -483,9 +483,9 @@ namespace odb
   "SELECT "
   "`SnmpObjectValue`.`snmpObjectValueId`, "
   "`SnmpObjectValue`.`value`, "
-  "`SnmpObjectValue`.`snmpObject`, "
-  "`SnmpObjectValue`.`snmpObjectType`, "
-  "`SnmpObjectValue`.`monitorHistory` "
+  "`SnmpObjectValue`.`snmpObjectFk`, "
+  "`SnmpObjectValue`.`snmpObjectTypeFk`, "
+  "`SnmpObjectValue`.`monitorHistoryFk` "
   "FROM `SnmpObjectValue` "
   "WHERE `SnmpObjectValue`.`snmpObjectValueId`=?";
 
@@ -493,9 +493,9 @@ namespace odb
   "UPDATE `SnmpObjectValue` "
   "SET "
   "`value`=?, "
-  "`snmpObject`=?, "
-  "`snmpObjectType`=?, "
-  "`monitorHistory`=? "
+  "`snmpObjectFk`=?, "
+  "`snmpObjectTypeFk`=?, "
+  "`monitorHistoryFk`=? "
   "WHERE `snmpObjectValueId`=?";
 
   const char access::object_traits_impl< ::SnmpObjectValue, id_mysql >::erase_statement[] =
@@ -506,13 +506,13 @@ namespace odb
   "SELECT\n"
   "`SnmpObjectValue`.`snmpObjectValueId`,\n"
   "`SnmpObjectValue`.`value`,\n"
-  "`SnmpObjectValue`.`snmpObject`,\n"
-  "`SnmpObjectValue`.`snmpObjectType`,\n"
-  "`SnmpObjectValue`.`monitorHistory`\n"
+  "`SnmpObjectValue`.`snmpObjectFk`,\n"
+  "`SnmpObjectValue`.`snmpObjectTypeFk`,\n"
+  "`SnmpObjectValue`.`monitorHistoryFk`\n"
   "FROM `SnmpObjectValue`\n"
-  "LEFT JOIN `SnmpObject` AS `snmpObject` ON `snmpObject`.`snmpObjectId`=`SnmpObjectValue`.`snmpObject`\n"
-  "LEFT JOIN `SnmpObjectType` AS `snmpObjectType` ON `snmpObjectType`.`snmpObjectTypeId`=`SnmpObjectValue`.`snmpObjectType`\n"
-  "LEFT JOIN `MonitorHistory` AS `monitorHistory` ON `monitorHistory`.`monitorHistoryId`=`SnmpObjectValue`.`monitorHistory`";
+  "LEFT JOIN `SnmpObject` AS `snmpObjectFk` ON `snmpObjectFk`.`snmpObjectId`=`SnmpObjectValue`.`snmpObjectFk`\n"
+  "LEFT JOIN `SnmpObjectType` AS `snmpObjectTypeFk` ON `snmpObjectTypeFk`.`snmpObjectTypeId`=`SnmpObjectValue`.`snmpObjectTypeFk`\n"
+  "LEFT JOIN `MonitorHistory` AS `monitorHistoryFk` ON `monitorHistoryFk`.`monitorHistoryId`=`SnmpObjectValue`.`monitorHistoryFk`";
 
   const char access::object_traits_impl< ::SnmpObjectValue, id_mysql >::erase_query_statement[] =
   "DELETE FROM `SnmpObjectValue`";

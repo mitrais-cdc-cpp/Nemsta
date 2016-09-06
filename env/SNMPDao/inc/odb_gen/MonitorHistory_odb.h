@@ -5,24 +5,6 @@
 #ifndef MONITOR_HISTORY_ODB_H
 #define MONITOR_HISTORY_ODB_H
 
-// Begin prologue.
-//
-#include <odb/boost/version.hxx>
-#if ODB_BOOST_VERSION != 2040000 // 2.4.0
-#  error ODB and C++ compilers see different libodb-boost interface versions
-#endif
-#include <boost/shared_ptr.hpp>
-#include <odb/boost/smart-ptr/pointer-traits.hxx>
-#include <odb/boost/smart-ptr/wrapper-traits.hxx>
-#include <odb/boost/optional/wrapper-traits.hxx>
-#include <odb/boost/unordered/container-traits.hxx>
-#include <odb/boost/date-time/mysql/gregorian-traits.hxx>
-#include <odb/boost/date-time/mysql/posix-time-traits.hxx>
-#include <odb/boost/multi-index/container-traits.hxx>
-#include <odb/boost/uuid/mysql/uuid-traits.hxx>
-//
-// End prologue.
-
 #include <odb/version.hxx>
 
 #if (ODB_VERSION != 20400UL)

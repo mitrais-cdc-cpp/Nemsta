@@ -9,7 +9,7 @@
 
 using namespace Mitrais::Nemsta;
 
-/*
+/**
  * Constructor of Nemsta Util class
  */
 NemstaUtil::NemstaUtil()
@@ -17,7 +17,7 @@ NemstaUtil::NemstaUtil()
 
 }
 
-/*
+/**
  * Destructor of Nemsta Util class
  */
 NemstaUtil::~NemstaUtil()
@@ -25,7 +25,7 @@ NemstaUtil::~NemstaUtil()
 
 }
 
-/*
+/**
  * Capture the SNMP Value
  *
  *@param number of argment (argc)
@@ -87,7 +87,7 @@ void NemstaUtil::toLower(std::string& str)
 	}
 }
 
-/*
+/**
  * Get IP Address
  *
  *@return IP Address
@@ -97,7 +97,7 @@ std::string NemstaUtil::getIpAddress()
 	return ipAddress_;
 }
 
-/*
+/**
  * Get MAC Address
  *
  *@return MAC Address

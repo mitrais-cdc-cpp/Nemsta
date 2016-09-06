@@ -16,17 +16,17 @@ namespace Mitrais
 		class NemstaUtil
 		{
 			public:
-				/*
+				/**
 				 * Constructor of Nemsta Util class
 				 */
 				NemstaUtil();
 				
-				/*
+				/**
 				 * Default desctructor
 				 */
 				~NemstaUtil();
 
-				/*
+				/**
 				 * Capture the SNMP Value
 				 *
 				 *@param number of argment (argc)
@@ -37,14 +37,14 @@ namespace Mitrais
 				 */
 				Mitrais::SNMP::ReturnStatus capture(int argc, char* argv[], Mitrais::SNMP::PDU& pdu);
 				
-				/*
+				/**
 				 * Get IP Address
 				 *
 				 *@return IP Address
 				 */
 				std::string getIpAddress();
 				
-				/*
+				/**
 				 * Get MAC Address
 				 *
 				 *@return MAC Address

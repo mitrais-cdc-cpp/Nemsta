@@ -7,22 +7,22 @@ namespace Mitrais
 {
 	namespace SNMP
 	{
-		/*
+		/**
 		 *  Data Struct
 		 */
 		struct Data
 		{
-			/*
+			/**
 			 * To store int data
 			 */
 			int intData;
 
-			/*
+			/**
 			 * To store float data
 			 */
 			float floatData;
 
-			/*
+			/**
 			 * To store string data
 			 */
 			std::string stringData;

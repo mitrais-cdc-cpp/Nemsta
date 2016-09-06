@@ -20,7 +20,7 @@ namespace Mitrais
 		class SnmpUtil
 		{
 		public:
-			/*
+			/**
 			 * Default constructor
 			 */
 			SnmpUtil();
@@ -30,7 +30,7 @@ namespace Mitrais
 			 */
 			~SnmpUtil();
 
-			/*
+			/**
 			 * Set the SNMP
 			 *
 			 * @param PUD
@@ -41,8 +41,9 @@ namespace Mitrais
 			 */
 			Mitrais::SNMP::ReturnStatus set(Mitrais::SNMP::PDU& pdu, std::string ipAddress, Mitrais::SNMP::SnmpMode mode);
 			
-		private:			
-			/*
+		private:
+
+			/**
 			 * Set Variable Binding
 			 *
 			 * @param OID

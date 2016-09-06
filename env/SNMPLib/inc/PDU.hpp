@@ -11,24 +11,24 @@ namespace Mitrais
 {
 	namespace SNMP
 	{
-		/*
+		/**
 		 * PDU class
 		 */
 		class PDU
 		{
 		public:
 
-			/*
+			/**
 			 * Default constructor
 			 */
 			PDU();
 
-			/*
+			/**
 			 * Default destructor
 			 */
 			~PDU();
 
-			/*
+			/**
 			 * Get binding list function
 			 *
 			 * @return vector<VariableBinding>
@@ -36,7 +36,7 @@ namespace Mitrais
 			 */
 			std::vector<VariableBinding> getBindingList();
 
-			/*
+			/**
 			 * set binding list function
 			 *
 			 * @param list of VariableBinding

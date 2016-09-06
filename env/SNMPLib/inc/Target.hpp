@@ -9,12 +9,12 @@ namespace Mitrais
 {
 	namespace SNMP
 	{
-		/*
+		/**
 		 * Target class
 		 */
 		struct Target
 		{
-			/*
+			/**
 			 * IP Address
 			 */
 			IpAddress Ip;

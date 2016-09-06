@@ -3,7 +3,7 @@
 using namespace Mitrais::Nemsta;
 using namespace Mitrais::SNMP;
 
-/*
+/**
  * Constructor of Snmp Util class
  */
 SnmpUtil::SnmpUtil()
@@ -11,7 +11,7 @@ SnmpUtil::SnmpUtil()
 
 }
 
-/*
+/**
  * Destructor of Snmp Util class
  */
 SnmpUtil::~SnmpUtil()
@@ -19,7 +19,7 @@ SnmpUtil::~SnmpUtil()
 
 }
 
-/*
+/**
  * Set the SNMP
  *
  * @param PUD
@@ -74,7 +74,7 @@ ReturnStatus SnmpUtil::set(PDU& pdu, std::string ipAddress, SnmpMode mode)
 	return status;
 }
 
-/*
+/**
  * Set Variable Binding
  *
  * @param OID
@@ -92,4 +92,3 @@ VariableBinding SnmpUtil::setVariableBinding(std::string oid)
 	
 	return vb;
 }
-

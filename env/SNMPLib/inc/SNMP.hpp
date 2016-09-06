@@ -18,17 +18,17 @@ namespace Mitrais
 		{
 			public:
 
-				/*
+				/**
 				 * Default constructor
 				 */
 				SNMP();
 
-				/*
+				/**
 				 * Default destructor
 				 */
 				~SNMP();
 
-				/*
+				/**
 				 * Set function
 				 * @param PDU
 				 * @param Target
@@ -39,7 +39,7 @@ namespace Mitrais
 				ReturnStatus set(PDU& pdu, Target target, SnmpMode mode);
 
 			private:
-				/*
+				/**
 				 * Set error function
 				 *
 				 * @param message
@@ -47,7 +47,7 @@ namespace Mitrais
 				 */
 				ReturnStatus setErrorMessage(std::string message, int errorCode);
 
-				/*
+				/**
 				 * Set Variable Binding Value
 				 *
 				 * @param PDU of SNMP++

@@ -7,12 +7,12 @@ namespace Mitrais
 {
 	namespace SNMP
 	{
-		/*
+		/**
 		 * OID struct
 		 */
 		struct OID
 		{
-			/*
+			/**
 			 * OID
 			 */
 			std::string oid;

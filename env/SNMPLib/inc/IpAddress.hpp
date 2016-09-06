@@ -7,12 +7,12 @@ namespace Mitrais
 {
 	namespace SNMP
 	{
-		/*
+		/**
 		 * IP address struct
 		 */
 		struct IpAddress
 		{
-			/*
+			/**
 			 * IP Address
 			 */
 			std::string IpAddress;

@@ -10,38 +10,38 @@ namespace Mitrais
 {
 	namespace SNMP
 	{
-		/*
+		/**
 		 * Variable Binding class
 		 */
 		class VariableBinding
 		{
 		public:
 
-			/*
+			/**
 			 * Default constructor
 			 */
 			VariableBinding();
 
-			/*
+			/**
 			 * Default destructor
 			 */
 			~VariableBinding();
 
-			/*
+			/**
 			 * get OID
 			 *
 			 * @return OID
 			 */
 			OID getOID();
 
-			/*
+			/**
 			 * set the OID
 			 *
 			 * @param OID
 			 */
 			void setOID(OID& oid);
 
-			/*
+			/**
 			 * Get value function
 			 *
 			 * @param T value
@@ -51,19 +51,19 @@ namespace Mitrais
 			 */
 			ReturnStatus getValue(std::string& value);
 
-			/*
+			/**
 			 * Set value function
 			 */
 			void setValue(std::string value);
 
 		private:
 
-			/*
+			/**
 			 * Value of T
 			 */
 			std::string value_;
 
-			/*
+			/**
 			 * The OID
 			 */
 			OID oid_;

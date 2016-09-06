@@ -50,17 +50,15 @@ long DatabaseUtil::insertSNMPValue(const int& networkElementId,
                                    const std::string& typeName) {
   transaction t(_dbConn->begin());
   try {
-    result_snmpmobject_type r(_dbConn->query<SnmpObjectType>());
-
     std::shared_ptr<SnmpObjectType> snmpObjectType(
         getSnmpObjectTypeByTypeName(typeName));
 
     std::shared_ptr<SnmpObject> snmpObject(getSnmpObjectByOid(OID));
 
-    long monitorHistoryId = insertMonitorHistory(12345, "Test");
+    // long monitorHistoryId = insertMonitorHistory(12345, "Test");
 
     std::shared_ptr<MonitorHistory> monitorHistory(
-        _dbConn->load<MonitorHistory>(monitorHistoryId));
+        insertMonitorHistory(12345, "Test"));
 
     // std::shared_ptr<MonitorHistory> monitorHistory(
     //    new MonitorHistory(12345, "Test 123"));
@@ -70,7 +68,6 @@ long DatabaseUtil::insertSNMPValue(const int& networkElementId,
 
     std::cout << "Mib SnmpObject : " << snmpObject->Mib() << std::endl;
     std::cout << "Typename : " << snmpObjectType->TypeName() << std::endl;
-    // std::cout << "Monitor Hiistory : " << monitorHistoryId << std::endl;
     std::cout << "SnmpValue Id : " << snmpValueId << std::endl;
     t.commit();
   } catch (const odb::exception& e) {
@@ -136,12 +133,12 @@ std::shared_ptr<SnmpObject> DatabaseUtil::getSnmpObjectByOid(
 }
 
 //
-long DatabaseUtil::insertMonitorHistory(const unsigned long long& lastUpdate,
-                                        const std::string& note) {
-  MonitorHistory entity(lastUpdate, note);
-  long id = _dbConn->persist(entity);
+std::shared_ptr<MonitorHistory> DatabaseUtil::insertMonitorHistory(
+    const unsigned long long& lastUpdate, const std::string& note) {
+  std::shared_ptr<MonitorHistory> entity(new MonitorHistory(lastUpdate, note));
+  _dbConn->persist(*entity);
 
-  return id;
+  return entity;
 }
 
 //

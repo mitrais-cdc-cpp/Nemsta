@@ -82,8 +82,8 @@ class DatabaseUtil {
 
   std::shared_ptr<SnmpObject> getSnmpObjectByOid(const std::string &value);
 
-  long insertMonitorHistory(const unsigned long long &lastUpdate,
-                            const std::string &note);
+  std::shared_ptr<MonitorHistory> insertMonitorHistory(
+      const unsigned long long &lastUpdate, const std::string &note);
 
   long insertSnmpObjectValue(const std::string &value,
                              std::shared_ptr<SnmpObject> snmpObject,

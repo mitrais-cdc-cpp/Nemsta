@@ -249,11 +249,11 @@ namespace odb
     // snmpObjectFk_
     //
     {
-      ::std::shared_ptr< ::SnmpObject > const& v =
+      ::std::auto_ptr< ::SnmpObject > const& v =
         o.snmpObjectFk_;
 
       typedef object_traits< ::SnmpObject > obj_traits;
-      typedef odb::pointer_traits< ::std::shared_ptr< ::SnmpObject > > ptr_traits;
+      typedef odb::pointer_traits< ::std::auto_ptr< ::SnmpObject > > ptr_traits;
 
       bool is_null (ptr_traits::null_ptr (v));
       if (!is_null)
@@ -274,11 +274,11 @@ namespace odb
     // snmpObjectTypeFk_
     //
     {
-      ::std::shared_ptr< ::SnmpObjectType > const& v =
+      ::std::auto_ptr< ::SnmpObjectType > const& v =
         o.snmpObjectTypeFk_;
 
       typedef object_traits< ::SnmpObjectType > obj_traits;
-      typedef odb::pointer_traits< ::std::shared_ptr< ::SnmpObjectType > > ptr_traits;
+      typedef odb::pointer_traits< ::std::auto_ptr< ::SnmpObjectType > > ptr_traits;
 
       bool is_null (ptr_traits::null_ptr (v));
       if (!is_null)
@@ -299,11 +299,11 @@ namespace odb
     // monitorHistoryFk_
     //
     {
-      ::std::shared_ptr< ::MonitorHistory > const& v =
+      ::std::auto_ptr< ::MonitorHistory > const& v =
         o.monitorHistoryFk_;
 
       typedef object_traits< ::MonitorHistory > obj_traits;
-      typedef odb::pointer_traits< ::std::shared_ptr< ::MonitorHistory > > ptr_traits;
+      typedef odb::pointer_traits< ::std::auto_ptr< ::MonitorHistory > > ptr_traits;
 
       bool is_null (ptr_traits::null_ptr (v));
       if (!is_null)
@@ -365,11 +365,11 @@ namespace odb
     // snmpObjectFk_
     //
     {
-      ::std::shared_ptr< ::SnmpObject >& v =
+      ::std::auto_ptr< ::SnmpObject >& v =
         o.snmpObjectFk_;
 
       typedef object_traits< ::SnmpObject > obj_traits;
-      typedef odb::pointer_traits< ::std::shared_ptr< ::SnmpObject > > ptr_traits;
+      typedef odb::pointer_traits< ::std::auto_ptr< ::SnmpObject > > ptr_traits;
 
       if (i.snmpObjectFk_null)
         v = ptr_traits::pointer_type ();
@@ -396,11 +396,11 @@ namespace odb
     // snmpObjectTypeFk_
     //
     {
-      ::std::shared_ptr< ::SnmpObjectType >& v =
+      ::std::auto_ptr< ::SnmpObjectType >& v =
         o.snmpObjectTypeFk_;
 
       typedef object_traits< ::SnmpObjectType > obj_traits;
-      typedef odb::pointer_traits< ::std::shared_ptr< ::SnmpObjectType > > ptr_traits;
+      typedef odb::pointer_traits< ::std::auto_ptr< ::SnmpObjectType > > ptr_traits;
 
       if (i.snmpObjectTypeFk_null)
         v = ptr_traits::pointer_type ();
@@ -427,11 +427,11 @@ namespace odb
     // monitorHistoryFk_
     //
     {
-      ::std::shared_ptr< ::MonitorHistory >& v =
+      ::std::auto_ptr< ::MonitorHistory >& v =
         o.monitorHistoryFk_;
 
       typedef object_traits< ::MonitorHistory > obj_traits;
-      typedef odb::pointer_traits< ::std::shared_ptr< ::MonitorHistory > > ptr_traits;
+      typedef odb::pointer_traits< ::std::auto_ptr< ::MonitorHistory > > ptr_traits;
 
       if (i.monitorHistoryFk_null)
         v = ptr_traits::pointer_type ();

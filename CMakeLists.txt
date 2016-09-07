@@ -9,8 +9,7 @@ set(_ECLIPSE_VERSION "4.5")
 
 file(GLOB SOURCES
  main.cpp 
- src/util/*.cpp
-)
+ src/util/*.cpp)
  
 
 message("Following sources found: ")
@@ -33,10 +32,12 @@ set(CMAKE_BUILD_TYPE Debug)
 ## compiler definitions########################################################
 ###############################################################################
 
-#enable c++11 and set it required
-#set_property(TARGET Nemsta PROPERTY CXX_STANDARD 11)
-#set_property(TARGET Nemsta PROPERTY CXX_STANDARD_REQUIRED ON)
-add_definitions("-DSTDCXX_98_HEADERS -D_SNMPv3")
+#enable c++98 and set it required
+set_property(TARGET Nemsta PROPERTY CXX_STANDARD 98)
+set_property(TARGET Nemsta PROPERTY CXX_STANDARD_REQUIRED ON)
+
+#snmp_pp definition
+add_definitions("-D_SNMPv3")
 
 #set warning level
 set_property(TARGET Nemsta APPEND_STRING PROPERTY COMPILE_FLAGS "-Wno-deprecated")
@@ -68,14 +69,12 @@ find_library(
 #SNMP++
 set(SNMP_PP_LIBRARY_DIRS ${CMAKE_CURRENT_LIST_DIR}/env/snmp_pp/lib)
 set(SNMP_PP_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/env/snmp_pp/include)
-
 find_library(
     SNMP_PP_LIBRARIES
     NAMES snmp++
     PATHS ${CMAKE_CURRENT_LIST_DIR}/env/snmp_pp/lib
     PATH_SUFFIXES "lib"
-    NO_DEFAULT_PATH
-)
+    NO_DEFAULT_PATH)
 
 #SNMPLib
 set(SNMPLIB_LIBRARY_DIRS ${CMAKE_CURRENT_LIST_DIR}/env/SNMPLib/lib)

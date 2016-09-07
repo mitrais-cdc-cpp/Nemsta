@@ -7,42 +7,43 @@
 
 #ifndef INC_UTIL_DATABASEUTIL_HPP_
 #define INC_UTIL_DATABASEUTIL_HPP_
-//#include <std/date_time/gregorian/gregorian.hpp>
-//#include <std/date_time/posix_time/ptime.hpp>
-//#include <std/shared_ptr.hpp>
+#include <odb/database.hxx>
+#include <odb/mysql/database.hxx>
+#include <odb/transaction.hxx>
+
+#include <odb_gen/MonitorHistory_odb.h>
+#include <odb_gen/NetworkElement_odb.h>
+#include <odb_gen/SnmpObjectType_odb.h>
+#include <odb_gen/SnmpObjectValue_odb.h>
+#include <odb_gen/SnmpObject_odb.h>
+
+#include <DBFactory.hpp>
+#include <MySQLFactory.hpp>
+
+#include <Entity/MonitorHistory.hpp>
+#include <Entity/NetworkElement.hpp>
+#include <Entity/SnmpObject.hpp>
+#include <Entity/SnmpObjectType.hpp>
+#include <Entity/SnmpObjectValue.hpp>
+
 #include <iostream>
 #include <memory>
-#include <odb/database.hxx>
-#include <odb/transaction.hxx>
 #include <string>
-#include "../../env/SNMPDao/inc/DBFactory.hpp"
-#include "../../env/SNMPDao/inc/Entity/MonitorHistory.hpp"
-#include "../../env/SNMPDao/inc/Entity/NetworkElement.hpp"
-#include "../../env/SNMPDao/inc/Entity/SnmpObject.hpp"
-#include "../../env/SNMPDao/inc/Entity/SnmpObjectType.hpp"
-#include "../../env/SNMPDao/inc/Entity/SnmpObjectValue.hpp"
-#include "../../env/SNMPDao/inc/MySQLFactory.hpp"
-#include "../../env/SNMPDao/inc/odb_gen/MonitorHistory_odb.h"
-#include "../../env/SNMPDao/inc/odb_gen/NetworkElement_odb.h"
-#include "../../env/SNMPDao/inc/odb_gen/SnmpObjectType_odb.h"
-#include "../../env/SNMPDao/inc/odb_gen/SnmpObjectValue_odb.h"
-#include "../../env/SNMPDao/inc/odb_gen/SnmpObject_odb.h"
-
-using namespace odb::core;
 
 typedef odb::query<SnmpObjectType> query_snmpmobject_type;
 typedef odb::result<SnmpObjectType> result_snmpmobject_type;
 typedef odb::query<SnmpObject> query_snmpmobject;
 typedef odb::result<SnmpObject> result_snmpmobject;
-namespace Mitrais {
-namespace Nemsta {
+
 class DatabaseUtil {
  public:
   /**
    * Default constructor
    * @param dbConn: Database connection
    */
-  DatabaseUtil(std::unique_ptr<database> &_dbConn);
+  // DatabaseUtil(std::auto_ptr<odb::core::database> &_dbConn);
+  DatabaseUtil(std::string username, std::string password, std::string host,
+               std::string dbname);
 
   /**
    * Default destructor
@@ -68,29 +69,27 @@ class DatabaseUtil {
    * @param id: NetworkElement id
    * @return pointer to NetworkElement
    */
-  std::shared_ptr<NetworkElement> getNetWorkElementById(
+  std::auto_ptr<NetworkElement> getNetWorkElementById(
       unsigned long networkElementId);
 
  private:
   /**
    * Database connection
    */
-  std::shared_ptr<database> _dbConn;
+  std::auto_ptr<odb::database> _dbConn;
 
-  std::shared_ptr<SnmpObjectType> getSnmpObjectTypeByTypeName(
+  std::auto_ptr<SnmpObjectType> getSnmpObjectTypeByTypeName(
       const std::string &value);
 
-  std::shared_ptr<SnmpObject> getSnmpObjectByOid(const std::string &value);
+  std::auto_ptr<SnmpObject> getSnmpObjectByOid(const std::string &value);
 
-  std::shared_ptr<MonitorHistory> insertMonitorHistory(
+  std::auto_ptr<MonitorHistory> insertMonitorHistory(
       const unsigned long long &lastUpdate, const std::string &note);
 
   long insertSnmpObjectValue(const std::string &value,
-                             std::shared_ptr<SnmpObject> snmpObject,
-                             std::shared_ptr<MonitorHistory> monitorHistory,
-                             std::shared_ptr<SnmpObjectType> snmpObjectType);
+                             std::auto_ptr<SnmpObject> snmpObject,
+                             std::auto_ptr<MonitorHistory> monitorHistory,
+                             std::auto_ptr<SnmpObjectType> snmpObjectType);
 };
-}
-}
 
 #endif /* INC_UTIL_DATABASEUTIL_HPP_ */

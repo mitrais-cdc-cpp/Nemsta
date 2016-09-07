@@ -8,6 +8,10 @@
 #include "SnmpMode.hpp"
 #include "Target.hpp"
 
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+
 #include <snmp_pp/snmp_pp.h>
 
 namespace Mitrais {

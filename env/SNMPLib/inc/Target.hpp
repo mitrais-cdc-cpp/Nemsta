@@ -5,21 +5,18 @@
 
 #include "IpAddress.hpp"
 
-namespace Mitrais
-{
-	namespace SNMP
-	{
-		/**
-		 * Target class
-		 */
-		struct Target
-		{
-			/**
-			 * IP Address
-			 */
-			IpAddress Ip;
-		};
-	}
+namespace Mitrais {
+namespace SNMP {
+/**
+ * Target class
+ */
+struct Target {
+  /**
+   * IP Address
+   */
+  IpAddress Ip;
+};
+}
 }
 
 #endif /* SNMPLIB_INC_TARGET_H_ */

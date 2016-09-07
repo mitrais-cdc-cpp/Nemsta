@@ -16,11 +16,10 @@ using namespace Mitrais::SNMP;
 using namespace Mitrais::Nemsta;
 using namespace odb::core;
 
-int main(int argc, char* argv[]) {
-  // NemstaUtil nemsta;
-  // PDU pdu;
-  // ReturnStatus status = nemsta.capture(argc, argv, pdu);
-  // std::string macAddress = nemsta.getMacAddress();
+int main(int argc, char *argv[]) {
+  NemstaUtil nemsta;
+  PDU pdu;
+  ReturnStatus status = nemsta.capture(argc, argv, pdu);
 
   // Database information
   std::string username = "NemsTA";
@@ -38,7 +37,6 @@ int main(int argc, char* argv[]) {
   // std::auto_ptr<odb::database> dbConn(dbFactory->createDatabase());
 
   DatabaseUtil databaseUtil(username, password, dbname, host);
-
   long test = databaseUtil.insertSNMPValue(1, "1.3.6.1.2.1.1.1.0", "TestInsert",
                                            "string");
 

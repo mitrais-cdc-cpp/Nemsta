@@ -12,9 +12,8 @@
  * @param dbConn
  */
 DatabaseUtil::DatabaseUtil(std::string username, std::string password,
-                           std::string host, std::string dbname)
-    : _dbConn(new odb::mysql::database(username.c_str(), password.c_str(),
-                                       dbname.c_str(), host.c_str())) {}
+                           std::string dbname, std::string host)
+    : _dbConn(new odb::mysql::database(username, password, dbname, host)) {}
 
 /**
  * Default destructor

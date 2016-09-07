@@ -24,8 +24,8 @@ int main(int argc, char *argv[]) {
   // Database information
   std::string username = "NemsTA";
   std::string password = "N3m5TA4adm1n";
-  std::string host = "172.19.12.251";
   std::string dbname = "nemstadb";
+  std::string host = "172.19.12.251";
 
   // std::cout << std::endl;
   // std::cout << "IP Address  : " << nemsta.getIpAddress() << std::endl;
@@ -37,6 +37,7 @@ int main(int argc, char *argv[]) {
   // std::auto_ptr<odb::database> dbConn(dbFactory->createDatabase());
 
   DatabaseUtil databaseUtil(username, password, dbname, host);
+
   long test = databaseUtil.insertSNMPValue(1, "1.3.6.1.2.1.1.1.0", "TestInsert",
                                            "string");
 

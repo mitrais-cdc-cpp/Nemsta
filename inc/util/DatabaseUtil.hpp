@@ -42,8 +42,8 @@ class DatabaseUtil {
    * @param dbConn: Database connection
    */
   // DatabaseUtil(std::auto_ptr<odb::core::database> &_dbConn);
-  DatabaseUtil(std::string username, std::string password, std::string host,
-               std::string dbname);
+  DatabaseUtil(std::string username, std::string password, std::string dbname,
+               std::string host);
 
   /**
    * Default destructor

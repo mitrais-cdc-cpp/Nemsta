@@ -18,6 +18,14 @@ int main(int argc, char *argv[]) {
   PDU pdu;
   ReturnStatus status = nemsta.capture(argc, argv, pdu);
 
+  std::vector<Mitrais::SNMP::VariableBinding> vbs = pdu.getBindingList();
+
+  for (auto var : vbs) {
+    std::string value;
+    var.getValue(value);
+    std::cout << "Result : " << var.getOID().oid << " : " << value << std::endl;
+  }
+
   DatabaseUtil databaseUtil;
   std::shared_ptr<DB::DBFactory> db = databaseUtil.create(RDBMSType::MYSQL);
 

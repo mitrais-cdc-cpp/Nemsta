@@ -30,7 +30,7 @@ set(CMAKE_BUILD_TYPE Debug)
 ## compiler definitions########################################################
 ###############################################################################
 
-#enable c++98 and set it required
+#enable c++11 and set it required
 set_property(TARGET Nemsta PROPERTY CXX_STANDARD 11)
 set_property(TARGET Nemsta PROPERTY CXX_STANDARD_REQUIRED ON)
 

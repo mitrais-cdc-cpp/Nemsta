@@ -17,6 +17,7 @@
 
 #include <memory>
 #include <cstddef>
+#include <utility>
 
 #include <odb/core.hxx>
 #include <odb/traits.hxx>
@@ -47,7 +48,7 @@ namespace odb
   {
     public:
     typedef ::SnmpObjectType object_type;
-    typedef ::SnmpObjectType* pointer_type;
+    typedef ::std::shared_ptr< ::SnmpObjectType > pointer_type;
     typedef odb::pointer_traits<pointer_type> pointer_traits;
 
     static const bool polymorphic = false;

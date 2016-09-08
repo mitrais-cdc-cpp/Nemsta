@@ -36,8 +36,8 @@ Mitrais::SNMP::ReturnStatus NemstaUtil::capture(int argc, char* argv[],
   // there is no argments or parameter stored
   if (argc == 1) {
     // set the IP address as default
-    // ipAddress_ = "172.19.12.29";
-    ipAddress_ = "172.19.14.26";
+     ipAddress_ = "172.19.12.29";
+    //ipAddress_ = "172.19.14.26";
 
   } else {
     // get the IP address from the parameter/argument

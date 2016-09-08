@@ -28,11 +28,10 @@ NemstaUtil::~NemstaUtil()
 /**
  * Capture the SNMP Value
  *
- *@param number of argment (argc)
- *@param string parameter
- *@param PDU&
- *
- *@return Return Status
+ * @param argc
+ * @param argv
+ * @param pdu
+ * @return
  */
 Mitrais::SNMP::ReturnStatus NemstaUtil::capture(int argc, char* argv[], Mitrais::SNMP::PDU& pdu)
 {
@@ -75,9 +74,9 @@ Mitrais::SNMP::ReturnStatus NemstaUtil::capture(int argc, char* argv[], Mitrais:
 }
 
 /**
- * Converts string to lowercase
+ * To lower case
  *
- * @param str the string
+ * @param str
  */
 void NemstaUtil::toLower(std::string& str)
 {

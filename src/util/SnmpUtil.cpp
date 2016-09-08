@@ -22,11 +22,10 @@ SnmpUtil::~SnmpUtil()
 /**
  * Set the SNMP
  *
- * @param PUD
- * @param IpAddress
+ * @param pdu
+ * @param ipAddress
  * @param mode
- *
- * @return Return status
+ * @return
  */
 ReturnStatus SnmpUtil::set(PDU& pdu, std::string ipAddress, SnmpMode mode)
 {
@@ -74,11 +73,12 @@ ReturnStatus SnmpUtil::set(PDU& pdu, std::string ipAddress, SnmpMode mode)
 	return status;
 }
 
+
 /**
  * Set Variable Binding
  *
- * @param OID
- * @return Variable Binding
+ * @param oid
+ * @return
  */
 VariableBinding SnmpUtil::setVariableBinding(std::string oid)
 {

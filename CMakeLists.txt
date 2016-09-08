@@ -17,8 +17,6 @@ foreach(a ${SOURCES})
   message("${a}")
 endforeach()
 
-
-
 ###############################################################################
 ## target definitions #########################################################
 ###############################################################################
@@ -33,11 +31,8 @@ set(CMAKE_BUILD_TYPE Debug)
 ###############################################################################
 
 #enable c++98 and set it required
-set_property(TARGET Nemsta PROPERTY CXX_STANDARD 98)
+set_property(TARGET Nemsta PROPERTY CXX_STANDARD 11)
 set_property(TARGET Nemsta PROPERTY CXX_STANDARD_REQUIRED ON)
-
-#snmp_pp definition
-add_definitions("-D_SNMPv3")
 
 #set warning level
 set_property(TARGET Nemsta APPEND_STRING PROPERTY COMPILE_FLAGS "-Wno-deprecated")
@@ -55,7 +50,6 @@ add_custom_target (doc ALL
 ## dependencies ###############################################################
 ###############################################################################
 
-
 #SNMPDao
 set(SNMPDAO_LIBRARY_DIRS ${CMAKE_CURRENT_LIST_DIR}/env/SNMPDao/lib)
 set(SNMPDAO_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/env/SNMPDao/inc)
@@ -63,16 +57,6 @@ find_library(
     SNMPDAO_LIBRARIES
     NAMES SNMPDao
     PATHS ${CMAKE_CURRENT_LIST_DIR}/env/SNMPDao
-    PATH_SUFFIXES "lib"
-    NO_DEFAULT_PATH)
-
-#SNMP++
-set(SNMP_PP_LIBRARY_DIRS ${CMAKE_CURRENT_LIST_DIR}/env/snmp_pp/lib)
-set(SNMP_PP_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/env/snmp_pp/include)
-find_library(
-    SNMP_PP_LIBRARIES
-    NAMES snmp++
-    PATHS ${CMAKE_CURRENT_LIST_DIR}/env/snmp_pp/lib
     PATH_SUFFIXES "lib"
     NO_DEFAULT_PATH)
 
@@ -117,8 +101,7 @@ find_library(
 	NO_DEFAULT_PATH)
 
 include_directories(${SNMPDAO_INCLUDE_DIRS}
-		${SNMPDAO_INCLUDE_DIRS}/Entity
-		${SNMP_PP_INCLUDE_DIRS}
+		${SNMPDAO_INCLUDE_DIRS}/Entity		
 		${SNMPLIB_INCLUDE_DIRS}
 		${ODB_INCLUDE_DIRS}
 		${ODB_MYSQL_INCLUDE_DIRS}
@@ -126,8 +109,7 @@ include_directories(${SNMPDAO_INCLUDE_DIRS}
 
 
 link_directories(${SNMPDAO_LIBRARY_DIRS}
-		${SNMPLIB_LIBRARY_DIRS}
-		${SNMP_PP_LIBRARY_DIRS}
+		${SNMPLIB_LIBRARY_DIRS}		
 		${ODB_LIBRARY_DIRS}
 		${ODB_MYSQL_LIBRARY_DIRS}
 		${MYSQL_CLIENT_LIBRARY_DIRS})
@@ -135,8 +117,7 @@ link_directories(${SNMPDAO_LIBRARY_DIRS}
 
 target_link_libraries(Nemsta
 	${SNMPDAO_LIBRARIES}
-	${SNMPLIB_LIBRARIES}
-	${SNMP_PP_LIBRARIES}
+	${SNMPLIB_LIBRARIES}	
 	${ODB_LIBRARIES}
 	${ODB_MYSQL_LIBRARIES}
 	${MYSQL_CLIENT_LIBRARIES})

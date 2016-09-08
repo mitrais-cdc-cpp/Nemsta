@@ -34,11 +34,10 @@ class SnmpUtil {
   /**
    * Set the SNMP
    *
-   * @param PUD
-   * @param IpAddress
+   * @param pdu
+   * @param ipAddress
    * @param mode
-   *
-   * @return Return status
+   * @return
    */
   Mitrais::SNMP::ReturnStatus set(Mitrais::SNMP::PDU& pdu,
                                   std::string ipAddress,
@@ -48,8 +47,8 @@ class SnmpUtil {
   /**
    * Set Variable Binding
    *
-   * @param OID
-   * @return Variable Binding
+   * @param oid
+   * @return
    */
   Mitrais::SNMP::VariableBinding setVariableBinding(std::string oid);
 };

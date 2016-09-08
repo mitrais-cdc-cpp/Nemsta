@@ -6,64 +6,67 @@
 #include "OID.hpp"
 #include "ReturnStatus.hpp"
 
-namespace Mitrais {
-namespace SNMP {
-/**
- * Variable Binding class
- */
-class VariableBinding {
- public:
-  /**
-   * Default constructor
-   */
-  VariableBinding();
+namespace Mitrais
+{
+	namespace SNMP
+	{
+		/**
+		 * Variable Binding class
+		 */
+		class VariableBinding
+		{
+		public:
 
-  /**
-   * Default destructor
-   */
-  ~VariableBinding();
+			/**
+			 * Default constructor
+			 */
+			VariableBinding();
 
-  /**
-   * get OID
-   *
-   * @return OID
-   */
-  OID getOID();
+			/**
+			 * Default destructor
+			 */
+			~VariableBinding();
 
-  /**
-   * set the OID
-   *
-   * @param OID
-   */
-  void setOID(OID& oid);
+			/**
+			 * get OID
+			 *
+			 * @return OID
+			 */
+			OID getOID();
 
-  /**
-   * Get value function
-   *
-   * @param T value
-   * @return Return Status
-   *
-   * @return Return status
-   */
-  ReturnStatus getValue(std::string& value);
+			/**
+			 * set the OID
+			 *
+			 * @param oid
+			 */
+			void setOID(OID& oid);
 
-  /**
-   * Set value function
-   */
-  void setValue(std::string value);
+			/**
+			 * get Value functuon
+			 *
+			 * @param value
+			 * @return
+			 */
+			ReturnStatus getValue(std::string& value);
 
- private:
-  /**
-   * Value of T
-   */
-  std::string value_;
+			/**
+			 * Set value function
+			 */
+			void setValue(std::string value);
 
-  /**
-   * The OID
-   */
-  OID oid_;
-};
-}
+		private:
+
+			/**
+			 * Value of T
+			 */
+			std::string value_;
+
+			/**
+			 * The OID
+			 */
+			OID oid_;
+		};
+	}
 }
 
 #endif /* SNMPLIB_INC_VARIABLEBINDING_H_ */

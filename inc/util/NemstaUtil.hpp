@@ -26,11 +26,10 @@ class NemstaUtil {
   /**
    * Capture the SNMP Value
    *
-   *@param number of argment (argc)
-   *@param string parameter
-   *@param PDU&
-   *
-   *@return Return Status
+   * @param argc
+   * @param argv
+   * @param pdu
+   * @return
    */
   Mitrais::SNMP::ReturnStatus capture(int argc, char* argv[],
                                       Mitrais::SNMP::PDU& pdu);
@@ -54,6 +53,11 @@ class NemstaUtil {
   std::string macAddress_;
   Mitrais::SNMP::PDU pdu_;
 
+  /**
+   * To lower case
+   *
+   * @param str
+   */
   void toLower(std::string& str);
 };
 }

@@ -1,48 +1,52 @@
 #ifndef SNMPLIB_INC_PDU_H_
 #define SNMPLIB_INC_PDU_H_
 
-#include <sys/socket.h>
 #include <vector>
 
 #include "Data.hpp"
 #include "VariableBinding.hpp"
 
-namespace Mitrais {
-namespace SNMP {
-/**
- * PDU class
- */
-class PDU {
- public:
-  /**
-   * Default constructor
-   */
-  PDU();
+namespace Mitrais
+{
+	namespace SNMP
+	{
+		/**
+		 * PDU class
+		 */
+		class PDU
+		{
+		public:
 
-  /**
-   * Default destructor
-   */
-  ~PDU();
+			/**
+			 * Default constructor
+			 */
+			PDU();
 
-  /**
-   * Get binding list function
-   *
-   * @return vector<VariableBinding>
-   *
-   */
-  std::vector<VariableBinding> getBindingList();
+			/**
+			 * Default destructor
+			 */
+			~PDU();
 
-  /**
-   * set binding list function
-   *
-   * @param list of VariableBinding
-   */
-  void setBindingList(std::vector<VariableBinding> list);
+			/**
+			 * Get binding list function
+			 *
+			 * @return vector<VariableBinding>
+			 *
+			 */
+			std::vector<VariableBinding> getBindingList();
 
- private:
-  std::vector<VariableBinding> vb_;
-};
-}
+			/**
+			 * set binding list function
+			 *
+			 * @param list of VariableBinding
+			 */
+			void setBindingList(std::vector<VariableBinding> list);
+
+
+		private:
+			std::vector<VariableBinding> vb_;
+		};
+	}
 }
 
 #endif /* SNMPLIB_INC_PDU_H_ */

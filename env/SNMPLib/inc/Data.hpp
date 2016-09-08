@@ -3,28 +3,34 @@
 
 #include <string>
 
-namespace Mitrais {
-namespace SNMP {
-/**
- *  Data Struct
- */
-struct Data {
-  /**
-   * To store int data
-   */
-  int intData;
+namespace Mitrais
+{
+	namespace SNMP
+	{
+		/**
+		 *  Data Struct
+		 */
+		struct Data
+		{
+			/**
+			 * To store int data
+			 */
+			int intData;
 
-  /**
-   * To store float data
-   */
-  float floatData;
+			/**
+			 * To store float data
+			 */
+			float floatData;
 
-  /**
-   * To store string data
-   */
-  std::string stringData;
-};
+			/**
+			 * To store string data
+			 */
+			std::string stringData;
+		};
+	}
 }
-}
+
+
+
 
 #endif /* SNMPLIB_INC_BINDING_HPP_ */

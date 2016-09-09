@@ -1,0 +1,13 @@
+prefix=/home/developer/git/SNMPLib/env/snmp_pp
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+modules=
+
+Name: snmp++
+Version: 3.3.7
+Description: SNMP C++ framework version 3
+Requires:
+Libs: -L${libdir} -lsnmp++
+Libs.private:  -lssl -lcrypto
+Cflags: -I${includedir}

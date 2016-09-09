@@ -22,6 +22,8 @@ endforeach()
 ###############################################################################
 
 add_executable(Nemsta ${SOURCES})
+target_compile_definitions(Nemsta PRIVATE LIBODB_MYSQL_INCLUDE_SHORT=1)
+#add_definitions(-DLIBODB_MYSQL_INCLUDE_SHORT)
 
 #Set Debug or Release
 set(CMAKE_BUILD_TYPE Debug)

@@ -2,12 +2,17 @@
 #define NEMSTA_INC_NEMSTAUTIL_H_
 
 #include <iostream>
+#include <memory>
 
 #include "SnmpUtil.hpp"
 
+#include "../../env/SNMPDao/inc/DBFactory.hpp"
+#include "../../env/SNMPDao/inc/DataAccess.hpp"
+#include "../../env/SNMPDao/inc/Entity/NetworkElement.hpp"
 #include "../../env/SNMPLib/inc/PDU.hpp"
 #include "../../env/SNMPLib/inc/ReturnStatus.hpp"
 #include "../../env/SNMPLib/inc/SnmpMode.hpp"
+#include "DatabaseUtil.hpp"
 
 namespace Mitrais {
 namespace Nemsta {
@@ -54,11 +59,21 @@ class NemstaUtil {
   Mitrais::SNMP::PDU pdu_;
 
   /**
+   * VariableBinding vector
+   */
+  std::vector<Mitrais::SNMP::VariableBinding> vbs_;
+
+  /**
    * To lower case
    *
    * @param str
    */
   void toLower(std::string& str);
+
+  /**
+   * Store SNMP Value to database
+   */
+  void storeToDatabase();
 };
 }
 }

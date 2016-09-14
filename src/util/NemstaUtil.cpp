@@ -36,8 +36,8 @@ Mitrais::SNMP::ReturnStatus NemstaUtil::capture(int argc, char* argv[],
   // there is no argments or parameter stored
   if (argc == 1) {
     // set the IP address as default
-     ipAddress_ = "172.19.12.29";
-    //ipAddress_ = "172.19.14.26";
+    ipAddress_ = "172.19.12.29";
+    // ipAddress_ = "172.19.14.26";
 
   } else {
     // get the IP address from the parameter/argument
@@ -60,7 +60,10 @@ Mitrais::SNMP::ReturnStatus NemstaUtil::capture(int argc, char* argv[],
   Mitrais::Nemsta::SnmpUtil snmp;
   Mitrais::SNMP::ReturnStatus status = snmp.set(pdu, ipAddress_, mode);
   pdu_ = pdu;
+  vbs_ = pdu.getBindingList();
 
+  // store to database
+  storeToDatabase();
   return status;
 }
 
@@ -102,4 +105,46 @@ std::string NemstaUtil::getMacAddress() {
   }
 
   return macAddress_.substr(2, 18);
+}
+
+/**
+ * Store SNMP Value to database
+ */
+void NemstaUtil::storeToDatabase() {
+  DatabaseUtil databaseUtil;
+
+  // Create database factory
+  std::shared_ptr<DB::DBFactory> db = databaseUtil.create(RDBMSType::MYSQL);
+  long networkElementId;
+
+  // Check if database connection OK
+  if (db) {
+    // Get network element by Mac Address
+    std::shared_ptr<NetworkElement> element(
+        db->getNetWorkElementByMacAddress(this->getMacAddress()));
+
+    // Assign the networkElementId
+    if (element) {
+      networkElementId = element->NetWorkElementId();
+    } else {
+      networkElementId = db->insertNetworkElement(
+          "Test Element", this->getMacAddress(), this->getIpAddress());
+    }
+
+    for (auto var : vbs_) {
+      std::string value;
+      var.getValue(value);
+      std::cout << "Result : " << var.getOID().oid << " : " << value
+                << std::endl;
+
+      // Get the given OID, insert it if not exist
+      std::string OIDResult =
+          db->insertSnmpObject("", var.getOID().oid, "Test Object");
+
+      // Insert the SNPM value by the given network element id and oid
+      db->insertSNMPValue(networkElementId, OIDResult, value, "string");
+    }
+  } else {
+    std::cout << "Error connecting to database" << std::endl;
+  }
 }

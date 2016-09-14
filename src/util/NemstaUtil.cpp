@@ -134,9 +134,6 @@ void NemstaUtil::storeToDatabase() {
     for (auto var : vbs_) {
       std::string value;
       var.getValue(value);
-      std::cout << "Result : " << var.getOID().oid << " : " << value
-                << std::endl;
-
       // Get the given OID, insert it if not exist
       std::string OIDResult =
           db->insertSnmpObject("", var.getOID().oid, "Test Object");

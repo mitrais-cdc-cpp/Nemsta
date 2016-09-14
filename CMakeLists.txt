@@ -179,4 +179,8 @@ if(UNIX)
         COMMAND find ARGS ${CMAKE_CURRENT_BINARY_DIR} -name "*.cmake" | xargs rm -rf
         COMMAND rm ARGS -rf ${CMAKE_CURRENT_BINARY_DIR}/install_manifest.txt
         TARGET  clean-all)
+        
 endif(UNIX)
+
+#copy config file to the output directory
+file(COPY ${CMAKE_CURRENT_LIST_DIR}/mysql.config DESTINATION .)

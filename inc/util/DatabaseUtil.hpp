@@ -7,6 +7,7 @@
 #include <iostream>
 #include <memory>
 #include <string>
+#include <fstream>
 
 enum class RDBMSType { MYSQL, MSSQLSERVER, POSTGRESQL, ORACLE, NOTDEFINED };
 

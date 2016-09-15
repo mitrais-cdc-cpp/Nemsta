@@ -1,20 +1,14 @@
 #include "../../inc/util/DatabaseUtil.hpp"
 
-const char CONFIG_COMMENT_MARK = '#';
-const char CONFIG_DELIMITER = '=';
-const char* MYSQL_CONFIG_FILE_FULLPATH = "./mysql.config";
-
-std::map<std::string, std::string> mysqlConfigValues;
-
 DatabaseUtil::DatabaseUtil() {}
 
 DatabaseUtil::~DatabaseUtil() {}
 
-void extractMySqlCredentialFromConfigFile()
+void DatabaseUtil::extractMySqlCredentialFromConfigFile()
 {
 	std::ifstream mysqlConfigFile;
 
-	mysqlConfigFile.open(MYSQL_CONFIG_FILE_FULLPATH, std::ios::in);
+	mysqlConfigFile.open(MYSQL_CONFIG_FILE_FULLPATH.c_str(), std::ios::in);
 
 	std::string line;
 	std::string key;
@@ -56,19 +50,21 @@ void extractMySqlCredentialFromConfigFile()
 	mysqlConfigFile.close();
 }
 
-std::string getConfigValueByKey(std::string key)
+bool DatabaseUtil::getConfigValueByKey(const std::string key, std::string &value)
 {
 	auto findResult = mysqlConfigValues.find(key);
 
 	if(findResult != mysqlConfigValues.end())
 	{
 		// return the value
-		return findResult->second;
+		value = findResult->second;
+
+		return true;
 	}
 	else
 	{
 		// not found
-		return "NOT FOUND!";
+		return false;
 	}
 }
 
@@ -76,10 +72,29 @@ std::shared_ptr<DB::DBFactory> DatabaseUtil::create(RDBMSType type) {
 
   extractMySqlCredentialFromConfigFile();
 
-  std::string username = getConfigValueByKey("username");
-  std::string password = getConfigValueByKey("password");
-  std::string dbname = getConfigValueByKey("dbname");
-  std::string host = getConfigValueByKey("host");
+  std::string username;
+  if(!getConfigValueByKey("username", username))
+  {
+	  std::cout << "Missing database configuration item key 'username'" << std::endl;
+  }
+
+  std::string password;
+  if(!getConfigValueByKey("password", password))
+  {
+	  std::cout << "Missing database configuration item key 'password'" << std::endl;
+  }
+
+  std::string dbname;
+  if(!getConfigValueByKey("dbname", dbname))
+  {
+	  std::cout << "Missing database configuration item key 'dbname'" << std::endl;
+  }
+
+  std::string host;
+  if(!getConfigValueByKey("host", host))
+  {
+	  std::cout << "Missing database configuration item key 'host'" << std::endl;
+  }
 
   std::shared_ptr<DB::DBFactory> dbFactory;
 
@@ -90,5 +105,6 @@ std::shared_ptr<DB::DBFactory> DatabaseUtil::create(RDBMSType type) {
       break;
     }
   }
+
   return dbFactory;
 }

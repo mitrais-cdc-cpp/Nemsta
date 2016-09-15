@@ -62,8 +62,11 @@ Mitrais::SNMP::ReturnStatus NemstaUtil::capture(int argc, char* argv[],
   pdu_ = pdu;
   vbs_ = pdu.getBindingList();
 
-  // store to database
-  storeToDatabase();
+  // store to database if VariableBinding vector is not empty
+  if (!vbs_.empty()) {
+    storeToDatabase();
+  }
+
   return status;
 }
 
@@ -108,6 +111,21 @@ std::string NemstaUtil::getMacAddress() {
 }
 
 /**
+ * Get the name of network element
+ * @return Network element's name
+ */
+std::string NemstaUtil::getElementName() {
+  std::string systemNameOid = SYSTEM_NAME;
+  for (auto var : vbs_) {
+    if (var.getOID().oid.compare(SYSTEM_NAME) == 0) {
+      var.getValue(elementName_);
+      break;
+    }
+  }
+  return elementName_;
+}
+
+/**
  * Store SNMP Value to database
  */
 void NemstaUtil::storeToDatabase() {
@@ -128,7 +146,7 @@ void NemstaUtil::storeToDatabase() {
       networkElementId = element->NetWorkElementId();
     } else {
       networkElementId = db->insertNetworkElement(
-          "Test Element", this->getMacAddress(), this->getIpAddress());
+          this->getElementName(), this->getMacAddress(), this->getIpAddress());
     }
 
     for (auto var : vbs_) {

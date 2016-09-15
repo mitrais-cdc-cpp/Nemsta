@@ -53,9 +53,31 @@ class NemstaUtil {
    */
   std::string getMacAddress();
 
+  /**
+   * Get the name of network element
+   * @return Network element's name
+   */
+  std::string getElementName();
+
  private:
+  /**
+   * IP Address
+   */
   std::string ipAddress_;
+
+  /**
+   * MAC Address
+   */
   std::string macAddress_;
+
+  /**
+   * Element name
+   */
+  std::string elementName_;
+
+  /**
+   * PDU
+   */
   Mitrais::SNMP::PDU pdu_;
 
   /**

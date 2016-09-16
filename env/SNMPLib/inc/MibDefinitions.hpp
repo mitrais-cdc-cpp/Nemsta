@@ -9,6 +9,8 @@
 #ifndef INC_MIBDEFINITIONS_HPP_
 #define INC_MIBDEFINITIONS_HPP_
 
+#include <string>
+
 // system description
 #define SYSTEM_DESCRIPTION "1.3.6.1.2.1.1.1.0"
 
@@ -65,7 +67,8 @@
  * this number will commonly be greater than one.
  * Otherwise this number will typically be one.
  */
-#define HOST_RESOURCES_MIB_HR_STORAGE_ALLOCATION_UNITS "1.3.6.1.2.1.25.2.3.1.4.4"
+#define HOST_RESOURCES_MIB_HR_STORAGE_ALLOCATION_UNITS \
+  "1.3.6.1.2.1.25.2.3.1.4.4"
 
 /* The interface's address at the protocol layer
  * immediately `below' the network layer in the
@@ -75,5 +78,12 @@
  * To Get the MAC ADDRESS
  */
 #define RFC1213_MIB_IF_PHYS_ADDRESS "1.3.6.1.2.1.2.2.1.6.11"
+
+/**
+ * Function to get SNMP Object name by given OID
+ * @param OID
+ * @return SNMP Object name
+ */
+std::string getSNMPNameByOID(const std::string &OID);
 
 #endif /* INC_MIBDEFINITIONS_HPP_ */

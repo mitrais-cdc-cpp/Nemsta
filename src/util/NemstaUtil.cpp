@@ -153,8 +153,8 @@ void NemstaUtil::storeToDatabase() {
       std::string value;
       var.getValue(value);
       // Get the given OID, insert it if not exist
-      std::string OIDResult =
-          db->insertSnmpObject("", var.getOID().oid, "Test Object");
+      std::string OIDResult = db->insertSnmpObject(
+          "", var.getOID().oid, getSNMPNameByOID(var.getOID().oid));
 
       // Insert the SNPM value by the given network element id and oid
       db->insertSNMPValue(networkElementId, OIDResult, value, "string");

@@ -9,6 +9,7 @@
 #include "../../env/SNMPDao/inc/DBFactory.hpp"
 #include "../../env/SNMPDao/inc/DataAccess.hpp"
 #include "../../env/SNMPDao/inc/Entity/NetworkElement.hpp"
+#include "../../env/SNMPLib/inc/MibDefinitions.hpp"
 #include "../../env/SNMPLib/inc/PDU.hpp"
 #include "../../env/SNMPLib/inc/ReturnStatus.hpp"
 #include "../../env/SNMPLib/inc/SnmpMode.hpp"

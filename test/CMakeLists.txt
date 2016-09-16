@@ -14,6 +14,7 @@ file(GLOB SOURCES
 	main.cpp	
 	*.h
 	*.cpp
+	*.hpp
 	../inc/util/*.h
 	../src/util/*.cpp)
  
@@ -194,3 +195,6 @@ if(UNIX)
         COMMAND rm ARGS -rf ${CMAKE_CURRENT_BINARY_DIR}/install_manifest.txt
         TARGET  clean-all)
 endif(UNIX)
+
+#copy config file to the output directory
+file(COPY ${UNITTEST_CMAKE_CURRENT_LIST_DIR}/mysql.config DESTINATION .)

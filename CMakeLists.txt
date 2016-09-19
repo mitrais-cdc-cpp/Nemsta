@@ -184,3 +184,4 @@ endif(UNIX)
 
 #copy config file to the output directory
 file(COPY ${CMAKE_CURRENT_LIST_DIR}/mysql.config DESTINATION .)
+file(COPY ${CMAKE_CURRENT_LIST_DIR}/mssql.config DESTINATION .)

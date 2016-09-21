@@ -12,7 +12,11 @@ using namespace Mitrais::Nemsta;
 /**
  * Constructor of Nemsta Util class
  */
-NemstaUtil::NemstaUtil() {}
+NemstaUtil::NemstaUtil() {
+  // Call the snmp util to get local workstation MAC address
+  Mitrais::Nemsta::SnmpUtil snmp;
+  localMacAddress_ = snmp.getLocalMacAddress();
+}
 
 /**
  * Destructor of Nemsta Util class
@@ -157,7 +161,8 @@ void NemstaUtil::storeToDatabase() {
           "", var.getOID().oid, getSNMPNameByOID(var.getOID().oid));
 
       // Insert the SNPM value by the given network element id and oid
-      db->insertSNMPValue(networkElementId, OIDResult, value, "string");
+      db->insertSNMPValue(networkElementId, OIDResult, value, "string",
+                          this->localMacAddress_);
     }
   } else {
     std::cout << "Error connecting to database" << std::endl;

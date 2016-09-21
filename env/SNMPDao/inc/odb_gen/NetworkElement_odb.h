@@ -84,27 +84,27 @@ namespace odb
 
 #include <odb/details/buffer.hxx>
 
-#include <odb/mysql/version.hxx>
-#include <odb/mysql/forward.hxx>
-#include <odb/mysql/binding.hxx>
-#include <odb/mysql/mysql-types.hxx>
-#include <odb/mysql/query.hxx>
+#include <odb/mssql/version.hxx>
+#include <odb/mssql/forward.hxx>
+#include <odb/mssql/binding.hxx>
+#include <odb/mssql/mssql-types.hxx>
+#include <odb/mssql/query.hxx>
 
 namespace odb
 {
   // NetworkElement
   //
   template <typename A>
-  struct query_columns< ::NetworkElement, id_mysql, A >
+  struct query_columns< ::NetworkElement, id_mssql, A >
   {
     // networkElementId
     //
     typedef
-    mysql::query_column<
-      mysql::value_traits<
+    mssql::query_column<
+      mssql::value_traits<
         long unsigned int,
-        mysql::id_ulonglong >::query_type,
-      mysql::id_ulonglong >
+        mssql::id_bigint >::query_type,
+      mssql::id_bigint >
     networkElementId_type_;
 
     static const networkElementId_type_ networkElementId;
@@ -112,11 +112,11 @@ namespace odb
     // elementName
     //
     typedef
-    mysql::query_column<
-      mysql::value_traits<
+    mssql::query_column<
+      mssql::value_traits<
         ::std::string,
-        mysql::id_string >::query_type,
-      mysql::id_string >
+        mssql::id_string >::query_type,
+      mssql::id_string >
     elementName_type_;
 
     static const elementName_type_ elementName;
@@ -124,11 +124,11 @@ namespace odb
     // macAddress
     //
     typedef
-    mysql::query_column<
-      mysql::value_traits<
+    mssql::query_column<
+      mssql::value_traits<
         ::std::string,
-        mysql::id_string >::query_type,
-      mysql::id_string >
+        mssql::id_string >::query_type,
+      mssql::id_string >
     macAddress_type_;
 
     static const macAddress_type_ macAddress;
@@ -136,51 +136,55 @@ namespace odb
     // ipAddress
     //
     typedef
-    mysql::query_column<
-      mysql::value_traits<
+    mssql::query_column<
+      mssql::value_traits<
         ::std::string,
-        mysql::id_string >::query_type,
-      mysql::id_string >
+        mssql::id_string >::query_type,
+      mssql::id_string >
     ipAddress_type_;
 
     static const ipAddress_type_ ipAddress;
   };
 
   template <typename A>
-  const typename query_columns< ::NetworkElement, id_mysql, A >::networkElementId_type_
-  query_columns< ::NetworkElement, id_mysql, A >::
-  networkElementId (A::table_name, "`networkElementId`", 0);
+  const typename query_columns< ::NetworkElement, id_mssql, A >::networkElementId_type_
+  query_columns< ::NetworkElement, id_mssql, A >::
+  networkElementId (A::table_name, "[networkElementId]", 0);
 
   template <typename A>
-  const typename query_columns< ::NetworkElement, id_mysql, A >::elementName_type_
-  query_columns< ::NetworkElement, id_mysql, A >::
-  elementName (A::table_name, "`elementName`", 0);
+  const typename query_columns< ::NetworkElement, id_mssql, A >::elementName_type_
+  query_columns< ::NetworkElement, id_mssql, A >::
+  elementName (A::table_name, "[elementName]", 0, 45);
 
   template <typename A>
-  const typename query_columns< ::NetworkElement, id_mysql, A >::macAddress_type_
-  query_columns< ::NetworkElement, id_mysql, A >::
-  macAddress (A::table_name, "`macAddress`", 0);
+  const typename query_columns< ::NetworkElement, id_mssql, A >::macAddress_type_
+  query_columns< ::NetworkElement, id_mssql, A >::
+  macAddress (A::table_name, "[macAddress]", 0, 45);
 
   template <typename A>
-  const typename query_columns< ::NetworkElement, id_mysql, A >::ipAddress_type_
-  query_columns< ::NetworkElement, id_mysql, A >::
-  ipAddress (A::table_name, "`ipAddress`", 0);
+  const typename query_columns< ::NetworkElement, id_mssql, A >::ipAddress_type_
+  query_columns< ::NetworkElement, id_mssql, A >::
+  ipAddress (A::table_name, "[ipAddress]", 0, 45);
 
   template <typename A>
-  struct pointer_query_columns< ::NetworkElement, id_mysql, A >:
-    query_columns< ::NetworkElement, id_mysql, A >
+  struct pointer_query_columns< ::NetworkElement, id_mssql, A >:
+    query_columns< ::NetworkElement, id_mssql, A >
   {
   };
 
   template <>
-  class access::object_traits_impl< ::NetworkElement, id_mysql >:
+  class access::object_traits_impl< ::NetworkElement, id_mssql >:
     public access::object_traits< ::NetworkElement >
   {
     public:
+    static const std::size_t batch = 1UL;
+
+    static const bool rowversion = false;
+
     struct id_image_type
     {
-      unsigned long long id_value;
-      my_bool id_null;
+      long long id_value;
+      SQLLEN id_size_ind;
 
       std::size_t version;
     };
@@ -189,28 +193,33 @@ namespace odb
     {
       // networkElementId_
       //
-      unsigned long long networkElementId_value;
-      my_bool networkElementId_null;
+      long long networkElementId_value;
+      SQLLEN networkElementId_size_ind;
 
       // elementName_
       //
-      details::buffer elementName_value;
-      unsigned long elementName_size;
-      my_bool elementName_null;
+      char elementName_value[46];
+      SQLLEN elementName_size_ind;
 
       // macAddress_
       //
-      details::buffer macAddress_value;
-      unsigned long macAddress_size;
-      my_bool macAddress_null;
+      char macAddress_value[46];
+      SQLLEN macAddress_size_ind;
 
       // ipAddress_
       //
-      details::buffer ipAddress_value;
-      unsigned long ipAddress_size;
-      my_bool ipAddress_null;
+      char ipAddress_value[46];
+      SQLLEN ipAddress_size_ind;
 
       std::size_t version;
+
+      mssql::change_callback change_callback_;
+
+      mssql::change_callback*
+      change_callback ()
+      {
+        return &change_callback_;
+      }
     };
 
     struct extra_statement_cache_type;
@@ -223,22 +232,18 @@ namespace odb
     static id_type
     id (const image_type&);
 
-    static bool
-    grow (image_type&,
-          my_bool*);
-
     static void
-    bind (MYSQL_BIND*,
+    bind (mssql::bind*,
           image_type&,
-          mysql::statement_kind);
+          mssql::statement_kind);
 
     static void
-    bind (MYSQL_BIND*, id_image_type&);
+    bind (mssql::bind*, id_image_type&);
 
-    static bool
+    static void
     init (image_type&,
           const object_type&,
-          mysql::statement_kind);
+          mssql::statement_kind);
 
     static void
     init (object_type&,
@@ -248,9 +253,9 @@ namespace odb
     static void
     init (id_image_type&, const id_type&);
 
-    typedef mysql::object_statements<object_type> statements_type;
+    typedef mssql::object_statements<object_type> statements_type;
 
-    typedef mysql::query_base query_base_type;
+    typedef mssql::query_base query_base_type;
 
     static const std::size_t column_count = 4UL;
     static const std::size_t id_column_count = 1UL;
@@ -312,7 +317,7 @@ namespace odb
 
   template <>
   class access::object_traits_impl< ::NetworkElement, id_common >:
-    public access::object_traits_impl< ::NetworkElement, id_mysql >
+    public access::object_traits_impl< ::NetworkElement, id_mssql >
   {
   };
 

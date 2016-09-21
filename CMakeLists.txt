@@ -22,7 +22,8 @@ endforeach()
 ###############################################################################
 
 add_executable(Nemsta ${SOURCES})
-target_compile_definitions(Nemsta PRIVATE LIBODB_MYSQL_INCLUDE_SHORT=1)
+#target_compile_definitions(Nemsta PRIVATE LIBODB_MYSQL_INCLUDE_SHORT=1)
+target_compile_definitions(Nemsta PRIVATE LIBODB_MSSQL_INCLUDE_SHORT=1)
 #add_definitions(-DLIBODB_MYSQL_INCLUDE_SHORT)
 
 #Set Debug or Release
@@ -101,7 +102,27 @@ find_library(
 	PATHS ${CMAKE_CURRENT_LIST_DIR}/env/odb-mysql/lib
 	PATH_SUFFIXES "lib"  
 	NO_DEFAULT_PATH)
-
+	
+#ODB_MSSQL
+set(ODB_MSSQL_LIBRARY_DIRS ${CMAKE_CURRENT_LIST_DIR}/env/odb-mssql/lib)  
+set(ODB_MSSQL_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/env/odb-mssql/include)  
+find_library(  
+	ODB_MSSQL_LIBRARIES  
+	NAMES odb-mssql libodb-mssql
+	PATHS ${CMAKE_CURRENT_LIST_DIR}/env/odb-mssql/lib
+	PATH_SUFFIXES "lib"  
+	NO_DEFAULT_PATH)
+	
+#UNIX_ODBC
+set(UNIX_ODBC_LIBRARY_DIRS ${CMAKE_CURRENT_LIST_DIR}/env/unix-odbc/lib)  
+set(UNIX_ODBC_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/env/unix-odbc/include)  
+find_library(  
+	UNIX_ODBC_LIBRARIES  
+	NAMES odbc
+	PATHS ${CMAKE_CURRENT_LIST_DIR}/env/unix-odbc/lib
+	PATH_SUFFIXES "lib"  
+	NO_DEFAULT_PATH)
+	
 #MYSQL_CLIENT
 set(MYSQL_CLIENT_LIBRARY_DIRS ${CMAKE_CURRENT_LIST_DIR}/env/mysql-connector/lib)  
 set(MYSQL_CLIENT_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/env/mysql-connector/include)  
@@ -118,7 +139,9 @@ include_directories(${SNMPDAO_INCLUDE_DIRS}
 		${SNMPLIB_INCLUDE_DIRS}
 		${ODB_INCLUDE_DIRS}
 		${ODB_MYSQL_INCLUDE_DIRS}
-		${MYSQL_CLIENT_INCLUDE_DIRS})
+		${ODB_MSSQL_INCLUDE_DIRS}
+		${MYSQL_CLIENT_INCLUDE_DIRS}
+		${UNIX_ODBC_INCLUDE_DIRS})
 
 
 link_directories(${SNMPDAO_LIBRARY_DIRS}
@@ -126,7 +149,9 @@ link_directories(${SNMPDAO_LIBRARY_DIRS}
 		${SNMP_PP_LIBRARY_DIRS}
 		${ODB_LIBRARY_DIRS}
 		${ODB_MYSQL_LIBRARY_DIRS}
-		${MYSQL_CLIENT_LIBRARY_DIRS})
+		${ODB_MSSQL_LIBRARY_DIRS}
+		${MYSQL_CLIENT_LIBRARY_DIRS}
+		${UNIX_ODBC_LIBRARY_DIRS})
 
 
 target_link_libraries(Nemsta
@@ -135,7 +160,9 @@ target_link_libraries(Nemsta
 	${SNMP_PP_LIBRARIES}
 	${ODB_LIBRARIES}
 	${ODB_MYSQL_LIBRARIES}
-	${MYSQL_CLIENT_LIBRARIES})
+	${ODB_MSSQL_LIBRARIES}
+	${MYSQL_CLIENT_LIBRARIES}
+	${UNIX_ODBC_LIBRARIES})
 
 
 ###############################################################################

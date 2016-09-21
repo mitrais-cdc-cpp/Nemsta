@@ -3,6 +3,7 @@
 
 #include <DBFactory.hpp>
 #include <MySQLFactory.hpp>
+#include <MicrosoftSQLFactory.hpp>
 
 #include <iostream>
 #include <memory>
@@ -39,6 +40,11 @@ class DatabaseUtil {
    * The fullpath to the mysql credentials configuration. It is referring to the file at the same folder as the executable output filename
    */
   const std::string MYSQL_CONFIG_FILE_FULLPATH = "./mysql.config";
+
+  /*
+     * The fullpath to the mssql credentials configuration. It is referring to the file at the same folder as the executable output filename
+     */
+  const std::string MSSQL_CONFIG_FILE_FULLPATH = "./mssql.config";
 
   /*
    * The collection of all mysql configuration

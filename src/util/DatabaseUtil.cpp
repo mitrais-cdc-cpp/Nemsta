@@ -77,33 +77,40 @@ std::shared_ptr<DB::DBFactory> DatabaseUtil::create(RDBMSType type) {
   {
 	  std::cout << "Missing database configuration item key 'username'" << std::endl;
   }
+  std::cout<<username<<std::endl;
 
   std::string password;
   if(!getConfigValueByKey("password", password))
   {
 	  std::cout << "Missing database configuration item key 'password'" << std::endl;
   }
+  std::cout<<password<<std::endl;
 
   std::string dbname;
   if(!getConfigValueByKey("dbname", dbname))
   {
 	  std::cout << "Missing database configuration item key 'dbname'" << std::endl;
   }
+  std::cout<<dbname<<std::endl;
 
   std::string host;
   if(!getConfigValueByKey("host", host))
   {
 	  std::cout << "Missing database configuration item key 'host'" << std::endl;
   }
+  std::cout<<host<<std::endl;
 
   std::shared_ptr<DB::DBFactory> dbFactory;
 
   switch (type) {
-    case RDBMSType::MYSQL: {
+    case RDBMSType::MYSQL:
       dbFactory =
           std::make_shared<DB::MySQLFactory>(username, password, dbname, host);
       break;
-    }
+    case RDBMSType::MSSQLSERVER:
+      dbFactory =
+    	  std::make_shared<DB::MicrosoftSQLFactory>(username, password, dbname, host);
+      break;
   }
 
   return dbFactory;

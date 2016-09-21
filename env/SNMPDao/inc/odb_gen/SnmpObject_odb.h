@@ -84,27 +84,27 @@ namespace odb
 
 #include <odb/details/buffer.hxx>
 
-#include <odb/mysql/version.hxx>
-#include <odb/mysql/forward.hxx>
-#include <odb/mysql/binding.hxx>
-#include <odb/mysql/mysql-types.hxx>
-#include <odb/mysql/query.hxx>
+#include <odb/mssql/version.hxx>
+#include <odb/mssql/forward.hxx>
+#include <odb/mssql/binding.hxx>
+#include <odb/mssql/mssql-types.hxx>
+#include <odb/mssql/query.hxx>
 
 namespace odb
 {
   // SnmpObject
   //
   template <typename A>
-  struct query_columns< ::SnmpObject, id_mysql, A >
+  struct query_columns< ::SnmpObject, id_mssql, A >
   {
     // snmpObjectId
     //
     typedef
-    mysql::query_column<
-      mysql::value_traits<
+    mssql::query_column<
+      mssql::value_traits<
         long unsigned int,
-        mysql::id_ulonglong >::query_type,
-      mysql::id_ulonglong >
+        mssql::id_bigint >::query_type,
+      mssql::id_bigint >
     snmpObjectId_type_;
 
     static const snmpObjectId_type_ snmpObjectId;
@@ -112,11 +112,11 @@ namespace odb
     // mib
     //
     typedef
-    mysql::query_column<
-      mysql::value_traits<
+    mssql::query_column<
+      mssql::value_traits<
         ::std::string,
-        mysql::id_string >::query_type,
-      mysql::id_string >
+        mssql::id_string >::query_type,
+      mssql::id_string >
     mib_type_;
 
     static const mib_type_ mib;
@@ -124,11 +124,11 @@ namespace odb
     // oid
     //
     typedef
-    mysql::query_column<
-      mysql::value_traits<
+    mssql::query_column<
+      mssql::value_traits<
         ::std::string,
-        mysql::id_string >::query_type,
-      mysql::id_string >
+        mssql::id_string >::query_type,
+      mssql::id_string >
     oid_type_;
 
     static const oid_type_ oid;
@@ -136,51 +136,55 @@ namespace odb
     // objectName
     //
     typedef
-    mysql::query_column<
-      mysql::value_traits<
+    mssql::query_column<
+      mssql::value_traits<
         ::std::string,
-        mysql::id_string >::query_type,
-      mysql::id_string >
+        mssql::id_string >::query_type,
+      mssql::id_string >
     objectName_type_;
 
     static const objectName_type_ objectName;
   };
 
   template <typename A>
-  const typename query_columns< ::SnmpObject, id_mysql, A >::snmpObjectId_type_
-  query_columns< ::SnmpObject, id_mysql, A >::
-  snmpObjectId (A::table_name, "`snmpObjectId`", 0);
+  const typename query_columns< ::SnmpObject, id_mssql, A >::snmpObjectId_type_
+  query_columns< ::SnmpObject, id_mssql, A >::
+  snmpObjectId (A::table_name, "[snmpObjectId]", 0);
 
   template <typename A>
-  const typename query_columns< ::SnmpObject, id_mysql, A >::mib_type_
-  query_columns< ::SnmpObject, id_mysql, A >::
-  mib (A::table_name, "`mib`", 0);
+  const typename query_columns< ::SnmpObject, id_mssql, A >::mib_type_
+  query_columns< ::SnmpObject, id_mssql, A >::
+  mib (A::table_name, "[mib]", 0, 45);
 
   template <typename A>
-  const typename query_columns< ::SnmpObject, id_mysql, A >::oid_type_
-  query_columns< ::SnmpObject, id_mysql, A >::
-  oid (A::table_name, "`oid`", 0);
+  const typename query_columns< ::SnmpObject, id_mssql, A >::oid_type_
+  query_columns< ::SnmpObject, id_mssql, A >::
+  oid (A::table_name, "[oid]", 0, 45);
 
   template <typename A>
-  const typename query_columns< ::SnmpObject, id_mysql, A >::objectName_type_
-  query_columns< ::SnmpObject, id_mysql, A >::
-  objectName (A::table_name, "`objectName`", 0);
+  const typename query_columns< ::SnmpObject, id_mssql, A >::objectName_type_
+  query_columns< ::SnmpObject, id_mssql, A >::
+  objectName (A::table_name, "[objectName]", 0, 100);
 
   template <typename A>
-  struct pointer_query_columns< ::SnmpObject, id_mysql, A >:
-    query_columns< ::SnmpObject, id_mysql, A >
+  struct pointer_query_columns< ::SnmpObject, id_mssql, A >:
+    query_columns< ::SnmpObject, id_mssql, A >
   {
   };
 
   template <>
-  class access::object_traits_impl< ::SnmpObject, id_mysql >:
+  class access::object_traits_impl< ::SnmpObject, id_mssql >:
     public access::object_traits< ::SnmpObject >
   {
     public:
+    static const std::size_t batch = 1UL;
+
+    static const bool rowversion = false;
+
     struct id_image_type
     {
-      unsigned long long id_value;
-      my_bool id_null;
+      long long id_value;
+      SQLLEN id_size_ind;
 
       std::size_t version;
     };
@@ -189,28 +193,33 @@ namespace odb
     {
       // snmpObjectId_
       //
-      unsigned long long snmpObjectId_value;
-      my_bool snmpObjectId_null;
+      long long snmpObjectId_value;
+      SQLLEN snmpObjectId_size_ind;
 
       // mib_
       //
-      details::buffer mib_value;
-      unsigned long mib_size;
-      my_bool mib_null;
+      char mib_value[46];
+      SQLLEN mib_size_ind;
 
       // oid_
       //
-      details::buffer oid_value;
-      unsigned long oid_size;
-      my_bool oid_null;
+      char oid_value[46];
+      SQLLEN oid_size_ind;
 
       // objectName_
       //
-      details::buffer objectName_value;
-      unsigned long objectName_size;
-      my_bool objectName_null;
+      char objectName_value[101];
+      SQLLEN objectName_size_ind;
 
       std::size_t version;
+
+      mssql::change_callback change_callback_;
+
+      mssql::change_callback*
+      change_callback ()
+      {
+        return &change_callback_;
+      }
     };
 
     struct extra_statement_cache_type;
@@ -223,22 +232,18 @@ namespace odb
     static id_type
     id (const image_type&);
 
-    static bool
-    grow (image_type&,
-          my_bool*);
-
     static void
-    bind (MYSQL_BIND*,
+    bind (mssql::bind*,
           image_type&,
-          mysql::statement_kind);
+          mssql::statement_kind);
 
     static void
-    bind (MYSQL_BIND*, id_image_type&);
+    bind (mssql::bind*, id_image_type&);
 
-    static bool
+    static void
     init (image_type&,
           const object_type&,
-          mysql::statement_kind);
+          mssql::statement_kind);
 
     static void
     init (object_type&,
@@ -248,9 +253,9 @@ namespace odb
     static void
     init (id_image_type&, const id_type&);
 
-    typedef mysql::object_statements<object_type> statements_type;
+    typedef mssql::object_statements<object_type> statements_type;
 
-    typedef mysql::query_base query_base_type;
+    typedef mssql::query_base query_base_type;
 
     static const std::size_t column_count = 4UL;
     static const std::size_t id_column_count = 1UL;
@@ -312,7 +317,7 @@ namespace odb
 
   template <>
   class access::object_traits_impl< ::SnmpObject, id_common >:
-    public access::object_traits_impl< ::SnmpObject, id_mysql >
+    public access::object_traits_impl< ::SnmpObject, id_mssql >
   {
   };
 

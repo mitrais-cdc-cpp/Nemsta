@@ -132,7 +132,7 @@ void NemstaUtil::storeToDatabase() {
   DatabaseUtil databaseUtil;
 
   // Create database factory
-  std::shared_ptr<DB::DBFactory> db = databaseUtil.create(RDBMSType::MYSQL);
+  std::shared_ptr<DB::DBFactory> db = databaseUtil.create(RDBMSType::MSSQLSERVER);
   long networkElementId;
 
   // Check if database connection OK

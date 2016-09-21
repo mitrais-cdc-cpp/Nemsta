@@ -10,205 +10,142 @@
 #include <cstring>  // std::memcpy
 
 
-#include <odb/mysql/traits.hxx>
-#include <odb/mysql/database.hxx>
-#include <odb/mysql/transaction.hxx>
-#include <odb/mysql/connection.hxx>
-#include <odb/mysql/statement.hxx>
-#include <odb/mysql/statement-cache.hxx>
-#include <odb/mysql/simple-object-statements.hxx>
-#include <odb/mysql/container-statements.hxx>
-#include <odb/mysql/exceptions.hxx>
-#include <odb/mysql/simple-object-result.hxx>
-#include <odb/mysql/enum.hxx>
+#include <odb/mssql/traits.hxx>
+#include <odb/mssql/database.hxx>
+#include <odb/mssql/transaction.hxx>
+#include <odb/mssql/connection.hxx>
+#include <odb/mssql/statement.hxx>
+#include <odb/mssql/statement-cache.hxx>
+#include <odb/mssql/simple-object-statements.hxx>
+#include <odb/mssql/container-statements.hxx>
+#include <odb/mssql/exceptions.hxx>
+#include <odb/mssql/simple-object-result.hxx>
 
 namespace odb
 {
   // SnmpObject
   //
 
-  struct access::object_traits_impl< ::SnmpObject, id_mysql >::extra_statement_cache_type
+  struct access::object_traits_impl< ::SnmpObject, id_mssql >::extra_statement_cache_type
   {
     extra_statement_cache_type (
-      mysql::connection&,
+      mssql::connection&,
       image_type&,
       id_image_type&,
-      mysql::binding&,
-      mysql::binding&)
+      mssql::binding&,
+      mssql::binding&)
     {
     }
   };
 
-  access::object_traits_impl< ::SnmpObject, id_mysql >::id_type
-  access::object_traits_impl< ::SnmpObject, id_mysql >::
+  access::object_traits_impl< ::SnmpObject, id_mssql >::id_type
+  access::object_traits_impl< ::SnmpObject, id_mssql >::
   id (const id_image_type& i)
   {
-    mysql::database* db (0);
+    mssql::database* db (0);
     ODB_POTENTIALLY_UNUSED (db);
 
     id_type id;
     {
-      mysql::value_traits<
+      mssql::value_traits<
           long unsigned int,
-          mysql::id_ulonglong >::set_value (
+          mssql::id_bigint >::set_value (
         id,
         i.id_value,
-        i.id_null);
+        i.id_size_ind == SQL_NULL_DATA);
     }
 
     return id;
   }
 
-  access::object_traits_impl< ::SnmpObject, id_mysql >::id_type
-  access::object_traits_impl< ::SnmpObject, id_mysql >::
+  access::object_traits_impl< ::SnmpObject, id_mssql >::id_type
+  access::object_traits_impl< ::SnmpObject, id_mssql >::
   id (const image_type& i)
   {
-    mysql::database* db (0);
+    mssql::database* db (0);
     ODB_POTENTIALLY_UNUSED (db);
 
     id_type id;
     {
-      mysql::value_traits<
+      mssql::value_traits<
           long unsigned int,
-          mysql::id_ulonglong >::set_value (
+          mssql::id_bigint >::set_value (
         id,
         i.snmpObjectId_value,
-        i.snmpObjectId_null);
+        i.snmpObjectId_size_ind == SQL_NULL_DATA);
     }
 
     return id;
   }
 
-  bool access::object_traits_impl< ::SnmpObject, id_mysql >::
-  grow (image_type& i,
-        my_bool* t)
-  {
-    ODB_POTENTIALLY_UNUSED (i);
-    ODB_POTENTIALLY_UNUSED (t);
-
-    bool grew (false);
-
-    // snmpObjectId_
-    //
-    t[0UL] = 0;
-
-    // mib_
-    //
-    if (t[1UL])
-    {
-      i.mib_value.capacity (i.mib_size);
-      grew = true;
-    }
-
-    // oid_
-    //
-    if (t[2UL])
-    {
-      i.oid_value.capacity (i.oid_size);
-      grew = true;
-    }
-
-    // objectName_
-    //
-    if (t[3UL])
-    {
-      i.objectName_value.capacity (i.objectName_size);
-      grew = true;
-    }
-
-    return grew;
-  }
-
-  void access::object_traits_impl< ::SnmpObject, id_mysql >::
-  bind (MYSQL_BIND* b,
+  void access::object_traits_impl< ::SnmpObject, id_mssql >::
+  bind (mssql::bind* b,
         image_type& i,
-        mysql::statement_kind sk)
+        mssql::statement_kind sk)
   {
     ODB_POTENTIALLY_UNUSED (sk);
 
-    using namespace mysql;
+    using namespace mssql;
 
     std::size_t n (0);
 
     // snmpObjectId_
     //
-    if (sk != statement_update)
+    if (sk != statement_insert && sk != statement_update)
     {
-      b[n].buffer_type = MYSQL_TYPE_LONGLONG;
-      b[n].is_unsigned = 1;
+      b[n].type = mssql::bind::bigint;
       b[n].buffer = &i.snmpObjectId_value;
-      b[n].is_null = &i.snmpObjectId_null;
+      b[n].size_ind = &i.snmpObjectId_size_ind;
       n++;
     }
 
     // mib_
     //
-    b[n].buffer_type = MYSQL_TYPE_STRING;
-    b[n].buffer = i.mib_value.data ();
-    b[n].buffer_length = static_cast<unsigned long> (
-      i.mib_value.capacity ());
-    b[n].length = &i.mib_size;
-    b[n].is_null = &i.mib_null;
+    b[n].type = mssql::bind::string;
+    b[n].buffer = &i.mib_value;
+    b[n].size_ind = &i.mib_size_ind;
+    b[n].capacity = static_cast<SQLLEN> (sizeof (i.mib_value));
     n++;
 
     // oid_
     //
-    b[n].buffer_type = MYSQL_TYPE_STRING;
-    b[n].buffer = i.oid_value.data ();
-    b[n].buffer_length = static_cast<unsigned long> (
-      i.oid_value.capacity ());
-    b[n].length = &i.oid_size;
-    b[n].is_null = &i.oid_null;
+    b[n].type = mssql::bind::string;
+    b[n].buffer = &i.oid_value;
+    b[n].size_ind = &i.oid_size_ind;
+    b[n].capacity = static_cast<SQLLEN> (sizeof (i.oid_value));
     n++;
 
     // objectName_
     //
-    b[n].buffer_type = MYSQL_TYPE_STRING;
-    b[n].buffer = i.objectName_value.data ();
-    b[n].buffer_length = static_cast<unsigned long> (
-      i.objectName_value.capacity ());
-    b[n].length = &i.objectName_size;
-    b[n].is_null = &i.objectName_null;
+    b[n].type = mssql::bind::string;
+    b[n].buffer = &i.objectName_value;
+    b[n].size_ind = &i.objectName_size_ind;
+    b[n].capacity = static_cast<SQLLEN> (sizeof (i.objectName_value));
     n++;
   }
 
-  void access::object_traits_impl< ::SnmpObject, id_mysql >::
-  bind (MYSQL_BIND* b, id_image_type& i)
+  void access::object_traits_impl< ::SnmpObject, id_mssql >::
+  bind (mssql::bind* b, id_image_type& i)
   {
     std::size_t n (0);
-    b[n].buffer_type = MYSQL_TYPE_LONGLONG;
-    b[n].is_unsigned = 1;
+    b[n].type = mssql::bind::bigint;
     b[n].buffer = &i.id_value;
-    b[n].is_null = &i.id_null;
+    b[n].size_ind = &i.id_size_ind;
   }
 
-  bool access::object_traits_impl< ::SnmpObject, id_mysql >::
+  void access::object_traits_impl< ::SnmpObject, id_mssql >::
   init (image_type& i,
         const object_type& o,
-        mysql::statement_kind sk)
+        mssql::statement_kind sk)
   {
     ODB_POTENTIALLY_UNUSED (i);
     ODB_POTENTIALLY_UNUSED (o);
     ODB_POTENTIALLY_UNUSED (sk);
 
-    using namespace mysql;
+    using namespace mssql;
 
-    bool grew (false);
-
-    // snmpObjectId_
-    //
-    if (sk == statement_insert)
-    {
-      long unsigned int const& v =
-        o.snmpObjectId_;
-
-      bool is_null (false);
-      mysql::value_traits<
-          long unsigned int,
-          mysql::id_ulonglong >::set_image (
-        i.snmpObjectId_value, is_null, v);
-      i.snmpObjectId_null = is_null;
-    }
+    if (i.change_callback_.callback != 0)
+      (i.change_callback_.callback) (i.change_callback_.context);
 
     // mib_
     //
@@ -218,17 +155,16 @@ namespace odb
 
       bool is_null (false);
       std::size_t size (0);
-      std::size_t cap (i.mib_value.capacity ());
-      mysql::value_traits<
+      mssql::value_traits<
           ::std::string,
-          mysql::id_string >::set_image (
+          mssql::id_string >::set_image (
         i.mib_value,
+        sizeof (i.mib_value) - 1,
         size,
         is_null,
         v);
-      i.mib_null = is_null;
-      i.mib_size = static_cast<unsigned long> (size);
-      grew = grew || (cap != i.mib_value.capacity ());
+      i.mib_size_ind =
+        is_null ? SQL_NULL_DATA : static_cast<SQLLEN> (size);
     }
 
     // oid_
@@ -239,17 +175,16 @@ namespace odb
 
       bool is_null (false);
       std::size_t size (0);
-      std::size_t cap (i.oid_value.capacity ());
-      mysql::value_traits<
+      mssql::value_traits<
           ::std::string,
-          mysql::id_string >::set_image (
+          mssql::id_string >::set_image (
         i.oid_value,
+        sizeof (i.oid_value) - 1,
         size,
         is_null,
         v);
-      i.oid_null = is_null;
-      i.oid_size = static_cast<unsigned long> (size);
-      grew = grew || (cap != i.oid_value.capacity ());
+      i.oid_size_ind =
+        is_null ? SQL_NULL_DATA : static_cast<SQLLEN> (size);
     }
 
     // objectName_
@@ -260,23 +195,20 @@ namespace odb
 
       bool is_null (false);
       std::size_t size (0);
-      std::size_t cap (i.objectName_value.capacity ());
-      mysql::value_traits<
+      mssql::value_traits<
           ::std::string,
-          mysql::id_string >::set_image (
+          mssql::id_string >::set_image (
         i.objectName_value,
+        sizeof (i.objectName_value) - 1,
         size,
         is_null,
         v);
-      i.objectName_null = is_null;
-      i.objectName_size = static_cast<unsigned long> (size);
-      grew = grew || (cap != i.objectName_value.capacity ());
+      i.objectName_size_ind =
+        is_null ? SQL_NULL_DATA : static_cast<SQLLEN> (size);
     }
-
-    return grew;
   }
 
-  void access::object_traits_impl< ::SnmpObject, id_mysql >::
+  void access::object_traits_impl< ::SnmpObject, id_mssql >::
   init (object_type& o,
         const image_type& i,
         database* db)
@@ -291,12 +223,12 @@ namespace odb
       long unsigned int& v =
         o.snmpObjectId_;
 
-      mysql::value_traits<
+      mssql::value_traits<
           long unsigned int,
-          mysql::id_ulonglong >::set_value (
+          mssql::id_bigint >::set_value (
         v,
         i.snmpObjectId_value,
-        i.snmpObjectId_null);
+        i.snmpObjectId_size_ind == SQL_NULL_DATA);
     }
 
     // mib_
@@ -305,13 +237,13 @@ namespace odb
       ::std::string& v =
         o.mib_;
 
-      mysql::value_traits<
+      mssql::value_traits<
           ::std::string,
-          mysql::id_string >::set_value (
+          mssql::id_string >::set_value (
         v,
         i.mib_value,
-        i.mib_size,
-        i.mib_null);
+        static_cast<std::size_t> (i.mib_size_ind),
+        i.mib_size_ind == SQL_NULL_DATA);
     }
 
     // oid_
@@ -320,13 +252,13 @@ namespace odb
       ::std::string& v =
         o.oid_;
 
-      mysql::value_traits<
+      mssql::value_traits<
           ::std::string,
-          mysql::id_string >::set_value (
+          mssql::id_string >::set_value (
         v,
         i.oid_value,
-        i.oid_size,
-        i.oid_null);
+        static_cast<std::size_t> (i.oid_size_ind),
+        i.oid_size_ind == SQL_NULL_DATA);
     }
 
     // objectName_
@@ -335,82 +267,82 @@ namespace odb
       ::std::string& v =
         o.objectName_;
 
-      mysql::value_traits<
+      mssql::value_traits<
           ::std::string,
-          mysql::id_string >::set_value (
+          mssql::id_string >::set_value (
         v,
         i.objectName_value,
-        i.objectName_size,
-        i.objectName_null);
+        static_cast<std::size_t> (i.objectName_size_ind),
+        i.objectName_size_ind == SQL_NULL_DATA);
     }
   }
 
-  void access::object_traits_impl< ::SnmpObject, id_mysql >::
+  void access::object_traits_impl< ::SnmpObject, id_mssql >::
   init (id_image_type& i, const id_type& id)
   {
     {
       bool is_null (false);
-      mysql::value_traits<
+      mssql::value_traits<
           long unsigned int,
-          mysql::id_ulonglong >::set_image (
+          mssql::id_bigint >::set_image (
         i.id_value, is_null, id);
-      i.id_null = is_null;
+      i.id_size_ind = is_null ? SQL_NULL_DATA : 0;
     }
   }
 
-  const char access::object_traits_impl< ::SnmpObject, id_mysql >::persist_statement[] =
-  "INSERT INTO `SnmpObject` "
-  "(`snmpObjectId`, "
-  "`mib`, "
-  "`oid`, "
-  "`objectName`) "
+  const char access::object_traits_impl< ::SnmpObject, id_mssql >::persist_statement[] =
+  "INSERT INTO [SnmpObject] "
+  "([mib], "
+  "[oid], "
+  "[objectName]) "
+  "OUTPUT INSERTED.[snmpObjectId] "
   "VALUES "
-  "(?, ?, ?, ?)";
+  "(?, ?, ?)";
 
-  const char access::object_traits_impl< ::SnmpObject, id_mysql >::find_statement[] =
+  const char access::object_traits_impl< ::SnmpObject, id_mssql >::find_statement[] =
   "SELECT "
-  "`SnmpObject`.`snmpObjectId`, "
-  "`SnmpObject`.`mib`, "
-  "`SnmpObject`.`oid`, "
-  "`SnmpObject`.`objectName` "
-  "FROM `SnmpObject` "
-  "WHERE `SnmpObject`.`snmpObjectId`=?";
+  "[SnmpObject].[snmpObjectId], "
+  "[SnmpObject].[mib], "
+  "[SnmpObject].[oid], "
+  "[SnmpObject].[objectName] "
+  "FROM [SnmpObject] "
+  "WHERE [SnmpObject].[snmpObjectId]=?";
 
-  const char access::object_traits_impl< ::SnmpObject, id_mysql >::update_statement[] =
-  "UPDATE `SnmpObject` "
+  const char access::object_traits_impl< ::SnmpObject, id_mssql >::update_statement[] =
+  "UPDATE [SnmpObject] "
   "SET "
-  "`mib`=?, "
-  "`oid`=?, "
-  "`objectName`=? "
-  "WHERE `snmpObjectId`=?";
+  "[mib]=?, "
+  "[oid]=?, "
+  "[objectName]=? "
+  "WHERE [snmpObjectId]=?";
 
-  const char access::object_traits_impl< ::SnmpObject, id_mysql >::erase_statement[] =
-  "DELETE FROM `SnmpObject` "
-  "WHERE `snmpObjectId`=?";
+  const char access::object_traits_impl< ::SnmpObject, id_mssql >::erase_statement[] =
+  "DELETE FROM [SnmpObject] "
+  "WHERE [snmpObjectId]=?";
 
-  const char access::object_traits_impl< ::SnmpObject, id_mysql >::query_statement[] =
+  const char access::object_traits_impl< ::SnmpObject, id_mssql >::query_statement[] =
   "SELECT "
-  "`SnmpObject`.`snmpObjectId`, "
-  "`SnmpObject`.`mib`, "
-  "`SnmpObject`.`oid`, "
-  "`SnmpObject`.`objectName` "
-  "FROM `SnmpObject`";
+  "[SnmpObject].[snmpObjectId], "
+  "[SnmpObject].[mib], "
+  "[SnmpObject].[oid], "
+  "[SnmpObject].[objectName] "
+  "FROM [SnmpObject]";
 
-  const char access::object_traits_impl< ::SnmpObject, id_mysql >::erase_query_statement[] =
-  "DELETE FROM `SnmpObject`";
+  const char access::object_traits_impl< ::SnmpObject, id_mssql >::erase_query_statement[] =
+  "DELETE FROM [SnmpObject]";
 
-  const char access::object_traits_impl< ::SnmpObject, id_mysql >::table_name[] =
-  "`SnmpObject`";
+  const char access::object_traits_impl< ::SnmpObject, id_mssql >::table_name[] =
+  "[SnmpObject]";
 
-  void access::object_traits_impl< ::SnmpObject, id_mysql >::
+  void access::object_traits_impl< ::SnmpObject, id_mssql >::
   persist (database& db, object_type& obj)
   {
     ODB_POTENTIALLY_UNUSED (db);
 
-    using namespace mysql;
+    using namespace mssql;
 
-    mysql::connection& conn (
-      mysql::transaction::current ().connection ());
+    mssql::connection& conn (
+      mssql::transaction::current ().connection ());
     statements_type& sts (
       conn.statement_cache ().find_object<object_type> ());
 
@@ -421,10 +353,7 @@ namespace odb
     image_type& im (sts.image ());
     binding& imb (sts.insert_image_binding ());
 
-    if (init (im, obj, statement_insert))
-      im.version++;
-
-    im.snmpObjectId_value = 0;
+    init (im, obj, statement_insert);
 
     if (im.version != sts.insert_image_version () ||
         imb.version == 0)
@@ -456,18 +385,18 @@ namespace odb
               callback_event::post_persist);
   }
 
-  void access::object_traits_impl< ::SnmpObject, id_mysql >::
+  void access::object_traits_impl< ::SnmpObject, id_mssql >::
   update (database& db, const object_type& obj)
   {
     ODB_POTENTIALLY_UNUSED (db);
 
-    using namespace mysql;
-    using mysql::update_statement;
+    using namespace mssql;
+    using mssql::update_statement;
 
     callback (db, obj, callback_event::pre_update);
 
-    mysql::transaction& tr (mysql::transaction::current ());
-    mysql::connection& conn (tr.connection ());
+    mssql::transaction& tr (mssql::transaction::current ());
+    mssql::connection& conn (tr.connection ());
     statements_type& sts (
       conn.statement_cache ().find_object<object_type> ());
 
@@ -477,8 +406,7 @@ namespace odb
     init (idi, id);
 
     image_type& im (sts.image ());
-    if (init (im, obj, statement_update))
-      im.version++;
+    init (im, obj, statement_update);
 
     bool u (false);
     binding& imb (sts.update_image_binding ());
@@ -517,15 +445,15 @@ namespace odb
     pointer_cache_traits::update (db, obj);
   }
 
-  void access::object_traits_impl< ::SnmpObject, id_mysql >::
+  void access::object_traits_impl< ::SnmpObject, id_mssql >::
   erase (database& db, const id_type& id)
   {
-    using namespace mysql;
+    using namespace mssql;
 
     ODB_POTENTIALLY_UNUSED (db);
 
-    mysql::connection& conn (
-      mysql::transaction::current ().connection ());
+    mssql::connection& conn (
+      mssql::transaction::current ().connection ());
     statements_type& sts (
       conn.statement_cache ().find_object<object_type> ());
 
@@ -546,11 +474,11 @@ namespace odb
     pointer_cache_traits::erase (db, id);
   }
 
-  access::object_traits_impl< ::SnmpObject, id_mysql >::pointer_type
-  access::object_traits_impl< ::SnmpObject, id_mysql >::
+  access::object_traits_impl< ::SnmpObject, id_mssql >::pointer_type
+  access::object_traits_impl< ::SnmpObject, id_mssql >::
   find (database& db, const id_type& id)
   {
-    using namespace mysql;
+    using namespace mssql;
 
     {
       pointer_type p (pointer_cache_traits::find (db, id));
@@ -559,17 +487,20 @@ namespace odb
         return p;
     }
 
-    mysql::connection& conn (
-      mysql::transaction::current ().connection ());
+    mssql::connection& conn (
+      mssql::transaction::current ().connection ());
     statements_type& sts (
       conn.statement_cache ().find_object<object_type> ());
 
     statements_type::auto_lock l (sts);
+    auto_result ar;
 
     if (l.locked ())
     {
       if (!find_ (sts, &id))
         return pointer_type ();
+
+      ar.set (sts.find_statement ());
     }
 
     pointer_type p (
@@ -588,6 +519,8 @@ namespace odb
 
       callback (db, obj, callback_event::pre_load);
       init (obj, sts.image (), &db);
+      st.stream_result ();
+      ar.free ();
       load_ (sts, obj, false);
       sts.load_delayed (0);
       l.unlock ();
@@ -602,13 +535,13 @@ namespace odb
     return p;
   }
 
-  bool access::object_traits_impl< ::SnmpObject, id_mysql >::
+  bool access::object_traits_impl< ::SnmpObject, id_mssql >::
   find (database& db, const id_type& id, object_type& obj)
   {
-    using namespace mysql;
+    using namespace mssql;
 
-    mysql::connection& conn (
-      mysql::transaction::current ().connection ());
+    mssql::connection& conn (
+      mssql::transaction::current ().connection ());
     statements_type& sts (
       conn.statement_cache ().find_object<object_type> ());
 
@@ -620,12 +553,15 @@ namespace odb
     select_statement& st (sts.find_statement ());
     ODB_POTENTIALLY_UNUSED (st);
 
+    auto_result ar (st);
     reference_cache_traits::position_type pos (
       reference_cache_traits::insert (db, id, obj));
     reference_cache_traits::insert_guard ig (pos);
 
     callback (db, obj, callback_event::pre_load);
     init (obj, sts.image (), &db);
+    st.stream_result ();
+    ar.free ();
     load_ (sts, obj, false);
     sts.load_delayed (0);
     l.unlock ();
@@ -635,13 +571,13 @@ namespace odb
     return true;
   }
 
-  bool access::object_traits_impl< ::SnmpObject, id_mysql >::
+  bool access::object_traits_impl< ::SnmpObject, id_mssql >::
   reload (database& db, object_type& obj)
   {
-    using namespace mysql;
+    using namespace mssql;
 
-    mysql::connection& conn (
-      mysql::transaction::current ().connection ());
+    mssql::connection& conn (
+      mssql::transaction::current ().connection ());
     statements_type& sts (
       conn.statement_cache ().find_object<object_type> ());
 
@@ -656,8 +592,12 @@ namespace odb
     select_statement& st (sts.find_statement ());
     ODB_POTENTIALLY_UNUSED (st);
 
+    auto_result ar (st);
+
     callback (db, obj, callback_event::pre_load);
     init (obj, sts.image (), &db);
+    st.stream_result ();
+    ar.free ();
     load_ (sts, obj, true);
     sts.load_delayed (0);
     l.unlock ();
@@ -665,11 +605,11 @@ namespace odb
     return true;
   }
 
-  bool access::object_traits_impl< ::SnmpObject, id_mysql >::
+  bool access::object_traits_impl< ::SnmpObject, id_mssql >::
   find_ (statements_type& sts,
          const id_type* id)
   {
-    using namespace mysql;
+    using namespace mssql;
 
     id_image_type& i (sts.id_image ());
     init (i, *id);
@@ -699,33 +639,25 @@ namespace odb
     auto_result ar (st);
     select_statement::result r (st.fetch ());
 
-    if (r == select_statement::truncated)
+    if (r != select_statement::no_data)
     {
-      if (grow (im, sts.select_image_truncated ()))
-        im.version++;
-
-      if (im.version != sts.select_image_version ())
-      {
-        bind (imb.bind, im, statement_select);
-        sts.select_image_version (im.version);
-        imb.version++;
-        st.refetch ();
-      }
+      ar.release ();
+      return true;
     }
-
-    return r != select_statement::no_data;
+    else
+      return false;
   }
 
-  result< access::object_traits_impl< ::SnmpObject, id_mysql >::object_type >
-  access::object_traits_impl< ::SnmpObject, id_mysql >::
+  result< access::object_traits_impl< ::SnmpObject, id_mssql >::object_type >
+  access::object_traits_impl< ::SnmpObject, id_mssql >::
   query (database&, const query_base_type& q)
   {
-    using namespace mysql;
+    using namespace mssql;
     using odb::details::shared;
     using odb::details::shared_ptr;
 
-    mysql::connection& conn (
-      mysql::transaction::current ().connection ());
+    mssql::connection& conn (
+      mssql::transaction::current ().connection ());
 
     statements_type& sts (
       conn.statement_cache ().find_object<object_type> ());
@@ -761,19 +693,19 @@ namespace odb
     st->execute ();
 
     shared_ptr< odb::object_result_impl<object_type> > r (
-      new (shared) mysql::object_result_impl<object_type> (
+      new (shared) mssql::object_result_impl<object_type> (
         q, st, sts, 0));
 
     return result<object_type> (r);
   }
 
-  unsigned long long access::object_traits_impl< ::SnmpObject, id_mysql >::
+  unsigned long long access::object_traits_impl< ::SnmpObject, id_mssql >::
   erase_query (database&, const query_base_type& q)
   {
-    using namespace mysql;
+    using namespace mssql;
 
-    mysql::connection& conn (
-      mysql::transaction::current ().connection ());
+    mssql::connection& conn (
+      mssql::transaction::current ().connection ());
 
     std::string text (erase_query_statement);
     if (!q.empty ())

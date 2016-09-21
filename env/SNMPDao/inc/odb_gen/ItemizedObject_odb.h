@@ -84,27 +84,27 @@ namespace odb
 
 #include <odb/details/buffer.hxx>
 
-#include <odb/mysql/version.hxx>
-#include <odb/mysql/forward.hxx>
-#include <odb/mysql/binding.hxx>
-#include <odb/mysql/mysql-types.hxx>
-#include <odb/mysql/query.hxx>
+#include <odb/mssql/version.hxx>
+#include <odb/mssql/forward.hxx>
+#include <odb/mssql/binding.hxx>
+#include <odb/mssql/mssql-types.hxx>
+#include <odb/mssql/query.hxx>
 
 namespace odb
 {
   // ItemizedObject
   //
   template <typename A>
-  struct query_columns< ::ItemizedObject, id_mysql, A >
+  struct query_columns< ::ItemizedObject, id_mssql, A >
   {
     // ItemizedObjectId
     //
     typedef
-    mysql::query_column<
-      mysql::value_traits<
+    mssql::query_column<
+      mssql::value_traits<
         long unsigned int,
-        mysql::id_ulonglong >::query_type,
-      mysql::id_ulonglong >
+        mssql::id_bigint >::query_type,
+      mssql::id_bigint >
     ItemizedObjectId_type_;
 
     static const ItemizedObjectId_type_ ItemizedObjectId;
@@ -112,11 +112,11 @@ namespace odb
     // networkElementId
     //
     typedef
-    mysql::query_column<
-      mysql::value_traits<
+    mssql::query_column<
+      mssql::value_traits<
         long unsigned int,
-        mysql::id_ulonglong >::query_type,
-      mysql::id_ulonglong >
+        mssql::id_bigint >::query_type,
+      mssql::id_bigint >
     networkElementId_type_;
 
     static const networkElementId_type_ networkElementId;
@@ -124,46 +124,50 @@ namespace odb
     // snmpObjectId
     //
     typedef
-    mysql::query_column<
-      mysql::value_traits<
+    mssql::query_column<
+      mssql::value_traits<
         long unsigned int,
-        mysql::id_ulonglong >::query_type,
-      mysql::id_ulonglong >
+        mssql::id_bigint >::query_type,
+      mssql::id_bigint >
     snmpObjectId_type_;
 
     static const snmpObjectId_type_ snmpObjectId;
   };
 
   template <typename A>
-  const typename query_columns< ::ItemizedObject, id_mysql, A >::ItemizedObjectId_type_
-  query_columns< ::ItemizedObject, id_mysql, A >::
-  ItemizedObjectId (A::table_name, "`ItemizedObjectId`", 0);
+  const typename query_columns< ::ItemizedObject, id_mssql, A >::ItemizedObjectId_type_
+  query_columns< ::ItemizedObject, id_mssql, A >::
+  ItemizedObjectId (A::table_name, "[ItemizedObjectId]", 0);
 
   template <typename A>
-  const typename query_columns< ::ItemizedObject, id_mysql, A >::networkElementId_type_
-  query_columns< ::ItemizedObject, id_mysql, A >::
-  networkElementId (A::table_name, "`networkElementId`", 0);
+  const typename query_columns< ::ItemizedObject, id_mssql, A >::networkElementId_type_
+  query_columns< ::ItemizedObject, id_mssql, A >::
+  networkElementId (A::table_name, "[networkElementId]", 0);
 
   template <typename A>
-  const typename query_columns< ::ItemizedObject, id_mysql, A >::snmpObjectId_type_
-  query_columns< ::ItemizedObject, id_mysql, A >::
-  snmpObjectId (A::table_name, "`snmpObjectId`", 0);
+  const typename query_columns< ::ItemizedObject, id_mssql, A >::snmpObjectId_type_
+  query_columns< ::ItemizedObject, id_mssql, A >::
+  snmpObjectId (A::table_name, "[snmpObjectId]", 0);
 
   template <typename A>
-  struct pointer_query_columns< ::ItemizedObject, id_mysql, A >:
-    query_columns< ::ItemizedObject, id_mysql, A >
+  struct pointer_query_columns< ::ItemizedObject, id_mssql, A >:
+    query_columns< ::ItemizedObject, id_mssql, A >
   {
   };
 
   template <>
-  class access::object_traits_impl< ::ItemizedObject, id_mysql >:
+  class access::object_traits_impl< ::ItemizedObject, id_mssql >:
     public access::object_traits< ::ItemizedObject >
   {
     public:
+    static const std::size_t batch = 1UL;
+
+    static const bool rowversion = false;
+
     struct id_image_type
     {
-      unsigned long long id_value;
-      my_bool id_null;
+      long long id_value;
+      SQLLEN id_size_ind;
 
       std::size_t version;
     };
@@ -172,20 +176,28 @@ namespace odb
     {
       // ItemizedObjectId_
       //
-      unsigned long long ItemizedObjectId_value;
-      my_bool ItemizedObjectId_null;
+      long long ItemizedObjectId_value;
+      SQLLEN ItemizedObjectId_size_ind;
 
       // networkElementId_
       //
-      unsigned long long networkElementId_value;
-      my_bool networkElementId_null;
+      long long networkElementId_value;
+      SQLLEN networkElementId_size_ind;
 
       // snmpObjectId_
       //
-      unsigned long long snmpObjectId_value;
-      my_bool snmpObjectId_null;
+      long long snmpObjectId_value;
+      SQLLEN snmpObjectId_size_ind;
 
       std::size_t version;
+
+      mssql::change_callback change_callback_;
+
+      mssql::change_callback*
+      change_callback ()
+      {
+        return &change_callback_;
+      }
     };
 
     struct extra_statement_cache_type;
@@ -198,22 +210,18 @@ namespace odb
     static id_type
     id (const image_type&);
 
-    static bool
-    grow (image_type&,
-          my_bool*);
-
     static void
-    bind (MYSQL_BIND*,
+    bind (mssql::bind*,
           image_type&,
-          mysql::statement_kind);
+          mssql::statement_kind);
 
     static void
-    bind (MYSQL_BIND*, id_image_type&);
+    bind (mssql::bind*, id_image_type&);
 
-    static bool
+    static void
     init (image_type&,
           const object_type&,
-          mysql::statement_kind);
+          mssql::statement_kind);
 
     static void
     init (object_type&,
@@ -223,9 +231,9 @@ namespace odb
     static void
     init (id_image_type&, const id_type&);
 
-    typedef mysql::object_statements<object_type> statements_type;
+    typedef mssql::object_statements<object_type> statements_type;
 
-    typedef mysql::query_base query_base_type;
+    typedef mssql::query_base query_base_type;
 
     static const std::size_t column_count = 3UL;
     static const std::size_t id_column_count = 1UL;
@@ -287,7 +295,7 @@ namespace odb
 
   template <>
   class access::object_traits_impl< ::ItemizedObject, id_common >:
-    public access::object_traits_impl< ::ItemizedObject, id_mysql >
+    public access::object_traits_impl< ::ItemizedObject, id_mssql >
   {
   };
 

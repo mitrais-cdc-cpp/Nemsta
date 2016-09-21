@@ -2,6 +2,7 @@
 #define NEMSTA_INC_SNMPUTIL_H_
 
 #include <iostream>
+#include <string>
 #include <vector>
 
 #include "../../env/SNMPLib/inc/MibDefinitions.hpp"
@@ -42,6 +43,12 @@ class SnmpUtil {
   Mitrais::SNMP::ReturnStatus set(Mitrais::SNMP::PDU& pdu,
                                   std::string ipAddress,
                                   Mitrais::SNMP::SnmpMode mode);
+
+  /**
+   * Function to get local Mac Address
+   * @return Mac Address
+   */
+  std::string getLocalMacAddress();
 
  private:
   /**

@@ -67,7 +67,7 @@ class NemstaUtil {
   std::string ipAddress_;
 
   /**
-   * MAC Address
+   * Host MAC Address
    */
   std::string macAddress_;
 
@@ -75,6 +75,11 @@ class NemstaUtil {
    * Element name
    */
   std::string elementName_;
+
+  /**
+   * Local workstation MAC Address
+   */
+  std::string localMacAddress_;
 
   /**
    * PDU

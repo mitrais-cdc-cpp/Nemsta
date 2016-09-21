@@ -8,7 +8,8 @@ void DatabaseUtil::extractMySqlCredentialFromConfigFile()
 {
 	std::ifstream mysqlConfigFile;
 
-	mysqlConfigFile.open(MYSQL_CONFIG_FILE_FULLPATH.c_str(), std::ios::in);
+//	mysqlConfigFile.open(MYSQL_CONFIG_FILE_FULLPATH.c_str(), std::ios::in);
+	mysqlConfigFile.open(MSSQL_CONFIG_FILE_FULLPATH.c_str(), std::ios::in);
 
 	std::string line;
 	std::string key;
